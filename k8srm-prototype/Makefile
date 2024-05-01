@@ -19,12 +19,13 @@ all: fmt test build
 
 .PHONY: fmt
 fmt:
-	gofmt -s -w *.go
+	gofmt -s -w .
 
 .PHONY: test
 test:
-	go test -v
+	go test ./...
 
 .PHONY: build
 build:
-	go build -o schedule 
+	cd cmd/schedule && go build
+	cd cmd/mock-apiserver && go build

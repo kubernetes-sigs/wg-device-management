@@ -1,0 +1,138 @@
+# Allows the user to request exactly one foozer
+# device to satisfy the claim.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-foozer-single
+spec:
+  deviceType: gpu
+  driver: example.com-foozer
+  maxDeviceCount: 1
+---
+# Allows the user to request a set of foozer
+# devices to satisfy the claim.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-foozer-set
+spec:
+  deviceType: gpu
+  driver: example.com-foozer
+---
+# Allows the user to request exactly one barzer
+# device to satisfy the a claim for GPUs.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-barzer-gpu-single
+spec:
+  deviceType: gpu
+  driver: example.com-barzer
+  deviceMaxCount: 1
+---
+# Allows the user to request a set of barzer
+# devices to satisfy the a claim for GPUs.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-barzer-gpu-set
+spec:
+  deviceType: gpu
+  driver: example.com-barzer
+---
+# Allows the user to request a set of any
+# example.com GPUs to satisfy the claim for
+# GPUS.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-gpu-set
+spec:
+  deviceType: gpu
+  contstraints: "device.vendor == 'example.com'"
+---
+# Allows the user to request exactly one
+# example.com GPU to satisfy the claim for
+# GPUS.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-gpu-single
+spec:
+  deviceType: gpu
+  constraints: "device.vendor == 'example.com'"
+  deviceMaxCount: 1
+---
+# Allows the user to request a set of example.com
+# GPUs to satisfy the claim, but require that they
+# all are the same model and firmware version.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-consistent-gpu-set
+spec:
+  deviceType: gpu
+  constraints: "device.vendor == 'example.com'"
+  attributeMatches:
+    - device.model
+    - device.firmwareVersion
+---
+# Request any SR-IOV NIC.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: sriov-nic
+spec:
+  deviceTypes: sriov-nic
+  deviceMaxCount: 1
+---
+# Request any 1Gbps SR-IOV NIC.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: sriov-nic-1Gbps
+spec:
+  deviceTypes: sriov-nic
+  constraints: "device.bandwidth = '1G'"
+  deviceMaxCount: 1
+---
+# Request any 10Gbps SR-IOV NIC.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: sriov-nic-10Gbps
+spec:
+  deviceTypes: sriov-nic
+  constraints: "device.bandwidth = '10G'"
+  deviceMaxCount: 1
+---
+# Request any 1Gbps or faster SR-IOV NIC.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: sriov-nic-1Gbps-or-faster
+spec:
+  deviceTypes: sriov-nic
+  constraints: "device.bandwidth >= '1G'"
+  deviceMaxCount: 1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: vlan-driver-vlan-2000
+data:
+  vlanID: 2000
+---
+# Request a VLAN interface on VLAN 2000
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: vlan-2000
+spec:
+  deviceType: vlan
+  configs:
+  - apiVersion: v1
+    kind: ConfigMap
+    namespace: default
+    name: vlan-driver-vlan-2000
