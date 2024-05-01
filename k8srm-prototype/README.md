@@ -12,11 +12,11 @@ Just run `make`, it will build everything.
 k8srm-prototype$ make
 gofmt -s -w .
 go test ./...
-?   	github.com/johnbelamaric/k8srm-prototype/cmd/mock-apiserver	[no test files]
-?   	github.com/johnbelamaric/k8srm-prototype/cmd/schedule	[no test files]
-?   	github.com/johnbelamaric/k8srm-prototype/pkg/api	[no test files]
-?   	github.com/johnbelamaric/k8srm-prototype/pkg/gen	[no test files]
-ok  	github.com/johnbelamaric/k8srm-prototype/pkg/schedule	(cached)
+?   	github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/cmd/mock-apiserver	[no test files]
+?   	github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/cmd/schedule	[no test files]
+?   	github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api	[no test files]
+?   	github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/gen	[no test files]
+ok  	github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/schedule	(cached)
 cd cmd/schedule && go build
 cd cmd/mock-apiserver && go build
 ```

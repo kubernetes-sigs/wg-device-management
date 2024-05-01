@@ -3,7 +3,7 @@ package schedule
 import (
 	"fmt"
 
-	"github.com/johnbelamaric/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
 
 	"gonum.org/v1/gonum/stat/combin"
 )
