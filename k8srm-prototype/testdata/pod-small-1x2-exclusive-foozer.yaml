@@ -1,0 +1,46 @@
+podClaim:
+  name: pod-small-1x2-exclusive-foozer
+  claims:
+  - capacities:
+    - capacity: pods
+      counter:
+        request: 1
+    name: pod
+  - name: foozer-1
+    driver: example.com/foozer
+    capacities:
+    - capacity: access
+      accessMode:
+        request: WriteExclusive
+    - capacity: example.com/foozer/cores
+      quantity:
+        request: "1"
+    - capacity: example.com/foozer/memory
+      quantity:
+        request: 8Gi
+  - name: foozer-2
+    driver: example.com/foozer
+    capacities:
+    - capacity: access
+      accessMode:
+        request: WriteExclusive
+    - capacity: example.com/foozer/cores
+      quantity:
+        request: "1"
+    - capacity: example.com/foozer/memory
+      quantity:
+        request: 8Gi
+containerClaims:
+- claims:
+  - capacities:
+    - capacity: containers
+      counter:
+        request: 1
+    - capacity: cpu
+      quantity:
+        request: 100m
+    - capacity: memory
+      quantity:
+        request: 100Mi
+    name: container
+  name: my-container

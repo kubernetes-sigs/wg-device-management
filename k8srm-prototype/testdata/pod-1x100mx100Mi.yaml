@@ -1,0 +1,22 @@
+podClaim:
+  claims:
+  - capacities:
+    - capacity: pods
+      counter:
+        request: 1
+    name: pod
+  name: pod-1x100mx100Mi
+containerClaims:
+- claims:
+  - capacities:
+    - capacity: containers
+      counter:
+        request: 1
+    - capacity: cpu
+      quantity:
+        request: 100m
+    - capacity: memory
+      quantity:
+        request: 100Mi
+    name: container
+  name: my-container
