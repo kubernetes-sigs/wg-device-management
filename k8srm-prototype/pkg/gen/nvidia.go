@@ -139,6 +139,9 @@ func sharedGroupToRequests(group newresourceapi.NamedResourcesSharedResourceGrou
 
 	for _, item := range group.Items {
 		if item.QuantityValue != nil {
+			if item.QuantityValue.IsZero() {
+				continue
+			}
 			requests[item.Name] = *item.QuantityValue
 		} else if item.IntRangeValue != nil {
 			// sorry, unrolling these intranges to avoid additional types
