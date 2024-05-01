@@ -5,7 +5,7 @@ import (
 	"reflect"
 
 	"github.com/google/cel-go/cel"
-	"github.com/johnbelamaric/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
 )
 
 const (

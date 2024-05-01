@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/johnbelamaric/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
 )
 
 type NodeResult struct {

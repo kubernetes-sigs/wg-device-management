@@ -3,7 +3,7 @@ package schedule
 import (
 	"testing"
 
-	"github.com/johnbelamaric/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
 	"github.com/stretchr/testify/require"
 
 	"k8s.io/apimachinery/pkg/api/resource"

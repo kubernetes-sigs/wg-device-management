@@ -1,4 +1,4 @@
-module github.com/johnbelamaric/k8srm-prototype
+module github.com/kubernetes-sigs/wg-device-management/k8srm-prototype
 
 go 1.22.0
 
