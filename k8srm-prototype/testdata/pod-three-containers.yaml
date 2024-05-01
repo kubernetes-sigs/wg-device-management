@@ -1,0 +1,48 @@
+podClaim:
+  claims:
+  - capacities:
+    - capacity: pods
+      counter:
+        request: 1
+    name: pod
+  name: my-pod
+containerClaims:
+- claims:
+  - capacities:
+    - capacity: containers
+      counter:
+        request: 1
+    - capacity: cpu
+      quantity:
+        request: 7127m
+    - capacity: memory
+      quantity:
+        request: 8Gi
+    name: container
+  name: my-container-1
+- claims:
+  - capacities:
+    - capacity: containers
+      counter:
+        request: 1
+    - capacity: cpu
+      quantity:
+        request: 200m
+    - capacity: memory
+      quantity:
+        request: 8Gi
+    name: container
+  name: my-container-2
+- claims:
+  - capacities:
+    - capacity: containers
+      counter:
+        request: 1
+    - capacity: cpu
+      quantity:
+        request: 200m
+    - capacity: memory
+      quantity:
+        request: 8Gi
+    name: container
+  name: my-container-3
