@@ -8,8 +8,8 @@ Learn how to engage with the Kubernetes community on the [community page](http:/
 
 You can reach the maintainers of this project at:
 
-- [Slack](https://kubernetes.slack.com/messages/sig-storage)
-- [Mailing List](https://groups.google.com/g/kubernetes-sig-storage)
+- [Slack](https://kubernetes.slack.com/messages/wg-device-management)
+- [Mailing List](https://groups.google.com/a/kubernetes.io/g/wg-device-management)
 
 ### Code of conduct
 
