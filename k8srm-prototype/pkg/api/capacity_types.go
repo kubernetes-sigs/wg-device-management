@@ -40,9 +40,17 @@ type DevicePoolSpec struct {
 	// +optional
 	Attributes []Attribute `json:"attributes,omitempty"`
 
-	// DeviceCount contains the total number of devices in the pool.
+	// Resources are pooled resources that are shared by all devices in the
+	// pool. This is typically used when representing a partitionable
+	// device, and need not be populated otherwise.
+	//
+	// +optional
+	Resources []ResourceCapacity `json:"resources,omitempty"`
+
+	// Devices contains the individual devices in the pool.
+	//
 	// +required
-	DeviceCount int `json:"count,omitempty"`
+	Devices []Device `json:"devices,omitempty"`
 }
 
 // DevicePoolStatus contains the state of the pool as last reported by the
@@ -51,6 +59,52 @@ type DevicePoolSpec struct {
 // to make future scheduling decisions.
 type DevicePoolStatus struct {
 	AvailableDevices int `json:"availableDevices,omitempty"`
+}
+
+// Device is used to track individual devices in a pool.
+type Device struct {
+	// Name is a driver-specific identifier for the device.
+	// +required
+	Name string `json:"name"`
+
+	// Attributes contain additional metadata that can be used in
+	// constraints. If an attribute name overlaps with the pool attribute,
+	// the device attribute takes precedence.
+	//
+	// +optional
+	Attributes []Attribute `json:"attributes,omitempty"`
+
+	// Requests contains the pool resources that are consumed when
+	// this device is allocated.
+	//
+	// +optional
+	Requests map[string]resource.Quantity `json:"requests,omitempty"`
+
+	// Resources allows the definition of per-device resources that can
+	// be allocated in a manner similar to standard Kubernetes resources.
+	// NOTE: We may not need to implement this right away.
+	//
+	// +optional
+	Resources []ResourceCapacity `json:"resources,omitempty"`
+}
+
+type ResourceCapacity struct {
+	// Name is the resource name/type.
+	Name string `json:"name"`
+
+	// Capacity is the total capacity of the named resource.
+	// +required
+	Capacity resource.Quantity `json:"capacity"`
+
+	// BlockSize is the increments in which capacity is consumed. For
+	// example, if you can only allocate memory in 4k pages, then the
+	// block size should be "4Ki". Default is 1.
+	//
+	// +optional
+	BlockSize *resource.Quantity `json:"blockSize,omitempty"`
+
+	// If we ever need per-resource topology, then topology associations
+	// would also go in here.
 }
 
 // Attribute capture the name, value, and type of an device attribute.
