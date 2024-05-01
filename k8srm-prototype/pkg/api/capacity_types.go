@@ -74,7 +74,7 @@ type Device struct {
 	// +optional
 	Attributes []Attribute `json:"attributes,omitempty"`
 
-	// Requests contains the pool resources that are consumed when
+	// Requests contains the pooled resources that are consumed when
 	// this device is allocated.
 	//
 	// +optional
@@ -99,6 +99,12 @@ type ResourceCapacity struct {
 	// BlockSize is the increments in which capacity is consumed. For
 	// example, if you can only allocate memory in 4k pages, then the
 	// block size should be "4Ki". Default is 1.
+	//
+	// If the resource is consumable in a fractional way, then the
+	// default of 1 should not be used; instead this should be a fractional
+	// amount corresponding the increment size. We may also need a minimum
+	// value, if the minimum is larger than the block size (as is the case
+	// for standard Kubernetes CPU resources).
 	//
 	// +optional
 	BlockSize *resource.Quantity `json:"blockSize,omitempty"`

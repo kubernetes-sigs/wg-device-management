@@ -89,6 +89,20 @@ func getGenerators() map[string]generator {
 		}
 	}
 
+	generators["dgxa100"] = func(num int) []api.DevicePool {
+		var pools []api.DevicePool
+		for i := 0; i < num; i++ {
+			nodeName := fmt.Sprintf("nvidia-%02d", i)
+			p, err := dgxa100Pool(nodeName, "dgxa100")
+			if err != nil {
+				fmt.Printf("Error generating dgxa100 pool for %q: %s\n", nodeName, err.Error())
+				continue
+			}
+			pools = append(pools, *p)
+		}
+		return pools
+	}
+
 	return generators
 }
 
