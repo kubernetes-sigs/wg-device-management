@@ -2,6 +2,7 @@ package gen
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
 
@@ -106,16 +107,19 @@ func getGenerators() map[string]generator {
 	return generators
 }
 
-func Gen(nodeType string, num int) []api.DevicePool {
+func Gen(nodeType string, num int) ([]api.DevicePool, error) {
 	generators := getGenerators()
 
-	fmt.Println(generators)
 	generate, ok := generators[nodeType]
 	if !ok {
-		return nil
+		var valid []string
+		for k := range generators {
+			valid = append(valid, k)
+		}
+		return nil, fmt.Errorf("generator %q not found, valid generators are: %s", nodeType, strings.Join(valid, ", "))
 	}
 
-	return generate(num)
+	return generate(num), nil
 }
 
 func gen(num int, nodeBase, poolBase string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) []api.DevicePool {

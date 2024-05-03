@@ -2,11 +2,14 @@ module github.com/kubernetes-sigs/wg-device-management/k8srm-prototype
 
 go 1.22.1
 
+replace github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources => ../nv-partitionable-devices
+
 require (
 	github.com/NVIDIA/go-nvml v0.12.0-5
 	github.com/google/cel-go v0.20.1
-	github.com/klueska/nvk8s-resourcemodel v0.0.0-20240428200758-7baef5cd3f0d
+	github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.9.0
+	k8s.io/api v0.30.0
 	k8s.io/apimachinery v0.30.0
 	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20240404191132-83bd9c05741b
 	sigs.k8s.io/yaml v1.4.0
@@ -35,7 +38,6 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.30.0 // indirect
 	k8s.io/klog/v2 v2.120.1 // indirect
 	k8s.io/utils v0.0.0-20240423183400-0849a56e8f22 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect

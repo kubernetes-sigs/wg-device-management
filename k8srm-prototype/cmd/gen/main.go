@@ -24,9 +24,9 @@ func usage() {
 }
 
 func genCapacityExample(shape string) {
-	pools := gen.Gen(shape, 2)
-	if pools == nil {
-		fmt.Printf("could not generate shape %q\n", shape)
+	pools, err := gen.Gen(shape, 2)
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	if pools != nil {

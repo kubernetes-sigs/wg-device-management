@@ -4,10 +4,10 @@ import (
 	"fmt"
 
 	"github.com/NVIDIA/go-nvml/pkg/nvml/mock/dgxa100"
-	"github.com/klueska/nvk8s-resourcemodel/pkg/intrange"
-	nvdevicelib "github.com/klueska/nvk8s-resourcemodel/pkg/nvdevice"
-	newresourceapi "github.com/klueska/nvk8s-resourcemodel/pkg/resource/new"
 	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/intrange"
+	nvdevicelib "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/nvdevice"
+	newresourceapi "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/resource/new"
 
 	resourceapi "k8s.io/api/resource/v1alpha2"
 	"k8s.io/apimachinery/pkg/api/resource"
