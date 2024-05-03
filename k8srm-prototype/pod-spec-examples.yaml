@@ -21,7 +21,8 @@
 
 # Allocates four SR-IOV VFs from any Intel NIC These could even each come from
 # a different NIC (on the same node of course). NICs are not tied to specific
-# containers, so there is no need to name the claim.
+# containers, so there is no need to name the claim; the NICs will be added to
+# the pod-level sandbox.
 deviceClaims:
 - template:
     claims:
@@ -53,7 +54,7 @@ deviceClaims:
       - pcie-root
 
 # Allocates two A100 GPUs on the same PCI root complex, but keeps them
-# separated in the API so they can be attached to two differenti containers.
+# separated in the API so they can be attached to two different containers.
 deviceClaims:
 - template:
     matchAttributes:
@@ -82,7 +83,8 @@ deviceClaims:
 deviceClaims:
 - template:
     claims:
-    - oneOf:
+    - name: gpus
+      oneOf:
       - deviceClass: "nvidia-a100"
       - deviceClass: "nvidia-h100"
       - deviceClass: "nvidia-l4"
@@ -98,8 +100,10 @@ deviceClaims:
     - numa
     - pcie-root
     claims:
-    - deviceType: "sriov-vf"
-    - oneOf:
+    - name: nic
+      deviceType: "sriov-vf"
+    - name: gpus
+      oneOf:
       - deviceClass: "nvidia-a100"
       - deviceClass: "nvidia-h100"
       - deviceClass: "nvidia-l4"
@@ -110,7 +114,8 @@ deviceClaims:
 deviceClaims:
 - template:
   claims:
-  - deviceType: "sriov-vf"
+  - name: nics
+    deviceType: "sriov-vf"
     count: 4
     matchAttributes:
     - vendor
@@ -122,6 +127,7 @@ deviceClaims:
 deviceClaims:
 - template:
   claims:
-  - deviceClass: "nvidia-h100-mps"
+  - name: gpus
+    deviceClass: "nvidia-h100-mps"
     requests:
       memory: 8Gi
