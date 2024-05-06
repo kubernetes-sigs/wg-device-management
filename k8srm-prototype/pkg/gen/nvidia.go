@@ -56,8 +56,8 @@ func dgxa100Pool(nodeName, poolName string) (*api.DevicePool, error) {
 				{Name: "vendor", StringValue: ptr("nvidia")},
 				{Name: "model", StringValue: ptr("dgxa100")},
 			},
-			Resources: sharedGroupToResources(model.NamedResources.SharedLimits[0]),
-			Devices:   devices,
+			SharedResources: sharedGroupToResources(model.NamedResources.SharedLimits[0], false),
+			Devices:         devices,
 		},
 	}, nil
 }
@@ -69,8 +69,8 @@ func instanceToDevice(instance newresourceapi.NamedResourcesInstance) api.Device
 	}
 
 	if len(instance.Resources) > 0 {
-		device.Requests = sharedGroupToRequests(instance.Resources[0])
-		//device.Resources = sharedGroupToResources(instance.Resources[0])
+		device.ConsumesSharedResources = sharedGroupToRequests(instance.Resources[0])
+		device.ProvidesClaimResources = sharedGroupToResources(instance.Resources[0], true)
 	}
 
 	return device
@@ -107,10 +107,16 @@ func attributesToAttributes(attrs []resourceapi.NamedResourcesAttribute) []api.A
 	return attributes
 }
 
-func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGroup) []api.ResourceCapacity {
+func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGroup, userOnly bool) []api.ResourceCapacity {
 	var resources []api.ResourceCapacity
 
 	for _, item := range group.Items {
+		// as an example, make it so that only memory is a user-facing
+		// allocatable resource, whereas other resources are just
+		// about the shared pool
+		if userOnly && item.Name != "memory" {
+			continue
+		}
 		if item.QuantityValue != nil {
 			resources = append(resources, api.ResourceCapacity{
 				Name:     item.Name,
@@ -118,12 +124,12 @@ func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGro
 			})
 		} else if item.IntRangeValue != nil {
 			// sorry, unrolling these intranges to avoid additional types
-			// beyond Quantity. Assumes max range 0-15
-			for i := 0; i < 16; i++ {
+			// beyond Quantity. Assumes max range 0-7
+			for i := 0; i < 8; i++ {
 				single := intrange.NewIntRange(int64(i), 1)
 				if item.IntRangeValue.Contains(single) {
 					resources = append(resources, api.ResourceCapacity{
-						Name:     fmt.Sprintf("%s-%02d", item.Name, i),
+						Name:     fmt.Sprintf("%s-%d", item.Name, i),
 						Capacity: resource.MustParse("1"),
 					})
 				}
