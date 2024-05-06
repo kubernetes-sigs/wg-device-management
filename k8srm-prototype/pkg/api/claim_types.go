@@ -31,6 +31,8 @@ type DeviceClassSpec struct {
 	// +optional
 	Selector *metav1.LabelSelector `json:"selector,omitempty"`
 
+	// ClassCriteria defines the criteria to determine if a device is part
+	// of this class.
 	ClassCriteria *DeviceClassDetail `json:"classCriteria,omitempty"`
 }
 
@@ -55,6 +57,7 @@ type DeviceClassDetail struct {
 	// objects that will be attached to the device allocation.
 	//
 	// +optional
+	// +listType=atomic
 	Configs []DeviceClassConfigReference `json:"configs,omitempty"`
 }
 
@@ -105,6 +108,7 @@ type DeviceClaimInstance struct {
 	// Claims are listed in order of priority.
 	//
 	// +optional
+	// +listType=atomic
 	OneOf []DeviceClaimDetail `json:"oneOf,omitempty"`
 }
 
@@ -186,11 +190,13 @@ type DeviceClaimDetail struct {
 	// score differently for each.
 	//
 	// +optional
+	// +listType=atomic
 	MatchAttributes []string `json:"matchAttributes,omitempty"`
 
 	// Configs contains references to arbitrary vendor device configuration
 	// objects that will be attached to the device allocation.
 	// +optional
+	// +listType=atomic
 	Configs []DeviceConfigReference `json:"configs,omitempty"`
 }
 
@@ -310,6 +316,7 @@ type DeviceAllocation struct {
 	// may even be larger than the requests or limits in the claim.
 	//
 	// +optional
+	// +listType=atomic
 	Allocations []ResourceAllocation `json:"allocations,omitempty"`
 }
 
@@ -349,15 +356,18 @@ type AllocatedDeviceStatus struct {
 	// config references, the `Ready` condition should be True.
 	//
 	// +optional
+	// +listType=atomic
 	Conditions []metav1.Condition `json:"conditions"`
 
 	// DeviceIPs contains all of the IPs allocated for a device, if any.
 	//
 	// +optional
+	// +listType=atomic
 	DeviceIPs []DeviceIP `json:"deviceIPs,omitempty"`
 
 	// Arbitrary driver-specific data.
 	//
 	// +optional
+	// +listType=atomic
 	DeviceInfo []runtime.RawExtension `json:"deviceInfo,omitempty"`
 }

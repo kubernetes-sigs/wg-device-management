@@ -39,6 +39,7 @@ type DevicePoolSpec struct {
 	// Attributes contains device attributes that are common to all devices
 	// in the pool.
 	// +optional
+	// +listType=atomic
 	Attributes []Attribute `json:"attributes,omitempty"`
 
 	// SharedResources are pooled resources that are shared by all devices
@@ -46,11 +47,13 @@ type DevicePoolSpec struct {
 	// partitionable device, and need not be populated otherwise.
 	//
 	// +optional
+	// +listType=atomic
 	SharedResources []ResourceCapacity `json:"sharedResources,omitempty"`
 
 	// Devices contains the individual devices in the pool.
 	//
 	// +required
+	// +listType=atomic
 	Devices []Device `json:"devices,omitempty"`
 }
 
