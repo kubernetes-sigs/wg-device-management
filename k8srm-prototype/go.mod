@@ -2,7 +2,7 @@ module github.com/kubernetes-sigs/wg-device-management/k8srm-prototype
 
 go 1.22.1
 
-replace github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources => ../nv-partitionable-devices
+replace github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources => ../nv-partitionable-resources
 
 require (
 	github.com/NVIDIA/go-nvml v0.12.0-5
