@@ -55,7 +55,19 @@ metadata:
 spec:
   driver: example.com-sriov
 ---
-# Request any SR-IOV NIC.
+# A example.org SR-IOV NIC (different vendor)
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.org-sriov-nic
+  labels:
+    vendor: example.org
+    device-type: sriov-nic
+spec:
+  driver: example.org-sriov
+---
+# Request any SR-IOV NIC. This will allow the claim to be satisfied by
+# example.com or example.org NICs.
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClass
 metadata:
