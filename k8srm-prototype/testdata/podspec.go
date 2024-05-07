@@ -1,28 +1,26 @@
 package podspec
 
-
 // Today in podspec, we have:
 //
 
 type PodSpec130 struct {
 	// lots of stuff, ending with:
 
-        ResourceClaims []PodResourceClaim
-
+	ResourceClaims []PodResourceClaim
 }
 
 type PodResourceClaim struct {
-        // Name uniquely identifies this resource claim inside the pod.
-        // This must be a DNS_LABEL.
-        Name string
+	// Name uniquely identifies this resource claim inside the pod.
+	// This must be a DNS_LABEL.
+	Name string
 
-        // Source describes where to find the ResourceClaim.
-        Source ClaimSource
+	// Source describes where to find the ResourceClaim.
+	Source ClaimSource
 }
 
 type ClaimSource struct {
-        ResourceClaimName *string
-        ResourceClaimTemplateName *string
+	ResourceClaimName         *string
+	ResourceClaimTemplateName *string
 }
 
 // This proposal instead has:
@@ -46,7 +44,7 @@ type PodDeviceClaim struct {
 }
 
 type DirectDeviceClaim struct {
-	Name string
+	Name  string
 	Class string
 }
 
@@ -56,4 +54,3 @@ type DeviceClaimTemplate struct {
 	// +required
 	ClaimName `json:"claimName"`
 }
-
