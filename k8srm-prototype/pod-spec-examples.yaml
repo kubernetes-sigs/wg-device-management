@@ -1,0 +1,136 @@
+# EXAMPLE SNIPPETS FROM PodSpec
+#
+# NOTE 2024-05-06 these have not been updated for the latest changes to the
+# model. Review with caution. Updates pending.
+#
+# NOTE: We want to allow a set of "must satisfy all"
+# and multiple sets of "must satisfy one of", and
+# we want to allow matchAttributes/distinctAttributes
+# across all of the selected devices.
+#
+# As written here, each entry in deviceClaims is claimName that
+# points to an existing claim or a template with:
+# - ObjectMeta
+# - MatchAttributes (and maybe DistinctAttributes?) that apply across all
+#   claims in the Claims list
+# - Claims list, each of which is either a claim (inlined), or
+#   a "oneOf" list of claims.
+
+# This means we have an extra "  claims:" line in the simplest of cases.  We
+# could eliminate that with equivalent expressiveness, by instead listing
+# "allOf" and "oneOf", where "oneOf" is actually a list-of-lists of claims, but
+# not sure that's better.
+
+
+# Allocates four SR-IOV VFs from any Intel NIC These could even each come from
+# a different NIC (on the same node of course). NICs are not tied to specific
+# containers, so there is no need to name the claim; the NICs will be added to
+# the pod-level sandbox.
+deviceClaims:
+- template:
+    claims:
+    - deviceClass: "intel-sriov-vf"
+      requests:
+        count: 4
+
+# Allocates four SR-IOV VFs from any vendor NIC, making sure all the VFs are on
+# the same PF this requires vendor & PF together to fully qualify a physical
+# card on a node.
+deviceClaims:
+- template:
+    claims:
+    - deviceType: "sriov-vf"
+      count: 4
+      matchAttributes:
+      - "vendor"
+      - "pf"
+
+# Allocates two A100 GPUs on the same PCI root complex. The name is used to
+# attach the associated claims to a container.
+deviceClaims:
+- template:
+    claims:
+    - name: gpus
+      deviceClass: "nvidia-a100"
+      count: 2
+      matchAttributes:
+      - pcie-root
+
+# Allocates two A100 GPUs on the same PCI root complex, but keeps them
+# separated in the API so they can be attached to two different containers.
+deviceClaims:
+- template:
+    matchAttributes:
+    - pcie-root
+    claims:
+    - name: gpu-one
+      deviceClass: "nvidia-a100"
+    - name: gpu-two
+      deviceClass: "nvidia-a100"
+
+# Allocates an SR-IOV PF and a an A100 from the same pcie-root. Name is
+# populated here for the PF just to show that it can be, but the expectation is
+# generally for network devices it is not needed. Note ANY vendor PF is fine
+# here; we use deviceType, not deviceClass.
+deviceClaims:
+- template:
+    matchAttributes:
+    - pcie-root
+    claims:
+    - name: gpu
+      deviceClass: "nvidia-a100"
+    - name: nic
+      deviceType: "sriov-pf"
+
+# Allocates either an A100, H100, or two L4s that are on the same pcie root.
+deviceClaims:
+- template:
+    claims:
+    - name: gpus
+      oneOf:
+      - deviceClass: "nvidia-a100"
+      - deviceClass: "nvidia-h100"
+      - deviceClass: "nvidia-l4"
+        count: 2
+        matchAttributes:
+        - pcie-root
+
+# Allocates and SR-IOV VF from any vendor and either an A100, H100, or two L4s,
+# all from the same NUMA node and PCIe root complex.
+deviceClaims:
+- template:
+    matchAttributes:
+    - numa
+    - pcie-root
+    claims:
+    - name: nic
+      deviceType: "sriov-vf"
+    - name: gpus
+      oneOf:
+      - deviceClass: "nvidia-a100"
+      - deviceClass: "nvidia-h100"
+      - deviceClass: "nvidia-l4"
+        count: 2
+
+# Allocates 4 VFs from 4 different PFs,
+# but all the same vendor
+deviceClaims:
+- template:
+  claims:
+  - name: nics
+    deviceType: "sriov-vf"
+    count: 4
+    matchAttributes:
+    - vendor
+    distinctAttributes: # maybe we should use affinity/antiaffinity terms?
+    - pf
+
+# Allocates a partial H100 in MPS mode, declaring a reservation of 8GB of
+# memory to regulate the number of clients that attach.
+deviceClaims:
+- template:
+  claims:
+  - name: gpus
+    deviceClass: "nvidia-h100-mps"
+    requests:
+      memory: 8Gi

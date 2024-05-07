@@ -2,6 +2,7 @@ package gen
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
 
@@ -13,14 +14,26 @@ func ptr[T any](val T) *T {
 	return &v
 }
 
-func genPoolForNumaNode(node, poolBase string, numaNode, count int, vendor, driver, model, firmwareVer, driverVer string) api.DevicePool {
+func genPool(node, pool string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) api.DevicePool {
+	var devices []api.Device
+	for nn := 0; nn < numaNodes; nn++ {
+		for d := 0; d < devicesPerNuma; d++ {
+			devices = append(devices, api.Device{
+				Name: fmt.Sprintf("dev-%02d", nn*devicesPerNuma+d),
+				Attributes: []api.Attribute{
+					{Name: "numa", StringValue: ptr(fmt.Sprintf("%d", nn))},
+				},
+			})
+		}
+	}
+
 	return api.DevicePool{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: api.DevMgmtAPIVersion,
 			Kind:       "DevicePool",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name: fmt.Sprintf("%s-%s-%02d", node, poolBase, numaNode),
+			Name: pool,
 		},
 		Spec: api.DevicePoolSpec{
 			NodeName: &node,
@@ -30,43 +43,100 @@ func genPoolForNumaNode(node, poolBase string, numaNode, count int, vendor, driv
 				{Name: "model", StringValue: ptr(model)},
 				{Name: "firmwareVersion", SemVerValue: ptr(api.SemVer(firmwareVer))},
 				{Name: "driverVersion", SemVerValue: ptr(api.SemVer(driverVer))},
-				{Name: "numa", StringValue: ptr(fmt.Sprintf("%d", numaNode))},
 			},
-			DeviceCount: count,
+			Devices: devices,
 		},
 	}
 }
 
-func genSimplePools(num, numa, count int, nodeBase, poolBase, vendor, driver, model, firmwareVer, driverVer string) []api.DevicePool {
+type generator func(num int) []api.DevicePool
+
+func getGenerators() map[string]generator {
+	generators := make(map[string]generator)
+
+	models := []string{"foozer-1000", "foozer-4000"}
+	sizes := map[string]struct {
+		numaNodes, devicesPerNuma int
+	}{
+		"tiny": {
+			numaNodes:      1,
+			devicesPerNuma: 2,
+		},
+		"small": {
+			numaNodes:      1,
+			devicesPerNuma: 4,
+		},
+		"medium": {
+			numaNodes:      2,
+			devicesPerNuma: 4,
+		},
+		"large": {
+			numaNodes:      4,
+			devicesPerNuma: 4,
+		},
+	}
+
+	vendor := "example.com"
+	driver := "example.com-foozer"
+	firmwareVersion := "1.8.2"
+	driverVersion := "4.2.1-gen3"
+
+	for _, model := range models {
+		for size, sizeInfo := range sizes {
+			nodeBase := model + "-" + size
+			generators[nodeBase] = func(num int) []api.DevicePool {
+				return gen(num, nodeBase, "foozer", sizeInfo.devicesPerNuma, sizeInfo.numaNodes, vendor, driver, model, firmwareVersion, driverVersion)
+			}
+		}
+	}
+
+	generators["dgxa100"] = func(num int) []api.DevicePool {
+		var pools []api.DevicePool
+		for i := 0; i < num; i++ {
+			nodeName := fmt.Sprintf("nvidia-%02d", i)
+			p, err := dgxa100Pool(nodeName, "dgxa100")
+			if err != nil {
+				fmt.Printf("Error generating dgxa100 pool for %q: %s\n", nodeName, err.Error())
+				continue
+			}
+			pools = append(pools, *p)
+		}
+		return pools
+	}
+
+	return generators
+}
+
+func Gen(nodeType string, num int) ([]api.DevicePool, error) {
+	generators := getGenerators()
+
+	generate, ok := generators[nodeType]
+	if !ok {
+		var valid []string
+		for k := range generators {
+			valid = append(valid, k)
+		}
+		return nil, fmt.Errorf("generator %q not found, valid generators are: %s", nodeType, strings.Join(valid, ", "))
+	}
+
+	return generate(num), nil
+}
+
+func gen(num int, nodeBase, poolBase string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) []api.DevicePool {
 	var pools []api.DevicePool
 	for i := 0; i < num; i++ {
-		node := fmt.Sprintf("%s-%02d", nodeBase, i)
-		for nn := 0; nn < numa; nn++ {
-			pools = append(pools, genPoolForNumaNode(node, poolBase, nn, count, vendor, driver, model, firmwareVer, driverVer))
-		}
+		nodeName := fmt.Sprintf("%s-%02d", nodeBase, i)
+		poolName := fmt.Sprintf("%s-pool-%s", nodeBase, poolBase)
+
+		pools = append(pools, genPool(nodeName, poolName, devicesPerNuma, numaNodes, vendor, driver, model, firmwareVer, driverVer))
 	}
 
 	return pools
 }
 
-func GenShapeZero(num int) []api.DevicePool {
-	return genSimplePools(num, 1, 2, "shape-zero", "foozer", "example.com", "example.com-foozer", "foozer-1000", "4.2.1-gen3", "1.8.2")
-}
-
-func GenShapeOne(num int) []api.DevicePool {
-	return genSimplePools(num, 2, 2, "shape-one", "foozer", "example.com", "example.com-foozer", "foozer-1000", "4.2.1-gen3", "1.8.2")
-}
-
-func GenShapeTwo(num int) []api.DevicePool {
-	return genSimplePools(num, 4, 4, "shape-two", "foozer", "example.com", "example.com-foozer", "foozer-4000", "4.2.1-gen7", "1.8.2")
-}
-
-func GenShapeThree(num int) []api.DevicePool {
-	return genSimplePools(num, 4, 4, "shape-three", "barzer", "example.com", "example.com-barzer", "barzer-1000", "1.1.1", "1.8.2")
-}
-
 // 4 cpus/numa nodes
 // Each CPU has two Foozers and two Barzers associated
+/*
 func GenFoozerBarzerNodes(num int) []api.DevicePool {
 	var pools []api.DevicePool
 	for i := 0; i < num; i++ {
@@ -79,3 +149,4 @@ func GenFoozerBarzerNodes(num int) []api.DevicePool {
 
 	return pools
 }
+*/

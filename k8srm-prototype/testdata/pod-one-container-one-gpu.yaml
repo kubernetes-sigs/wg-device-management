@@ -1,0 +1,41 @@
+# A Pod asking for a single Foozer GPU of any type, and associating that with a
+# single container.
+#
+# Notes
+#
+# The deviceClaims[0].source uses the `TemplateClass` form. This is supposed to
+# be the simplest form. It asks for a single instance of a device of a
+# particular class, and does not require pre-creating any object to base that
+# off of (except the class of course).
+#
+# Frankly, it's still fairly awkward for what should be the most common case.
+# It would be a lot nicer to just be able to say:
+#
+#   deviceClaims:
+#   - name: foozer-gpu
+#     className: example.com-foozer
+#
+# But that form would likely violate some of our API conventions. As it is,
+# even this one may be too much to stick in PodSpec due to the versioning
+# constraints there.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  deviceClaims:
+  - name: foozer-gpu
+    source:
+      templateClass:
+        className: example.com-foozer

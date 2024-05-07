@@ -1,32 +1,10 @@
 package api
 
 import (
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
-
-// DeviceDriver is a vendor provided resource that registers a given
-// driver with the cluster.
-// Cluster scoped.
-type DeviceDriver struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	// DeviceTypes specifies which DeviceType values are handled by this
-	// driver. DeviceType is a driver-independent classification of the
-	// device. In particular, for well-understood standards like SR-IOV
-	// based network interfaces, a device claim should be satisfiable by
-	// any vendor's devices, subject to the CEL-based Constraints fields in
-	// the class and claim.
-	//
-	// Drivers must register which device types they support. The code
-	// itself need not understand the meaning of the device types; rather,
-	// they are just used to map to a set of drivers that may satisfy a
-	// claim.
-	//
-	// +required
-	DeviceTypes []string `json:"deviceTypes,omitempty"`
-}
 
 // DeviceClass is a vendor or admin-provided resource that contains
 // contraint and configuration information. Essentially, it is a re-usable
@@ -36,49 +14,167 @@ type DeviceClass struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DeviceClassSpec   `json:"spec,omitempty"`
-	Status DeviceClassStatus `json:"status,omitempty"`
+	Spec DeviceClassSpec `json:"spec,omitempty"`
 }
 
-// DeviceClassSpec provides the details of the DeviceClass.
+// DeviceClassSpec provides either a selector to find other
+// classes, or the specific constraints defining this class.
 type DeviceClassSpec struct {
-	// DeviceType is a driver-independent classification of the device.
-	// This may be used instead of specifying the Driver explicitly, so that
-	// we do not aribtrarily limit claims to a particular vendor's devices.
-	//
-	// Alternatively, we may want to consider a DeviceCapabilities vector,
-	// or use device attributes or individual resource types supported by a
-	// device to indicate device functions.
-	//
-	// +required
-	DeviceType string `json:deviceType,omitempty`
 
+	// One of selector and classCriteria must be populated.
+
+	// Selector specifies a label selector used to identify classes which
+	// may be considered equivalent to this class. In other words, this
+	// allows the adminstrator to define groups of classes which may be
+	// referred to as a single class in the claim.
+	//
+	// +optional
+	Selector *metav1.LabelSelector `json:"selector,omitempty"`
+
+	// Definition specifies the criteria to determine if a device is part
+	// of this class.
+	Definition *DeviceClassDefinition `json:"definition,omitempty"`
+}
+
+// DeviceClassDefinition specifies the subset of devices to consider part of
+// this class, along with device-specific configuration information for those
+// devices.
+type DeviceClassDefinition struct {
 	// Driver specifies the driver that should handle this class of devices.
 	// When a DeviceClaim uses this class, only devices published by the
 	// specified driver will be considered.
-	// +optional
-	Driver *string `json:driver,omitempty`
+	// +required
+	Driver string `json:driver,omitempty`
 
 	// Constraints is a CEL expression that operates on device attributes,
 	// and must evaluate to true for a device to be considered. It will be
 	// ANDed with any Constraints field in the DeviceClaim using this class.
+	//
 	// +optional
 	Constraints *string `json:"constraints,omitempty"`
 
-	// Device claims may represent be satisfied by choosing multiple
-	// devices instead of just a single device. The min/max fields control
-	// whether we want a single device, or a set of devices to satisfy a
-	// claim.
-
-	// MinDeviceCount is the minimum number of devices that should be selected
-	// when satsifying a claim using this class. Default is 1.
+	// DeviceConfigs contains references to arbitrary vendor device configuration
+	// objects that will be attached to the device allocation.
+	//
 	// +optional
-	MinDeviceCount *int `json:"minDeviceCount,omitempty"`
+	// +listType=atomic
+	Configs []DeviceClassConfigReference `json:"configs,omitempty"`
+}
 
-	// MaxDeviceCount is the maximum number of devices that should be selected
-	// when sastisfying a claim using this class. No maximum, by default.
+// Namespace scoped.
+type DeviceClaim struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   DeviceClaimSpec   `json:"spec,omitempty"`
+	Status DeviceClaimStatus `json:"status,omitempty"`
+}
+
+// DeviceClaimSpec details the requirements that devices chosen
+// to satisfy this claim must meet.
+type DeviceClaimSpec struct {
+	// MatchAttributes allows specifying a constraint that will apply
+	// across all of the claims. For example, if you specified "numa", then
+	// this overall claim could only be successfully fulfilled if all of
+	// the included claims could be fulfilled by pools with the same "numa"
+	// attribute value. If we simply set matchAttributes in each claim
+	// separately, then they could be consistent within claims, but
+	// inconsistent across claims. Therefore, we need this additional
+	// constraint.
+	//
 	// +optional
-	MaxDeviceCount *int `json:"maxDeviceCount,omitempty"`
+	// +listType=atomic
+	MatchAttributes []string `json:"matchAttributes,omitempty"`
+
+	// Devices contains the actual device claim details, each entry
+	// of which must be sastisfied by selecting one or more devices.
+	// Each entry is either a claim for set of devices, or a list of
+	// prioritized claims for sets of devices, one of which must be
+	// satisfied.
+	//
+	// +required
+	// +listType=atomic
+	Devices []DeviceClaimInstance `json:"devices,omitempty"`
+}
+
+// DeviceClaimInstance captures a claim which must be satisfied,
+// or a group for which one must be sastisfied.
+type DeviceClaimInstance struct {
+	// If fields of DeviceClaimDetail are populated, OneOf should
+	// be empty.
+	*DeviceClaimDetail `json:",inline"`
+
+	// OneOf contains a list of claims, only one of which must be satisfied.
+	// Claims are listed in order of priority.
+	//
+	// +optional
+	// +listType=atomic
+	OneOf []DeviceClaimDetail `json:"oneOf,omitempty"`
+}
+
+// DeviceClaimDetail contains the details of how to fulfill a specific
+// request for devices.
+type DeviceClaimDetail struct {
+	// DeviceClass is the name of the DeviceClass to which the requested
+	// devices must belong.
+	//
+	// +required
+	DeviceClass string `json:"deviceClass"`
+
+	// AdminAccess indicates that this is a claim for administrative access
+	// to the devices. Claims with AdminAccess are expected to be used for
+	// monitoring or other management services for a device.  They ignore
+	// all ordinary claims to the device with respect to access modes and
+	// any resource allocations. Ability to create these claims is
+	// controlled via ResourceQuota.
+	//
+	// Default is false. If true, a DeviceClass must be specified so that
+	// the Driver is known, and only the Constraints fields will be taken
+	// into account for device selection. All devices meeting the
+	// Constraints expressions will be made available as part of the claim
+	// and may be assigned to a container.
+	//
+	// NOTE: This cannot appear in class because the quota code does not do
+	// an indirection. Still searching for a better way to handle this use
+	// case, without creating a new top-level type for it.
+	//
+	// +optional
+	AdminAccess *bool `json:"adminAccess,omitempty"`
+
+	// Constraints is a CEL expression that operates on device attributes.
+	// In order for a device to be considered, this CEL expression and the
+	// Constraints expression from the DeviceClass must both be true.
+	//
+	// +optional
+	Constraints *string `json:"constraints,omitempty"`
+
+	// Device claims may be satisfied by choosing multiple devices instead
+	// of just a single device.
+
+	// MaxDevices allows the user to specify a maximum number of devices
+	// that may be allocated to sastisfy this claim. The default is equal
+	// to requests.devices. Thus, without specifying MaxDevices, the user
+	// will get exactly the number of devices specified in
+	// requests.devices.
+	//
+	// +optional
+	MaxDevices *int `json:"maxDevices,omitempty"`
+
+	// Requests allows the user to specify the minimum resource
+	// requirements that must be satisfied across all devices allocated for
+	// this claim.
+	//
+	// All drivers can the support "devices", resource, which represents
+	// the minimum number of devices to allocate.
+	//
+	// Other resource types are driver-specific. The values in `requests`
+	// represent the aggregate across all devices, not the per-device
+	// values.
+	//
+	// If not set, requests.devices will default to 1.
+	//
+	// +optional
+	Requests map[string]resource.Quantity `json:"requests,omitempty"`
 
 	// MatchAttributes allows specifying a constraint within a set of
 	// chosen devices, without having to explicitly specify the value of
@@ -94,80 +190,13 @@ type DeviceClassSpec struct {
 	// score differently for each.
 	//
 	// +optional
-	MatchAttributes []string `json:"matchAttributes,omitempty"`
-
-	// DeviceConfigs contains references to arbitrary vendor device configuration
-	// objects that will be attached to the device allocation.
-	// +optional
-	Configs []DeviceClassConfigReference `json:"configs,omitempty"`
-}
-
-// DeviceClassStatus contains the current status of the class in the cluster.
-type DeviceClassStatus struct {
-	// Conditions contains the latest observation of the class's state.
-	// A class will be in Ready state if at least one DeviceDriver is
-	// registered to handle the class.
-	Conditions []metav1.Condition `json:"conditions"`
-
-	// Drivers contains the list of drivers that can handle this class.
-	Drivers []string `json:"drivers,omitempty"`
-}
-
-// DeviceClaim is used to specify a request for a set of devices.
-// Namespace scoped.
-type DeviceClaim struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   DeviceClaimSpec   `json:"spec,omitempty"`
-	Status DeviceClaimStatus `json:"status,omitempty"`
-}
-
-// DeviceClaimSpec details the requirements that devices chosen
-// to satisfy this claim must meet.
-type DeviceClaimSpec struct {
-	// DeviceClass is the name of the DeviceClass containing the basic information
-	// about the device being requested.
-	// +required
-	DeviceClass string `json:"deviceClass"`
-
-	// Driver will limit the scope of devices considered to only those
-	// published by the specified driver. If the DeviceClass specifies a
-	// Driver, this should be left empty. If it is not, then it MUST match
-	// the Driver in the DeviceClass.
-	// +optional
-	Driver *string `json:"driver,omitempty"`
-
-	// Constraints is a CEL expression that operates on device attributes.
-	// In order for a device to be considered, this CEL expression and the
-	// Constraints expression from the DeviceClass must both be true.
-	// +optional
-	Constraints *string `json:"constraints,omitempty"`
-
-	// Device classes and claims may represent or be satisfied by choosing
-	// multiple devices instead of just a single device.
-
-	// MinDeviceCount is the minimum number of devices that should be selected
-	// for this claim. It must be greater than or equal to the class MinDeviceCount,
-	// and less than or equal to the class MaxDeviceCount. Default is 1.
-	// +optional
-	MinDeviceCount *int `json:"minDeviceCount,omitempty"`
-
-	// MaxDeviceCount is the maximum number of devices that should be selected
-	// for this claim. It must be less than or equal to the class MaxDeviceCount.
-	// Default is no maximum.
-	// +optional
-	MaxDeviceCount *int `json:"maxDeviceCount,omitempty"`
-
-	// MatchAttributes allows specifying a constraint within a set of chosen
-	// devices. The list here will be merged with the list (if any)  provided
-	// in the class.
-	// +optional
+	// +listType=atomic
 	MatchAttributes []string `json:"matchAttributes,omitempty"`
 
 	// Configs contains references to arbitrary vendor device configuration
 	// objects that will be attached to the device allocation.
 	// +optional
+	// +listType=atomic
 	Configs []DeviceConfigReference `json:"configs,omitempty"`
 }
 
@@ -176,150 +205,59 @@ type DeviceClaimStatus struct {
 	// ClassConfigs contains the entire set of dereferenced vendor
 	// configurations from the DeviceClass, as of the time of allocation.
 	// +optional
+	// +listType=atomic
 	ClassConfigs []runtime.RawExtension `json:"classConfigs,omitempty"`
 
 	// ClaimConfigs contains the entire set of dereferenced vendor
 	// configurations from the DeviceClaim, as of the time of allocation.
 	// +optional
+	// +listType=atomic
 	ClaimConfigs []runtime.RawExtension `json:"claimConfigs,omitempty"`
 
 	// Allocations contains the list of device allocations needed to
 	// satisfy the claim, one per pool from which devices were allocated.
 	//
 	// Note that the "current capacity" of the cluster is the result of
-	// applying all such allocations to the published DevicePools. This
-	// means storing these allocations only in claim status fields is likely
-	// to scale poorly, and we will need a different strategy in the real
-	// code. For example, we may need to accumulate these in the DevicePool
-	// status fields themselves, and just reference them from here.
+	// applying all such allocations to the published DevicePools.
+	//
+	// This field is owned by the scheduler, whereas the DeviceStatuses
+	// field is owned by the drivers.
 	//
 	// +optional
-	Allocations []DevicePoolAllocation `json:"allocations,omitempty"`
+	// +listType=atomic
+	Allocations []DeviceAllocation `json:"allocations,omitempty"`
+
+	// DeviceStatuses contains the status of each device allocated for this
+	// claim, as reported by the driver. This can include driver-specific
+	// information. Entries are owned by their respective drivers.
+	//
+	// +optional
+	// +listType=map
+	// +listMapKey=devicePoolName
+	// +listMapKey=deviceName
+	DeviceStatuses []AllocatedDeviceStatus `json:"deviceStatuses,omitempty"`
 
 	// PodNames contains the names of all Pods using this claim.
 	// TODO: Can we just use ownerRefs instead?
+	//
 	// +optional
+	// +listType=set
 	PodNames []string `json:"podNames,omitempty"`
 }
 
-// DevicePrivilegedClaim is used to specify a special kind of privileged claim
-// for a set of devices on a node. This type of claim is used for monitoring or
-// other management services for a device. It ignores all ordinary claims to
-// the device with respect to access modes and any resource allocations. As a
-// separate type, it can (and is expected to) have separate RBAC constraints.
+// NOTE: We no longer have DeviceClaimTemplate. Instead, the PodSpec will
+// directly contain a either a DeviceClaimName (to enable multiple pods to
+// refer to a pre-provisioned claim), or an embedded struct that includes
+// ObjectMeta and a DeviceClaimName. In this case, the named DeviceClaim will
+// be treated as a template; that is, its spec will be copied to create a new
+// claim, based on the new metadata. Re-using claim-as-a-template avoids
+// another, nearly identical top-level API object. But it may be confusing, we
+// need feedback.
 //
-// It does not have all the sophisticated selection mechanisms of an ordinary
-// device claim, as the most common use case is simply to access all devices
-// managed by a given driver on a given node. It intentionally does not require
-// a class, though it does allow some flexibility with the specification of
-// Constraints and Configs.
-
-type DevicePrivilegedClaim struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   DevicePrivilegedClaimSpec   `json:"spec,omitempty"`
-	Status DevicePrivilegedClaimStatus `json:"status,omitempty"`
-}
-
-// DevicePrivilegedClaimSpec contains the details of the privileged claim.
-type DevicePrivilegedClaimSpec struct {
-	// Driver will limit the scope of devices considered to only those
-	// published by the specified driver.
-	// +required
-	Driver string `json:"driver,omitempty"`
-
-	// Constraints is a CEL expression that operates on device attributes.
-	// Only devices matching this constraint will be selected by this
-	// claim.
-	// +optional
-	Constraints *string `json:"constraints,omitempty"`
-
-	// Configs contains references to arbitrary vendor device configuration
-	// objects that will be attached to the device allocation.
-	// +optional
-	Configs []DeviceConfigReference `json:"configs,omitempty"`
-}
-
-// DevicePrivilegedClaimStatus contains the results of the claim allocation.
-type DevicePrivilegedClaimStatus struct {
-	// ClaimConfigs contains the entire set of dereferenced vendor
-	// configurations from the DeviceClaim, as of the time of allocation.
-	// +optional
-	ClaimConfigs []runtime.RawExtension `json:"claimConfigs,omitempty"`
-
-	// Allocations contains the list of device allocations needed to
-	// satisfy the claim, one per pool from which devices were allocated.
-	// +optional
-	Allocations []DevicePoolAllocation `json:"allocations,omitempty"`
-
-	// PodNames contains the names of all Pods using this claim.
-	// TODO: Can we just use ownerRefs instead?
-	// +optional
-	PodNames []string `json:"podNames,omitempty"`
-}
-
-// DeviceSetClaim is one idea for how we can do "composite devices". Rather
-// than changing how the devices are published by drivers, we just change
-// they are consumed. This allows us to combine claims into a group, and apply
-// additional constraints across the group.
-type DeviceSetClaim struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   DeviceSetClaimSpec   `json:"spec,omitempty"`
-	Status DeviceSetClaimStatus `json:"status,omitempty"`
-}
-
-// DeviceSetClaimSpec contains the details for requesting a set of devices
-// as a unit.
-type DeviceSetClaimSpec struct {
-	// TODO: Maybe we want DeviceSetClass ?
-
-	// MatchAttributes allows specifying a constraint that will apply
-	// across all of the claims. For example, if you specified "numa",
-	// then this claim could only be successfully fulfilled if all of
-	// the included claims could be fulfilled by pools with the same
-	// "numa" attribute value. If we simply set matchAttributes in each
-	// claim separately, then they could be consistent within claims, but
-	// inconsistent across claims. Therefore, we need this additional
-	// resource.
-	//
-	// +optional
-
-	MatchAttributes []string `json:"matchAttributes,omitempty"`
-
-	ClaimSpec []DeviceClaimSpec `json:claimSpec,omitempty"`
-}
-
-type DeviceSetClaimStatus struct {
-	ClaimStatus []DeviceClaimStatus `json:"claimStatus,omitempty"`
-}
-
-// DeviceClaimTemplate is used to generate claims along with Pods. These
-// generated claims have the same lifecycle as the Pod.
-// TODO: Could we just use a DeviceClaim here? Or is that too confusing?
-type DeviceClaimTemplate struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec DeviceClaimTemplateSpec `json:"spec,omitempty"`
-}
-
-// DeviceClaimTemplateSpec contains the information needed to generate
-// DeviceClaims, DevicePrivilegedClaims, or DeviceSetClaims.
-type DeviceClaimTemplateSpec struct {
-	metav1.ObjectMeta
-
-	// Exactly one of these must be populated
-	DeviceClaimSpec           *DeviceClaimSpec           `json:"claimSpec,omitempty"`
-	DevicePrivilegedClaimSpec *DevicePrivilegedClaimSpec `json:"privilegedClaimSpec,omitempty"`
-	DeviceSetClaimSpec        *DeviceSetClaimSpec        `json:"setClaimSpec,omitempty"`
-}
-
 // DeviceClassConfigReference is used to refer to arbitrary configuration
 // objects from the class. Since it is the class, and therefore is created by
 // the administrator, it allows referencing objects in any namespace.
+
 type DeviceClassConfigReference struct {
 	// API version of the referent.
 	// +required
@@ -355,16 +293,76 @@ type DeviceConfigReference struct {
 	Name string `json:"name"`
 }
 
-// DevicePoolAllocation contains the pool and number of selected devices.
-type DevicePoolAllocation struct {
-
-	// DevicePoolName contains the name of the DevicePool for this
-	// allocation.
+// DeviceAllocation contains an individual device allocation result, including
+// per-device resource allocations, when applicable.
+type DeviceAllocation struct {
+	// DevicePoolName is the name of the DevicePool to which this
+	// device belongs.
 	// +required
-	DevicePoolName string `json:"devicePoolName,omitempty"`
+	DevicePoolName string `json:"devicePoolName"`
 
-	// DeviceCount contains the number of devices allocated from the
-	// pool to satisfy this claim.
+	// DeviceName contains the name of the allocated Device.
 	// +required
-	DeviceCount int `json:"deviceCount,omitempty"`
+	DeviceName string `json:"deviceName,omitempty"`
+
+	// Allocations contain the resource allocations from this device,
+	// for the claim. Note that this may only satisfy part of the claim.
+	// Also, because devices may allocate some resources in blocks, this
+	// may even be larger than the requests or limits in the claim.
+	//
+	// +optional
+	// +listType=atomic
+	Allocations []ResourceAllocation `json:"allocations,omitempty"`
+}
+
+// ResourceAllocation contains the per-device resource allocations.
+type ResourceAllocation struct {
+	// Name is the resource name/string for this allocation.
+	// +required
+	Name string `json:"name"`
+
+	// Amount is the amount of resource allocated for this claim.
+	// +required
+	Allocation resource.Quantity `json:"allocation,omitempty"`
+}
+
+type DeviceIP struct {
+	// IP is the IP address assigned to the device
+	IP string `json:"ip,omitempty"`
+}
+
+// AllocatedDeviceStatus contains the status of an allocated device, if the
+// driver chooses to report it. This may include driver-specific information.
+type AllocatedDeviceStatus struct {
+	// DevicePoolName is the name of the DevicePool to which this
+	// device belongs. The driver for that device pool owns this
+	// entry.
+	//
+	// +required
+	DevicePoolName string `json:"devicePoolName"`
+
+	// DeviceName contains the name of the allocated Device.
+	//
+	// +required
+	DeviceName string `json:"deviceName,omitempty"`
+
+	// Conditions contains the latest observation of the device's state.
+	// If the device has been configured according to the class and claim
+	// config references, the `Ready` condition should be True.
+	//
+	// +optional
+	// +listType=atomic
+	Conditions []metav1.Condition `json:"conditions"`
+
+	// DeviceIPs contains all of the IPs allocated for a device, if any.
+	//
+	// +optional
+	// +listType=atomic
+	DeviceIPs []DeviceIP `json:"deviceIPs,omitempty"`
+
+	// Arbitrary driver-specific data.
+	//
+	// +optional
+	// +listType=atomic
+	DeviceInfo []runtime.RawExtension `json:"deviceInfo,omitempty"`
 }

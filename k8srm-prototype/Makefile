@@ -28,4 +28,5 @@ test:
 .PHONY: build
 build:
 	cd cmd/schedule && go build
+	cd cmd/gen && go build
 	cd cmd/mock-apiserver && go build

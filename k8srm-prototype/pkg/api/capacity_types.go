@@ -3,6 +3,7 @@ package api
 import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 const (
@@ -38,11 +39,22 @@ type DevicePoolSpec struct {
 	// Attributes contains device attributes that are common to all devices
 	// in the pool.
 	// +optional
+	// +listType=atomic
 	Attributes []Attribute `json:"attributes,omitempty"`
 
-	// DeviceCount contains the total number of devices in the pool.
+	// SharedResources are pooled resources that are shared by all devices
+	// in the pool. This is typically used when representing a
+	// partitionable device, and need not be populated otherwise.
+	//
+	// +optional
+	// +listType=atomic
+	SharedResources []ResourceCapacity `json:"sharedResources,omitempty"`
+
+	// Devices contains the individual devices in the pool.
+	//
 	// +required
-	DeviceCount int `json:"count,omitempty"`
+	// +listType=atomic
+	Devices []Device `json:"devices,omitempty"`
 }
 
 // DevicePoolStatus contains the state of the pool as last reported by the
@@ -50,7 +62,68 @@ type DevicePoolSpec struct {
 // by the scheduler but not yet seen by the driver. Thus, it is NOT sufficient
 // to make future scheduling decisions.
 type DevicePoolStatus struct {
-	AvailableDevices int `json:"availableDevices,omitempty"`
+	DeviceStatuses []AllocatedDevice `json:"deviceStatuses,omitempty"`
+}
+
+// AllocatedDevice represents a device that has been allocated from the pool.
+type AllocatedDevice struct {
+	Name string
+	// Conditions contains the latest observation of the device's state.
+	Conditions []metav1.Condition `json:"conditions"`
+
+	// ClaimUIDs contains the UIDs of the claims to which this device
+	// is allocated.
+	ClaimUIDs []types.UID
+}
+
+// Device is used to track individual devices in a pool.
+type Device struct {
+	// Name is a driver-specific identifier for the device.
+	// +required
+	Name string `json:"name"`
+
+	// Attributes contain additional metadata that can be used in
+	// constraints. If an attribute name overlaps with the pool attribute,
+	// the device attribute takes precedence.
+	//
+	// +optional
+	Attributes []Attribute `json:"attributes,omitempty"`
+
+	// ConsumesSharedResources contains the pooled resources that are
+	// consumed when this device is allocated.
+	//
+	// +optional
+	ConsumesSharedResources map[string]resource.Quantity `json:"consumesSharedResources,omitempty"`
+
+	// ProvidesClaimResources allows the definition of per-device resources
+	// that can be allocated in a manner similar to standard Kubernetes
+	// resources.
+	//
+	// +optional
+	ProvidesClaimResources []ResourceCapacity `json:"providesClaimResources,omitempty"`
+}
+
+type ResourceCapacity struct {
+	// Name is the resource name/type.
+	// +required
+	Name string `json:"name"`
+
+	// Capacity is the total capacity of the named resource.
+	// +required
+	Capacity resource.Quantity `json:"capacity"`
+
+	// BlockSize is the increments in which capacity is consumed. For
+	// example, if you can only allocate memory in 4k pages, then the
+	// block size should be "4Ki". Default is 1.
+	//
+	// If the resource is consumable in a fractional way, then the
+	// default of 1 should not be used; instead this should be a fractional
+	// amount corresponding the increment size. We may also need a minimum
+	// value, if the minimum is larger than the block size (as is the case
+	// for standard Kubernetes CPU resources).
+	//
+	// +optional
+	BlockSize *resource.Quantity `json:"blockSize,omitempty"`
 }
 
 // Attribute capture the name, value, and type of an device attribute.
