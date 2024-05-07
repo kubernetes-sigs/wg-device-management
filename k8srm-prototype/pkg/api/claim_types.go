@@ -31,15 +31,15 @@ type DeviceClassSpec struct {
 	// +optional
 	Selector *metav1.LabelSelector `json:"selector,omitempty"`
 
-	// ClassCriteria defines the criteria to determine if a device is part
+	// Definition specifies the criteria to determine if a device is part
 	// of this class.
-	ClassCriteria *DeviceClassDetail `json:"classCriteria,omitempty"`
+	Definition *DeviceClassDefinition `json:"definition,omitempty"`
 }
 
-// DeviceClassDetail defines the subset of devices to consider part of this
-// class, along with device-specific configuration information for those
+// DeviceClassDefinition specifies the subset of devices to consider part of
+// this class, along with device-specific configuration information for those
 // devices.
-type DeviceClassDetail struct {
+type DeviceClassDefinition struct {
 	// Driver specifies the driver that should handle this class of devices.
 	// When a DeviceClaim uses this class, only devices published by the
 	// specified driver will be considered.
@@ -86,20 +86,20 @@ type DeviceClaimSpec struct {
 	// +listType=atomic
 	MatchAttributes []string `json:"matchAttributes,omitempty"`
 
-	// Claims contains the actual claim details, arranged into groups
-	// containing claims which must all be satsified, or for which only
-	// one needs to be satisfied.
+	// Devices contains the actual device claim details, each entry
+	// of which must be sastisfied by selecting one or more devices.
+	// Each entry is either a claim for set of devices, or a list of
+	// prioritized claims for sets of devices, one of which must be
+	// satisfied.
 	//
 	// +required
 	// +listType=atomic
-	Claims []DeviceClaimInstance `json:"claims,omitempty"`
+	Devices []DeviceClaimInstance `json:"devices,omitempty"`
 }
 
 // DeviceClaimInstance captures a claim which must be satisfied,
 // or a group for which one must be sastisfied.
 type DeviceClaimInstance struct {
-	// At least one of AllOf and OneOf must be populated.
-
 	// If fields of DeviceClaimDetail are populated, OneOf should
 	// be empty.
 	*DeviceClaimDetail `json:",inline"`
@@ -218,12 +218,7 @@ type DeviceClaimStatus struct {
 	// satisfy the claim, one per pool from which devices were allocated.
 	//
 	// Note that the "current capacity" of the cluster is the result of
-	// applying all such allocations to the published DevicePools. This
-	// means storing these allocations only in claim status fields is
-	// likely to scale poorly, and we will need a different strategy in the
-	// real code. For example, we may need to accumulate these in the
-	// DevicePool status fields themselves, and just reference them from
-	// here.
+	// applying all such allocations to the published DevicePools.
 	//
 	// This field is owned by the scheduler, whereas the DeviceStatuses
 	// field is owned by the drivers.
