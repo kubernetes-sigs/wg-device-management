@@ -1,5 +1,8 @@
 # EXAMPLE SNIPPETS FROM PodSpec
 #
+# NOTE 2024-05-06 these have not been updated for the latest changes to the
+# model. Review with caution. Updates pending.
+#
 # NOTE: We want to allow a set of "must satisfy all"
 # and multiple sets of "must satisfy one of", and
 # we want to allow matchAttributes/distinctAttributes
