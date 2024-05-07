@@ -60,8 +60,20 @@
   will it be the latter? SR-IOV NICs with multiple PFs look a lot like
   partitioned devices. Do we really need to normalize to pools or can we just
   make each entry a separate device, which may be a simple device or may be a
-  complex, partitioned device? See this
-  [discussion](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591620848).
+  complex, partitioned device? Related discussions and some points pulled from
+  them:
+  - https://github.com/kubernetes-sigs/wg-device-management/pull/5/files#r1587245528
+  - https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591620848
+  - Are most cases going to use some form of `SharedResources` or do we think there are lots of cases where it's just "whole PCIe" card?
+  - Are we trying to come up with a new abstraction that is already part of the PCIe structure of functions? Can we model based on that instead?
+  - If we have to do things like "pf-0-vfs" and "memory-slice-0", are we missing some fundamental part of the model around shared resources - like groups of shared resources a la Kevin's named model extension (I thought that was too complex...)?
+  - Where it gets weird though is when a vendor has a mix of card types to support.
+    * Where does one draw the boundaries around each `DevicePool`?
+    * Do they put all of their simple devices in a single `DevicePool` alongside all partitionable devices in their own individual `DevicePool`s?
+    * Why is there a "pool" boundary at all if there is no real meaning tied to it?
+    * In the case of simple devices, is it only there so as to avoid having lots of separate `Device` objects in the API server?
+    * If we do want to support both simple and partitionable devices in a single `DevicePool`, do we need to add one level of embedding as @thockin proposed? An alternative of this is to go back to my concept of having a list of named `SharedResourceGroups`  (as opposed to a single `SharedResource` section), forcing individual devices to refer back to the name of the `SharedResourceGroup` they pull a given shared resource from.  
+    * What happens as the size of these device pools grow and we hit the limit of a single API server object? Where do we draw the boundary then?
 - Do we need to deal with cross-pod (and cross-node) "linked" claims ala this
   [discussion](https://github.com/kubernetes-sigs/wg-device-management/pull/5#pullrequestreview-2035165945)?
   Or can that be handled by a higher-level workload controller that understands
