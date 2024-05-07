@@ -3,7 +3,7 @@
 # Notes
 #
 # Since we want to allocate a pair of GPUs, this is more than we can do with a
-# simple `TemplateClass` construct. Instead, we need to create a claim that
+# simple `devices` construct. Instead, we need to create a claim that
 # looks like what we want, and use it as a template. Ideally, we would embed
 # all of this directly in the PodSpec, but we cannot because PodSpec is already
 # v1 and we cannot make major changes that we are not completely sure we will
@@ -22,13 +22,15 @@
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClaim
 metadata:
-  name: template-example.com-foozer-two-gpu
+  name: template-example.com-foozer-two-gpus
   namespace: default
 spec:
   devices:
-  - deviceClass: example.com-foozer
-    requests:
-      devices: 2
+  - name: foozer-gpus
+    allOf:
+    - class: example.com-foozer
+      requests:
+        devices: 2
 ---
 apiVersion: v1
 kind: Pod
@@ -44,9 +46,7 @@ spec:
         cpu: 10m
         memory: 10Mi
     devices:
-    - name: foozer-gpu
+    - name: foozer-gpus
   deviceClaims:
-  - name: foozer-gpu
-    source:
-      templateClaim:
-        claimName: template-example.com-foozer-two-gpu
+    template:
+      claimName: template-example.com-foozer-two-gpus

@@ -25,11 +25,8 @@ spec:
     devices:
     - name: other-foozer-gpu
   deviceClaims:
-  - name: foozer-gpu
-    source:
-      templateClass:
-        className: example.com-foozer
-  - name: other-foozer-gpu
-    source:
-      templateClass:
-        className: example.com-foozer
+    devices:
+    - name: foozer-gpu
+      class: example.com-foozer
+    - name: other-foozer-gpu
+      class: example.com-foozer

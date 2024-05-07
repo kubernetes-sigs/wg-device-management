@@ -97,12 +97,23 @@ type DeviceClaimSpec struct {
 	Devices []DeviceClaimInstance `json:"devices,omitempty"`
 }
 
-// DeviceClaimInstance captures a claim which must be satisfied,
-// or a group for which one must be sastisfied.
+// DeviceClaimInstance captures a group of claims which must all be satisfied,
+// and a group for which one must be sastisfied. If you require multiple
+// groups, one of each may be satsfied, you will need multiple instances.
 type DeviceClaimInstance struct {
-	// If fields of DeviceClaimDetail are populated, OneOf should
+	// Name is used to associate this instance with a specific
+	// container.
+	Name string `json:"name"`
+
+	// Previously, a DeviceClaimInstance resolved to a single
+	// DeviceClaimDetail, so we didn't need matchAttributes here. With
+	// this version, we *could* use matchAttributes here, but most use
+	// cases are likely satisfied by the matchAttributes at the Spec level,
+	// so for now we leave it out of this level.
+
+	// AllOf contains a list of claims, all of which must be satisfied.
 	// be empty.
-	*DeviceClaimDetail `json:",inline"`
+	AllOf []DeviceClaimDetail `json:"allOf,omitempty"`
 
 	// OneOf contains a list of claims, only one of which must be satisfied.
 	// Claims are listed in order of priority.
@@ -115,11 +126,11 @@ type DeviceClaimInstance struct {
 // DeviceClaimDetail contains the details of how to fulfill a specific
 // request for devices.
 type DeviceClaimDetail struct {
-	// DeviceClass is the name of the DeviceClass to which the requested
+	// Class is the name of the DeviceClass to which the requested
 	// devices must belong.
 	//
 	// +required
-	DeviceClass string `json:"deviceClass"`
+	Class string `json:"class"`
 
 	// AdminAccess indicates that this is a claim for administrative access
 	// to the devices. Claims with AdminAccess are expected to be used for
