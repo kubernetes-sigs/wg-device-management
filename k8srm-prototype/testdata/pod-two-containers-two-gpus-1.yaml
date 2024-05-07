@@ -1,0 +1,38 @@
+# A Pod asking for a two Foozer GPUs of the same model, and associating each
+# with a different container.
+#
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  - image: registry.k8s.io/pause:3.6
+    name: my-other-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: other-foozer-gpu
+  deviceClaims:
+  ## PROBLEM: We want to specify matchAttributes here but cannot! In the "unrolled"
+  # model we had matchAttributes here, a claims list as a sibling to that.
+  - name: foozer-gpu
+    source:
+      templateClass:
+        className: example.com-foozer
+  - name: other-foozer-gpu
+    source:
+      templateClass:
+        className: example.com-foozer
