@@ -1,0 +1,19 @@
+# A Pod with one secondary SR-IOV VF interface.
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+  deviceClaims:
+    devices:
+    - name: netdev0 # not used, but required
+      class: example.com-sriov-vf

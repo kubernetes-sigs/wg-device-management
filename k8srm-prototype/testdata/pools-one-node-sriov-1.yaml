@@ -12,15 +12,15 @@ kind: DevicePool
 metadata:
   name: node-001-nic-001
 spec:
-  driver: example.com-sriov
+  driver: example.org-sriov
   nodeName: node-00
   attributes:
   - name: vendor
-    stringValue: example.com
+    stringValue: example.org
   - name: model
-    stringValue: sriov-1g
-  - name: firmwareVersion
-    semVerValue: 1.0.1
+    stringValue: org-sriov-10g
+  - name: bandwidth
+    quantityValue: 10G
   sharedResources:
     vfs-pf-0: 2
     vfs-pf-1: 2
