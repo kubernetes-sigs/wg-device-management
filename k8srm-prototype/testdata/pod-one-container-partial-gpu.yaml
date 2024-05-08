@@ -1,0 +1,41 @@
+# A Pod asking for a share of a Foozer GPU with an advisory hold
+# of 8Gi of memory. Since Foozer devices cannot actually enforce
+# that the container will only get 8GB, this requires some good
+# faith on the part of users.
+#
+# NOTE: AllowShared boolean is not part of the model yet, but
+# if we decide we want to support the fractional device case,
+# we will need it or some form of 'access mode'.
+
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-foozer-shared-8Gi
+  namespace: default
+spec:
+  devices:
+  - name: gpu
+    allOf:
+    - class: example.com-foozer
+      allowShared: true
+      requests:
+        memory: 8Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: gpu
+  deviceClaims:
+    template:
+      claimName: template-foozer-shared-8Gi

@@ -1,0 +1,42 @@
+# A Pod asking for a Foozer GPU and an SR-IOV VF on the
+# same pcie-root complex.
+#
+# NOTE: we probably could combine the two `devices` entries into
+# one, since netdev doesn't get added to any container, it would
+# just be ignored for that purpose.
+
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-foozer-plus-vf
+  namespace: default
+spec:
+  matchAttributes:
+  - pcie-root
+  devices:
+  - name: gpu
+    allOf:
+    - class: example.com-foozer
+  - name: netdev # required but not used
+    allOf:
+    - class: sriov-nic
+      constraints: "device.sriovType == 'vf'"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: gpu
+  deviceClaims:
+    template:
+      claimName: template-foozer-plus-vf

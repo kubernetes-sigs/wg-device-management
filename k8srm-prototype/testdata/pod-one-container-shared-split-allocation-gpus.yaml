@@ -1,0 +1,36 @@
+# A Pod asking for 1-8 whole OR partial Foozer GPUs such that the total
+# available memory is at least 128Gi.
+
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-foozer-split-shared-128Gi
+  namespace: default
+spec:
+  devices:
+  - name: gpu
+    allOf:
+    - class: example.com-foozer
+      maxDevices: 8
+      allowShared: true
+      requests:
+        memory: 128Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: gpu
+  deviceClaims:
+    template:
+      claimName: template-foozer-split-shared-128Gi
