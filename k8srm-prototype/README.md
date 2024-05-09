@@ -131,18 +131,18 @@ serves as a template to generate claims that exist with the lifecycle of the
 pod. We may want to add `ObjectMeta` here as well, since it is behaving as a
 template, to allow setting labels, etc.
 
+The second form of `DeviceClaims` is a single struct with an ObjectMeta, and a
+claim name. The key with this form is that it is not *list* of named objects.
+Instead, it is a reference to a single claim object, and the named entries are
+*inside* the referenced object. This is to avoid a two-key mount in the
+`spec.containers[*].devices` entry. If that's not important, then we can tweak
+this a bit. In any case, this form allows claims which follow the lifecycle of
+the pod, similar to the first form. Since a top-level API claim spec can can
+contain multiple claim instances, this should be equally as expressive as if we
+included `matchAttributes` in the `PodSpec`, without having to do so.
 
-The key with this second form is that it is not list of named objects. Intead,
-it is just a single object, and the named objects are *inside* the referenced
-object. This is to avoid a two-key mount in the `spec.containers[*].devices`
-entry. If that's not important, then we can tweak this a bit. In any case, this
-form allows claims which follow the lifecycle of the pod, similar to the first
-form. Since a top-level API claim spec can can contain multiple claim instances,
-this should equally as expressive as if we included `matchAttributes` in the
-`PodSpec`, without having to do so.
-
-The third form (`claimName`) allows the user to share a pre-provisioned claim
-between pods.
+The third form of `DeviceClaims` is just a string; it is a claim name and allows
+the user to share a pre-provisioned claim between pods.
 
 Given that the first and second forms both have a template-like structure, we
 may want to combine them and use two-key indexing in the mounts. If we do so, we
