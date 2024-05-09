@@ -149,6 +149,10 @@ may want to combine them and use two-key indexing in the mounts. If we do so, we
 still want the direct specification of the class, so that the most common case
 does not need separate object just to reference a class.
 
+These `PodSpec` Go types can be seen in [podspec.go](testdata/podspec.go). This
+is not the complete `PodSpec` but just the relevant parts of the 1.30 and
+proposed versions.
+
 ## Types
 
 Types are divided into "claim" types, which form the UX, "capacity" types which
@@ -169,11 +173,8 @@ various options for claims. DeviceClass resources come in two varieties:
 
 Example classes are in [classes.yaml](testdata/classes.yaml).
 
-Users can make claims in their `PodSpec` in a few different ways, see
-[podspec.go](testdata/podspec.go) for a description of the various ways.
-
-Example pod definitions can be found in the `pod-*.yaml` files in
-[testdata](testdata).
+Example pod definitions can be found in the `pod-*.yaml` and `two-pods-*.yaml`
+files in [testdata](testdata).
 
 Drivers publish capacity via `DevicePool` resources. Examples may be found in
 the `pools-*.yaml` files in [testdata](testdata).
