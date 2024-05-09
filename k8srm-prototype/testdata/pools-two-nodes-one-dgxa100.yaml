@@ -1,0 +1,1453 @@
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: nvidia-00-dgxa100
+spec:
+  driver: gpu.nvidia.com/dra
+  nodeName: nvidia-00
+  sharedResources:
+  - capacity: 40Gi
+    name: memory
+  - capacity: "98"
+    name: multiprocessors
+  - capacity: "7"
+    name: copy-engines
+  - capacity: "5"
+    name: decoders
+  - capacity: "0"
+    name: encoders
+  - capacity: "1"
+    name: jpeg-engines
+  - capacity: "1"
+    name: ofa-engines
+  - capacity: "1"
+    name: memory-slices-0
+  - capacity: "1"
+    name: memory-slices-1
+  - capacity: "1"
+    name: memory-slices-2
+  - capacity: "1"
+    name: memory-slices-3
+  - capacity: "1"
+    name: memory-slices-4
+  - capacity: "1"
+    name: memory-slices-5
+  - capacity: "1"
+    name: memory-slices-6
+  - capacity: "1"
+    name: memory-slices-7
+  attributes:
+  - name: vendor
+    stringValue: nvidia
+  - name: model
+    stringValue: dgxa100
+  devices:
+  - attributes:
+    - intValue: 0
+      name: minor
+    - intValue: 0
+      name: index
+    - name: uuid
+      stringValue: GPU-a62c869a-8358-44cd-ad75-e78929be27e4
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      memory: 40Gi
+    name: gpu-0
+    claimResourcesProvided:
+    - capacity: 40Gi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-00: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-0
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-01: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-1
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-02: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-2
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-03: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-3
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-04: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-4
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-05: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-5
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-06: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-6
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 2g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "2"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      multiprocessors: "28"
+    name: gpu-0-mig-2g.10gb-0
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 2g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "2"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "28"
+    name: gpu-0-mig-2g.10gb-2
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 2g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "2"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      multiprocessors: "28"
+    name: gpu-0-mig-2g.10gb-4
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 3g.20gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "3"
+      decoders: "2"
+      memory: 19968Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "42"
+    name: gpu-0-mig-3g.20gb-0
+    claimResourcesProvided:
+    - capacity: 19968Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 3g.20gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "3"
+      decoders: "2"
+      memory: 19968Mi
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      memory-slices-06: "1"
+      memory-slices-07: "1"
+      multiprocessors: "42"
+    name: gpu-0-mig-3g.20gb-4
+    claimResourcesProvided:
+    - capacity: 19968Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 4g.20gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "4"
+      decoders: "2"
+      memory: 19968Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "56"
+    name: gpu-0-mig-4g.20gb-0
+    claimResourcesProvided:
+    - capacity: 19968Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 7g.40gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "7"
+      decoders: "5"
+      jpeg-engines: "1"
+      memory: 40192Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      memory-slices-06: "1"
+      memory-slices-07: "1"
+      multiprocessors: "98"
+      ofa-engines: "1"
+    name: gpu-0-mig-7g.40gb-0
+    claimResourcesProvided:
+    - capacity: 40192Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-00: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-0
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-01: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-1
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-02: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-2
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-03: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-3
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-04: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-4
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-05: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-5
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-06: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-6
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-0
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-2
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-4
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-06: "1"
+      memory-slices-07: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-6
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+---
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: nvidia-01-dgxa100
+spec:
+  driver: gpu.nvidia.com/dra
+  nodeName: nvidia-01
+  sharedResources:
+  - capacity: 40Gi
+    name: memory
+  - capacity: "98"
+    name: multiprocessors
+  - capacity: "7"
+    name: copy-engines
+  - capacity: "5"
+    name: decoders
+  - capacity: "0"
+    name: encoders
+  - capacity: "1"
+    name: jpeg-engines
+  - capacity: "1"
+    name: ofa-engines
+  - capacity: "1"
+    name: memory-slices-0
+  - capacity: "1"
+    name: memory-slices-1
+  - capacity: "1"
+    name: memory-slices-2
+  - capacity: "1"
+    name: memory-slices-3
+  - capacity: "1"
+    name: memory-slices-4
+  - capacity: "1"
+    name: memory-slices-5
+  - capacity: "1"
+    name: memory-slices-6
+  - capacity: "1"
+    name: memory-slices-7
+  attributes:
+  - name: vendor
+    stringValue: nvidia
+  - name: model
+    stringValue: dgxa100
+  devices:
+  - attributes:
+    - intValue: 0
+      name: minor
+    - intValue: 0
+      name: index
+    - name: uuid
+      stringValue: GPU-96e724d0-6c17-4947-9932-222fba5bf18a
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      memory: 40Gi
+    name: gpu-0
+    claimResourcesProvided:
+    - capacity: 40Gi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-00: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-0
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-01: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-1
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-02: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-2
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-03: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-3
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-04: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-4
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-05: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-5
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      memory: 4864Mi
+      memory-slices-06: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.5gb-6
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 2g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "2"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      multiprocessors: "28"
+    name: gpu-0-mig-2g.10gb-0
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 2g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "2"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "28"
+    name: gpu-0-mig-2g.10gb-2
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 2g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "2"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      multiprocessors: "28"
+    name: gpu-0-mig-2g.10gb-4
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 3g.20gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "3"
+      decoders: "2"
+      memory: 19968Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "42"
+    name: gpu-0-mig-3g.20gb-0
+    claimResourcesProvided:
+    - capacity: 19968Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 3g.20gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "3"
+      decoders: "2"
+      memory: 19968Mi
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      memory-slices-06: "1"
+      memory-slices-07: "1"
+      multiprocessors: "42"
+    name: gpu-0-mig-3g.20gb-4
+    claimResourcesProvided:
+    - capacity: 19968Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 4g.20gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "4"
+      decoders: "2"
+      memory: 19968Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "56"
+    name: gpu-0-mig-4g.20gb-0
+    claimResourcesProvided:
+    - capacity: 19968Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 7g.40gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "7"
+      decoders: "5"
+      jpeg-engines: "1"
+      memory: 40192Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      memory-slices-06: "1"
+      memory-slices-07: "1"
+      multiprocessors: "98"
+      ofa-engines: "1"
+    name: gpu-0-mig-7g.40gb-0
+    claimResourcesProvided:
+    - capacity: 40192Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-00: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-0
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-01: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-1
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-02: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-2
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-03: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-3
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-04: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-4
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-05: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-5
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.5gb+me
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      jpeg-engines: "1"
+      memory: 4864Mi
+      memory-slices-06: "1"
+      multiprocessors: "14"
+      ofa-engines: "1"
+    name: gpu-0-mig-1g.5gb-me-6
+    claimResourcesProvided:
+    - capacity: 4864Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-00: "1"
+      memory-slices-01: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-0
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-02: "1"
+      memory-slices-03: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-2
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-04: "1"
+      memory-slices-05: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-4
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory
+  - attributes:
+    - name: mig-profile
+      stringValue: 1g.10gb
+    - name: product-name
+      stringValue: Mock NVIDIA A100-SXM4-40GB
+    - name: brand
+      stringValue: Nvidia
+    - name: architecture
+      stringValue: Ampere
+    - name: cuda-compute-capability
+      semVerValue: 8.0.0
+    - name: driver-version
+      semVerValue: 550.54.15
+    - name: cuda-driver-version
+      semVerValue: 12.4.0
+    sharedResourcesConsumed:
+      copy-engines: "1"
+      decoders: "1"
+      memory: 9856Mi
+      memory-slices-06: "1"
+      memory-slices-07: "1"
+      multiprocessors: "14"
+    name: gpu-0-mig-1g.10gb-6
+    claimResourcesProvided:
+    - capacity: 9856Mi
+      name: memory

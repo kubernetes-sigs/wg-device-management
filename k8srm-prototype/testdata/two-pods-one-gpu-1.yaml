@@ -1,0 +1,60 @@
+# Two Pods sharing a GPU with a common sharing configuration.
+#
+
+apiVersion: gpu.example.com/v1alpha1
+kind: GPUSharingConfig
+metadata:
+  name: my-sharing-config
+  namespace: default
+spec:
+  enableSharing: true
+---
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: my-shared-gpu
+  namespace: default
+spec:
+  devices:
+  - name: foozer-gpu
+    class: example.com-foozer
+    configs:
+    - apiVersion: gpu.example.com/v1alpha1
+      kind: GPUSharingConfig
+      name: my-sharing-config
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer-0
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  deviceClaims:
+    claimName: my-shared-gpu
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer-1
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  deviceClaims:
+    claimName: my-shared-gpu

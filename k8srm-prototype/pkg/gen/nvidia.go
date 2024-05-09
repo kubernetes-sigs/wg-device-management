@@ -69,8 +69,8 @@ func instanceToDevice(instance newresourceapi.NamedResourcesInstance) api.Device
 	}
 
 	if len(instance.Resources) > 0 {
-		device.ConsumesSharedResources = sharedGroupToRequests(instance.Resources[0])
-		device.ProvidesClaimResources = sharedGroupToResources(instance.Resources[0], true)
+		device.SharedResourcesConsumed = sharedGroupToRequests(instance.Resources[0])
+		device.ClaimResourcesProvided = sharedGroupToResources(instance.Resources[0], true)
 	}
 
 	return device

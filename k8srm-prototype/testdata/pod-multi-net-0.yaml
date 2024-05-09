@@ -1,10 +1,9 @@
-# A Pod asking for a single Foozer GPU of any type, and associating that with a
-# single container.
-
+# A Pod with one secondary SR-IOV VF interface.
+#
 apiVersion: v1
 kind: Pod
 metadata:
-  name: foozer
+  name: my-pod
   namespace: default
 spec:
   containers:
@@ -14,9 +13,7 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpu
   deviceClaims:
     devices:
-    - name: foozer-gpu
-      class: example.com-foozer
+    - name: netdev0 # not used, but required
+      class: example.com-sriov-vf

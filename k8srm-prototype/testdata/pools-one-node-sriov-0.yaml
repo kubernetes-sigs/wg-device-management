@@ -1,0 +1,148 @@
+# An example of a node with two example.com SR-IOV NICs
+#
+# In this device, the behavior is:
+# - Each card has two PFs
+# - Each PF has 2 VFs
+# - The devices that are published are PFs and VFs.
+# - The `sriovType` attribute can be used to differentiate between PF and VF.
+# - Each VF also has a PF attribute, to allow constraints and selection based on
+#   the PF.
+#
+# This node (node-00) has two of these cards, each associated with a different
+# CPU/NUMA/PCIe package, represented here by the "numa" attribute.
+#
+# Each card gets published as a DevicePool with shared resources for the VFs.
+#
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: node-00-nic0
+spec:
+  driver: example.com-sriov
+  nodeName: node-00
+  attributes:
+  - name: vendor
+    stringValue: example.com
+  - name: model
+    stringValue: com-sriov-1g
+  - name: bandwidth
+    quantityValue: 1G
+  - name: numa
+    stringValue: "0"
+  - name: hwdevname
+    stringValue: "ecsriov0"
+  sharedResources:
+    vfs-pf-0: 2
+    vfs-pf-1: 2
+  devices:
+  - name: pf-0
+    attributes:
+    - name: sriovType
+      stringValue: pf
+    sharedResourcesConsumed:
+      vfs-pf-0: 2
+  - name: pf-1
+    attributes:
+    - name: sriovType
+      stringValue: pf
+    sharedResourcesConsumed:
+      vfs-pf-1: 2
+  - name: pf-0-vf-0
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "0"
+    sharedResourcesConsumed:
+      vfs-pf-0: 1
+  - name: pf-0-vf-1
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "0"
+    sharedResourcesConsumed:
+      vfs-pf-0: 1
+  - name: pf-1-vf-0
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "1"
+    sharedResourcesConsumed:
+      vfs-pf-1: 1
+  - name: pf-1-vf-1
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "1"
+    sharedResourcesConsumed:
+      vfs-pf-1: 1
+---
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: node-00-nic1
+spec:
+  driver: example.com-sriov
+  nodeName: node-00
+  attributes:
+  - name: vendor
+    stringValue: example.com
+  - name: model
+    stringValue: com-sriov-1g
+  - name: bandwidth
+    quantityValue: 1G
+  - name: numa
+    stringValue: "1"
+  - name: hwdevname
+    stringValue: "ecsriov1"
+  sharedResources:
+    vfs-pf-0: 2
+    vfs-pf-1: 2
+  devices:
+  - name: pf-0
+    attributes:
+    - name: sriovType
+      stringValue: pf
+    sharedResourcesConsumed:
+      vfs-pf-0: 2
+  - name: pf-1
+    attributes:
+    - name: sriovType
+      stringValue: pf
+    sharedResourcesConsumed:
+      vfs-pf-1: 2
+  - name: pf-0-vf-0
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "0"
+    sharedResourcesConsumed:
+      vfs-pf-0: 1
+  - name: pf-0-vf-1
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "0"
+    sharedResourcesConsumed:
+      vfs-pf-0: 1
+  - name: pf-1-vf-0
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "1"
+    sharedResourcesConsumed:
+      vfs-pf-1: 1
+  - name: pf-1-vf-1
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    - name: pf
+      stringValue: "1"
+    sharedResourcesConsumed:
+      vfs-pf-1: 1

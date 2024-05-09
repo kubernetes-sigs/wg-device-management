@@ -1,22 +1,20 @@
-# A Pod asking for a two Foozer GPUs of the same model and on the same
-# PCIe root, and associating them with one container.
-#
+# A Pod asking for 1-8 whole OR partial Foozer GPUs such that the total
+# available memory is at least 128Gi.
 
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClaim
 metadata:
-  name: template-example.com-foozer-two-gpus-same-model-pcie-root
+  name: template-foozer-split-shared-128Gi
   namespace: default
 spec:
   devices:
-  - name: foozer-gpus
+  - name: gpu
     allOf:
     - class: example.com-foozer
-      matchAttributes:
-      - model
-      - pcie-root
+      maxDevices: 8
+      allowShared: true
       requests:
-        devices: 2
+        memory: 128Gi
 ---
 apiVersion: v1
 kind: Pod
@@ -32,7 +30,7 @@ spec:
         cpu: 10m
         memory: 10Mi
     devices:
-    - name: foozer-gpus
+    - name: gpu
   deviceClaims:
     template:
-      claimName: template-example.com-foozer-two-gpus-same-model-pcie-root
+      claimName: template-foozer-split-shared-128Gi

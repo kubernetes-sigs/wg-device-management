@@ -1,27 +1,20 @@
-# A Pod asking for two Foozer GPUs of the same model, and associating each
-# with a different container.
+# Two Pods sharing a GPU, mediated by the user.
 #
 
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClaim
 metadata:
-  name: template-example.com-foozer-two-separate-gpus-same-model
+  name: my-shared-gpu
   namespace: default
 spec:
-  matchAttributes:
-  - model
   devices:
   - name: foozer-gpu
-    allOf:
-    - class: example.com-foozer
-  - name: other-foozer-gpu
-    allOf:
-    - class: example.com-foozer
+    class: example.com-foozer
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: foozer
+  name: foozer-0
   namespace: default
 spec:
   containers:
@@ -33,14 +26,23 @@ spec:
         memory: 10Mi
     devices:
     - name: foozer-gpu
+  deviceClaims:
+    claimName: my-shared-gpu
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer-1
+  namespace: default
+spec:
+  containers:
   - image: registry.k8s.io/pause:3.6
-    name: my-other-container
+    name: my-container
     resources:
       requests:
         cpu: 10m
         memory: 10Mi
     devices:
-    - name: other-foozer-gpu
+    - name: foozer-gpu
   deviceClaims:
-    template:
-      claimName: template-example.com-foozer-two-separate-gpus-same-model
+    claimName: my-shared-gpu

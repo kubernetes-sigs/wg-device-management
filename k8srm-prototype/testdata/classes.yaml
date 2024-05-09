@@ -44,7 +44,7 @@ spec:
       vendor: example.com
       device-type: gpu
 ---
-# A example.com SR-IOV NIC
+# An example.com SR-IOV NIC
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClass
 metadata:
@@ -55,7 +55,19 @@ metadata:
 spec:
   driver: example.com-sriov
 ---
-# Request any SR-IOV NIC.
+# An example.org SR-IOV NIC (different vendor)
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.org-sriov-nic
+  labels:
+    vendor: example.org
+    device-type: sriov-nic
+spec:
+  driver: example.org-sriov
+---
+# Request any SR-IOV NIC. This will allow the claim to be satisfied by
+# example.com or example.org NICs.
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClass
 metadata:
@@ -72,18 +84,18 @@ metadata:
   name: example.com-sriov-nic-1g
 spec:
   driver: example.com-sriov
-  constraints: "device.bandwidth = '1G'"
+  constraints: "device.bandwidth == '1G'"
 ---
-# Request any 10Gbps SR-IOV NIC.
+# Request an example.com 10Gbps SR-IOV NIC.
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClass
 metadata:
   name: example.com-sriov-nic-10g
 spec:
   driver: example.com-sriov
-  constraints: "device.bandwidth = '10G'"
+  constraints: "device.bandwidth == '10G'"
 ---
-# Request any 1Gbps or faster SR-IOV NIC.
+# Request an example.com 1Gbps or faster SR-IOV NIC.
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClass
 metadata:
@@ -92,6 +104,42 @@ spec:
   driver: example.com-sriov
   constraints: "device.bandwidth >= '1G'"
 ---
+#######
+# NOTE: We cannot create a class that is "any 1G NIC", because a class with a
+# selector cannot also have a claim detail, which contains the constraints.
+# Instead, we would need to create per-vendor classes with a particular label
+# (e.g., bandwidth=1G) and then create an aggregate class from those. This is
+# not great, but maybe acceptable for now.
+#
+# *Claims* can still add the Constraints; we just can't do it in the class.
+#######
+#
+# Request an example.com PF
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-pf
+spec:
+  driver: example.com-sriov
+  constraints: "device.sriovType == 'pf'"
+---
+# Request an example.com VF
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-vf
+spec:
+  driver: example.com-sriov
+  constraints: "device.sriovType == 'vf'"
+---
+#######
+# NOTE: We cannot create a class for example.org PF or VF, because instead of
+# using attributes, they use custom vf/pf resource types to control this. Claims
+# can request one or the other by using `requests`.
+#######
+#
+# ConfigMap to configure a DRA driver that manages VLAN interfaces.
+# NOTE: How do we control permissions on what these configs can do?
 apiVersion: v1
 kind: ConfigMap
 metadata:

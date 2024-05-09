@@ -89,18 +89,18 @@ type Device struct {
 	// +optional
 	Attributes []Attribute `json:"attributes,omitempty"`
 
-	// ConsumesSharedResources contains the pooled resources that are
+	// SharedResourcesConsumed contains the pooled resources that are
 	// consumed when this device is allocated.
 	//
 	// +optional
-	ConsumesSharedResources map[string]resource.Quantity `json:"consumesSharedResources,omitempty"`
+	SharedResourcesConsumed map[string]resource.Quantity `json:"sharedResourcesConsumed,omitempty"`
 
-	// ProvidesClaimResources allows the definition of per-device resources
+	// ClaimResourcesProvided allows the definition of per-device resources
 	// that can be allocated in a manner similar to standard Kubernetes
 	// resources.
 	//
 	// +optional
-	ProvidesClaimResources []ResourceCapacity `json:"providesClaimResources,omitempty"`
+	ClaimResourcesProvided []ResourceCapacity `json:"claimResourcesProvided,omitempty"`
 }
 
 type ResourceCapacity struct {

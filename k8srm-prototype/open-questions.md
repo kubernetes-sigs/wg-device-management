@@ -1,32 +1,3 @@
-# Notes
-
-*PodSpec Examples*
-
-- These are still a WIP, and we are moving them from from
-  `pod-spec-examples.yaml` to separate files under `testdata`.
-- PodSpec type is not defined here, it's only the YAML that exists. When we
-  implement sample scheduling code we will need to add the type in here.
-- PodSpec used in the examples is *almost* the same as 1.30, with these
-  differences:
-  - `PodSpec.ResourceClaims` => `PodSpec.DeviceClaims`
-  - `PodSpec.DeviceClaims[*].Source` is a little different. It allows:
-    - `DeviceClaimName` - an existing claim to directly associate
-    - `TemplateClass` - ObjectMeta + a class name. This generates a claim that
-      only uses the class name, no other fields. The idea is that it will be
-      common to just ask for a device of a particular class, without any further
-      constraints or claim details, and this provides a convenient way to do
-      that without creating another object ahead of time.
-    - `TemplateClaim` - ObjectMeta + a claim name. This generates a claim from
-      another claim. It avoids a separate "template" type, but is a little
-      confusing so curious to get feedback.
-    - `ClaimGenerator`- Future: a reference to a CR that must have a generated
-      claim spec in its status field (or we provide a fieldRef). Should we have
-      ObjectMeta here or in the referenced object? This is essentially a
-      generalization of `TemplateClaim` from specifically a device claim name to
-      an arbitrary object with "duck-typing".
-  - Instead of `resources.claims` in the container spec, there is `devices`
-    which is at the same level as `resources`.
-
 # Open Questions
 
 - Will the inlined pointer be OK for the DeviceClaimInstance one-of?
@@ -64,16 +35,31 @@
   them:
   - https://github.com/kubernetes-sigs/wg-device-management/pull/5/files#r1587245528
   - https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591620848
-  - Are most cases going to use some form of `SharedResources` or do we think there are lots of cases where it's just "whole PCIe" card?
-  - Are we trying to come up with a new abstraction that is already part of the PCIe structure of functions? Can we model based on that instead?
-  - If we have to do things like "pf-0-vfs" and "memory-slice-0", are we missing some fundamental part of the model around shared resources - like groups of shared resources a la Kevin's named model extension (I thought that was too complex...)?
-  - Where it gets weird though is when a vendor has a mix of card types to support.
+  - Are most cases going to use some form of `SharedResources` or do we think
+    there are lots of cases where it's just "whole PCIe" card?
+  - Are we trying to come up with a new abstraction that is already part of the
+    PCIe structure of functions? Can we model based on that instead?
+  - If we have to do things like "pf-0-vfs" and "memory-slice-0", are we missing
+    some fundamental part of the model around shared resources - like groups of
+    shared resources a la Kevin's named model extension (I thought that was too
+    complex...)?
+  - Where it gets weird though is when a vendor has a mix of card types to
+    support.
     * Where does one draw the boundaries around each `DevicePool`?
-    * Do they put all of their simple devices in a single `DevicePool` alongside all partitionable devices in their own individual `DevicePool`s?
-    * Why is there a "pool" boundary at all if there is no real meaning tied to it?
-    * In the case of simple devices, is it only there so as to avoid having lots of separate `Device` objects in the API server?
-    * If we do want to support both simple and partitionable devices in a single `DevicePool`, do we need to add one level of embedding as @thockin proposed? An alternative of this is to go back to my concept of having a list of named `SharedResourceGroups`  (as opposed to a single `SharedResource` section), forcing individual devices to refer back to the name of the `SharedResourceGroup` they pull a given shared resource from.  
-    * What happens as the size of these device pools grow and we hit the limit of a single API server object? Where do we draw the boundary then?
+    * Do they put all of their simple devices in a single `DevicePool` alongside
+      all partitionable devices in their own individual `DevicePool`s?
+    * Why is there a "pool" boundary at all if there is no real meaning tied to
+      it?
+    * In the case of simple devices, is it only there so as to avoid having lots
+      of separate `Device` objects in the API server?
+    * If we do want to support both simple and partitionable devices in a single
+      `DevicePool`, do we need to add one level of embedding as @thockin
+      proposed? An alternative of this is to go back to my concept of having a
+      list of named `SharedResourceGroups`  (as opposed to a single
+      `SharedResource` section), forcing individual devices to refer back to the
+      name of the `SharedResourceGroup` they pull a given shared resource from.
+    * What happens as the size of these device pools grow and we hit the limit
+      of a single API server object? Where do we draw the boundary then?
 - Do we need to deal with cross-pod (and cross-node) "linked" claims ala this
   [discussion](https://github.com/kubernetes-sigs/wg-device-management/pull/5#pullrequestreview-2035165945)?
   Or can that be handled by a higher-level workload controller that understands
@@ -89,9 +75,12 @@
   See this
   [discussion](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591621730).
 - Capacity model naming around shared resource consumption and claim resources
-  provided is not great. See
-  [here](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591623761)
-  and [here](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591623874).
+  provided is not great.
+  - ~See
+    [here](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591623761)~
+    (addressed)
+  - See
+    [here](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591623874)
 - Having DevicePoolName in the claim status field makes pools immutable which is
   bad. We need a different solution, maybe device UUIDs? See this
   [discussion](https://github.com/kubernetes-sigs/wg-device-management/pull/5#discussion_r1591664614).

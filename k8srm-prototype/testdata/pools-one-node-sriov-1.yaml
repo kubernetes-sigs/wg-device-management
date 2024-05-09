@@ -1,0 +1,75 @@
+# An alternate example of what a node with two PFs, each with
+# two VFs might look like.
+#
+# In this device, the behavior is:
+# - Each card has two PFs
+# - Each PF has 2 VFs
+# - The devices that are published are PFs and VFs, and they
+#   are published with pf/vf capacity, which is used to differentiate
+#   between asking for a pf and a vf.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: node-001-nic-001
+spec:
+  driver: example.org-sriov
+  nodeName: node-00
+  attributes:
+  - name: vendor
+    stringValue: example.org
+  - name: model
+    stringValue: org-sriov-10g
+  - name: bandwidth
+    quantityValue: 10G
+  sharedResources:
+    vfs-pf-0: 2
+    vfs-pf-1: 2
+  devices:
+  - name: pf-0
+    attributes:
+    - name: sriovType
+      stringValue: pf
+    sharedResourcesConsumed:
+      vfs-pf-0: 2
+    claimResourcesProvided:
+      pf: 1
+  - name: pf-1
+    attributes:
+    - name: sriovType
+      stringValue: pf
+    sharedResourcesConsumed:
+      vfs-pf-1: 2
+    claimResourcesProvided:
+      pf: 1
+  - name: pf-0-vf-0
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    sharedResourcesConsumed:
+      vfs-pf-0: 1
+    claimResourcesProvided:
+      vf: 1
+  - name: pf-0-vf-1
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    sharedResourcesConsumed:
+      vfs-pf-0: 1
+    claimResourcesProvided:
+      vf: 1
+  - name: pf-1-vf-0
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    sharedResourcesConsumed:
+      vfs-pf-1: 1
+    claimResourcesProvided:
+      vf: 1
+  - name: pf-1-vf-1
+    attributes:
+    - name: sriovType
+      stringValue: vf
+    sharedResourcesConsumed:
+      vfs-pf-1: 1
+    claimResourcesProvided:
+      vf: 1
