@@ -61,10 +61,10 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       memory: 40Gi
     name: gpu-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 40Gi
       name: memory
   - attributes:
@@ -82,13 +82,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-00: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -106,13 +106,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-01: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-1
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -130,13 +130,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-02: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -154,13 +154,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-03: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-3
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -178,13 +178,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-04: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -202,13 +202,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-05: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-5
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -226,13 +226,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-06: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-6
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -250,7 +250,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "2"
       decoders: "1"
       memory: 9856Mi
@@ -258,7 +258,7 @@ spec:
       memory-slices-01: "1"
       multiprocessors: "28"
     name: gpu-0-mig-2g.10gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -276,7 +276,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "2"
       decoders: "1"
       memory: 9856Mi
@@ -284,7 +284,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "28"
     name: gpu-0-mig-2g.10gb-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -302,7 +302,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "2"
       decoders: "1"
       memory: 9856Mi
@@ -310,7 +310,7 @@ spec:
       memory-slices-05: "1"
       multiprocessors: "28"
     name: gpu-0-mig-2g.10gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -328,7 +328,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "3"
       decoders: "2"
       memory: 19968Mi
@@ -338,7 +338,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "42"
     name: gpu-0-mig-3g.20gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 19968Mi
       name: memory
   - attributes:
@@ -356,7 +356,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "3"
       decoders: "2"
       memory: 19968Mi
@@ -366,7 +366,7 @@ spec:
       memory-slices-07: "1"
       multiprocessors: "42"
     name: gpu-0-mig-3g.20gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 19968Mi
       name: memory
   - attributes:
@@ -384,7 +384,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "4"
       decoders: "2"
       memory: 19968Mi
@@ -394,7 +394,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "56"
     name: gpu-0-mig-4g.20gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 19968Mi
       name: memory
   - attributes:
@@ -412,7 +412,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "7"
       decoders: "5"
       jpeg-engines: "1"
@@ -428,7 +428,7 @@ spec:
       multiprocessors: "98"
       ofa-engines: "1"
     name: gpu-0-mig-7g.40gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 40192Mi
       name: memory
   - attributes:
@@ -446,7 +446,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -455,7 +455,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -473,7 +473,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -482,7 +482,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-1
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -500,7 +500,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -509,7 +509,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -527,7 +527,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -536,7 +536,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-3
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -554,7 +554,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -563,7 +563,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -581,7 +581,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -590,7 +590,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-5
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -608,7 +608,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -617,7 +617,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-6
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -635,7 +635,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -643,7 +643,7 @@ spec:
       memory-slices-01: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -661,7 +661,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -669,7 +669,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -687,7 +687,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -695,7 +695,7 @@ spec:
       memory-slices-05: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -713,7 +713,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -721,7 +721,7 @@ spec:
       memory-slices-07: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-6
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
 ---
@@ -788,10 +788,10 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       memory: 40Gi
     name: gpu-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 40Gi
       name: memory
   - attributes:
@@ -809,13 +809,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-00: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -833,13 +833,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-01: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-1
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -857,13 +857,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-02: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -881,13 +881,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-03: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-3
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -905,13 +905,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-04: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -929,13 +929,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-05: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-5
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -953,13 +953,13 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       memory: 4864Mi
       memory-slices-06: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.5gb-6
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -977,7 +977,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "2"
       decoders: "1"
       memory: 9856Mi
@@ -985,7 +985,7 @@ spec:
       memory-slices-01: "1"
       multiprocessors: "28"
     name: gpu-0-mig-2g.10gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -1003,7 +1003,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "2"
       decoders: "1"
       memory: 9856Mi
@@ -1011,7 +1011,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "28"
     name: gpu-0-mig-2g.10gb-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -1029,7 +1029,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "2"
       decoders: "1"
       memory: 9856Mi
@@ -1037,7 +1037,7 @@ spec:
       memory-slices-05: "1"
       multiprocessors: "28"
     name: gpu-0-mig-2g.10gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -1055,7 +1055,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "3"
       decoders: "2"
       memory: 19968Mi
@@ -1065,7 +1065,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "42"
     name: gpu-0-mig-3g.20gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 19968Mi
       name: memory
   - attributes:
@@ -1083,7 +1083,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "3"
       decoders: "2"
       memory: 19968Mi
@@ -1093,7 +1093,7 @@ spec:
       memory-slices-07: "1"
       multiprocessors: "42"
     name: gpu-0-mig-3g.20gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 19968Mi
       name: memory
   - attributes:
@@ -1111,7 +1111,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "4"
       decoders: "2"
       memory: 19968Mi
@@ -1121,7 +1121,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "56"
     name: gpu-0-mig-4g.20gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 19968Mi
       name: memory
   - attributes:
@@ -1139,7 +1139,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "7"
       decoders: "5"
       jpeg-engines: "1"
@@ -1155,7 +1155,7 @@ spec:
       multiprocessors: "98"
       ofa-engines: "1"
     name: gpu-0-mig-7g.40gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 40192Mi
       name: memory
   - attributes:
@@ -1173,7 +1173,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1182,7 +1182,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1200,7 +1200,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1209,7 +1209,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-1
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1227,7 +1227,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1236,7 +1236,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1254,7 +1254,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1263,7 +1263,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-3
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1281,7 +1281,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1290,7 +1290,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1308,7 +1308,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1317,7 +1317,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-5
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1335,7 +1335,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       jpeg-engines: "1"
@@ -1344,7 +1344,7 @@ spec:
       multiprocessors: "14"
       ofa-engines: "1"
     name: gpu-0-mig-1g.5gb-me-6
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 4864Mi
       name: memory
   - attributes:
@@ -1362,7 +1362,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -1370,7 +1370,7 @@ spec:
       memory-slices-01: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-0
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -1388,7 +1388,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -1396,7 +1396,7 @@ spec:
       memory-slices-03: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-2
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -1414,7 +1414,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -1422,7 +1422,7 @@ spec:
       memory-slices-05: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-4
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory
   - attributes:
@@ -1440,7 +1440,7 @@ spec:
       semVerValue: 550.54.15
     - name: cuda-driver-version
       semVerValue: 12.4.0
-    consumesSharedResources:
+    sharedResourcesConsumed:
       copy-engines: "1"
       decoders: "1"
       memory: 9856Mi
@@ -1448,6 +1448,6 @@ spec:
       memory-slices-07: "1"
       multiprocessors: "14"
     name: gpu-0-mig-1g.10gb-6
-    providesClaimResources:
+    claimResourcesProvided:
     - capacity: 9856Mi
       name: memory

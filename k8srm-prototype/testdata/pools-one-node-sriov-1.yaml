@@ -29,47 +29,47 @@ spec:
     attributes:
     - name: sriovType
       stringValue: pf
-    consumesSharedResources:
+    sharedResourcesConsumed:
       vfs-pf-0: 2
-    providesClaimResources:
+    claimResourcesProvided:
       pf: 1
   - name: pf-1
     attributes:
     - name: sriovType
       stringValue: pf
-    consumesSharedResources:
+    sharedResourcesConsumed:
       vfs-pf-1: 2
-    providesClaimResources:
+    claimResourcesProvided:
       pf: 1
   - name: pf-0-vf-0
     attributes:
     - name: sriovType
       stringValue: vf
-    consumesSharedResources:
+    sharedResourcesConsumed:
       vfs-pf-0: 1
-    providesClaimResources:
+    claimResourcesProvided:
       vf: 1
   - name: pf-0-vf-1
     attributes:
     - name: sriovType
       stringValue: vf
-    consumesSharedResources:
+    sharedResourcesConsumed:
       vfs-pf-0: 1
-    providesClaimResources:
+    claimResourcesProvided:
       vf: 1
   - name: pf-1-vf-0
     attributes:
     - name: sriovType
       stringValue: vf
-    consumesSharedResources:
+    sharedResourcesConsumed:
       vfs-pf-1: 1
-    providesClaimResources:
+    claimResourcesProvided:
       vf: 1
   - name: pf-1-vf-1
     attributes:
     - name: sriovType
       stringValue: vf
-    consumesSharedResources:
+    sharedResourcesConsumed:
       vfs-pf-1: 1
-    providesClaimResources:
+    claimResourcesProvided:
       vf: 1
