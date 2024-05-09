@@ -3,6 +3,18 @@
 - Will the inlined pointer be OK for the DeviceClaimInstance one-of?
 - The way management pods are handled is clunky at best. A separate top-level
   type still seems cleaner.
+  - klueska: Another way to handle this, based on how it is done today in
+    classic DRA, would be the following:
+    - Move the AdminAccess flag back into the class.
+    - We define a particular annotation, something like `device-class-taint` on
+      the class.
+    - When a user uses a tainted class in a claim, a corresponding namespace
+      annotation, something like `device-class-toleration` must be present on
+      the namespace, or the scheduler will not satisfy the claim.
+    - This allows the cluster administrator some control over the namespaces in
+      which these special types of claims can be used.
+    - It can also allow them to control access to specific classes for other
+      reasons (for example, reservations or very expensive hardware, etc.)
 - Should classes be just (or nearly) as expressive as claims? For example,
   should the `oneOf` logic be something that can be encapsulated in a class?
 - Do we need BlockSize now? What about IntRange?
@@ -20,8 +32,8 @@
   `container.resources.claims` as is, too.
 - We need limits on the size of the ClassConfigs and ClaimConfigs lists.
 - We need to consider how this interacts with local volumes, for example NVME.
-  See PersistentVolumeMode. For example, "I need a GPU (one-of: [1x A100, 2x L4])
-  and an NVME SSD on the same PCIE.
+  See PersistentVolumeMode. For example, "I need a GPU (one-of: [1x A100, 2x
+  L4]) and an NVME SSD on the same PCIE.
 - More generally we need to exercise various multi-claim, all-of, one-of type of
   use cases and make sure this is sufficiently expressive.
 - Do we need PodNames in the claim status to show what Pods are using the claim,
