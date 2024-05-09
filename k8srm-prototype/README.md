@@ -8,7 +8,7 @@ with the latest in this repo:
 ## Overall Model
 
 As a refresher (see the KEPs for the details), the scope of the overall DRA /
-Device Management effort is to select, configure, and allocated devices, and
+Device Management effort is to select, configure, and allocate devices, and then
 attach them to pods and containers. "Devices" here typically means on-node
 devices but there are use cases for networked devices as well as devices that
 can be attached/detached at runtime.
