@@ -1,7 +1,9 @@
 # k8srm-prototype
 
-For more background, please see this document, though it is not yet up to date with the latest in this repo:
-- [Revisiting Kubernetes Resource Model](https://docs.google.com/document/d/1Xy8HpGATxgA2S5tuFWNtaarw5KT8D2mj1F4AP1wg6dM/edit?usp=sharing).
+For more background, please see this document, though it is not yet up to date
+with the latest in this repo:
+- [Revisiting Kubernetes Resource
+  Model](https://docs.google.com/document/d/1Xy8HpGATxgA2S5tuFWNtaarw5KT8D2mj1F4AP1wg6dM/edit?usp=sharing).
 
 ## Overall Model
 
@@ -14,7 +16,7 @@ can be attached/detached at runtime.
 The high-level model here is:
 - Drivers, typically running on the node, publish information about the devices
   they manage to the control plane.
-- A user can make "claims" in their PodSpec, requesting one or more devices
+- A user can make "claims" in their `PodSpec`, requesting one or more devices
   based on their needs.
 - The scheduler looks at available capacity and selects the possible options
   that can meet the user's needs, scores them, and allocates them.
@@ -29,11 +31,125 @@ needs of workload authors, device vendors, Kubernetes vendors, platform
 administrators, and higher level components such as autoscalers and ecosystem
 projects.
 
-## Types
+## Open Questions
 
-Note: this is really a brainstorming exercise and under active development. See
-the [notes and open questions](notes-and-open-questions.md) document for some of
-the still under discussion items.
+The next few sections of this document describe a proposed model. Note that this
+is really a brainstorming exercise and under active development. See the [open
+questions](open-questions.md) document for some of the still under discussion
+items.
+
+We are also looking at how we might extend the existing 1.30 DRA model with some
+of these ideas, rather than changing it out for these specific types.
+
+## Pod Spec
+
+This prototype changes the `PodSpec` a little from how it is in DRA in 1.30.
+
+In 1.30, the `PodSpec` has a list of named sources. The sources are structs that
+could contain either a claim name or a template name. The names are used to
+associate individual claims with containers. The example below allocates a
+single "foozer" device to the container in the pod.
+
+```yaml
+apiVersion: resource.k8s.io/v1alpha1
+kind: ResourceClaimTemplate
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  spec:
+    resourceClassName: example.com-foozer
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+      claims:
+      - name: gpu
+  resourceClaims:
+  - name: gpu
+    source:
+      resourceClaimTemplate: foozer
+```
+
+In the prototype model, we are adding `matchAttributes` constraints to control
+consistency within a selection of devices. In particular, we want to be able to
+specify a `matchAttributes` constraint across two separate named sources, so
+that we can ensure for example, a GPU chosen for one container is the same model
+as one chosen for another container. This would imply we need `matchAttributes`
+that apply across the list present in `PodSpec`. However, we don't want to put
+things like `matchAttributes` into `PodSpec`, since it is already `v1`.
+
+So, we tweak the `PodSpec` a bit from 1.30, such that, instead of a list of
+named sources, with each source being a oneOf, we instead have a single
+`DeviceClaims` oneOf in the `PodSpec`. This oneOf could be:
+- A list of named sources, where sources are limited to a simple "class" name
+  (ie, not a list of oneOfs, just a list of simple structs).
+- A template struct, which consists of ObjectMeta + a claim name.
+- A claim name.
+
+Additionally we move the container association from
+`spec.containers[*].resources.claims` to `spec.containers[*].devices`.
+
+The first form of the of the `DeviceClaims` oneOf allows for our simplest of use
+cases to be very simple to express, without creating a secondary object to which
+we must then refer. So, the equivalent of the 1.30 YAML above would be:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: gpu
+  deviceClaims:
+    devices:
+    - name: gpu
+      class: example.com-foozer
+```
+
+Each entry in `spec.deviceClaims.devices` is just a name/class pair, but in fact
+serves as a template to generate claims that exist with the lifecycle of the
+pod. We may want to add `ObjectMeta` here as well, since it is behaving as a
+template, to allow setting labels, etc.
+
+
+The key with this second form is that it is not list of named objects. Intead,
+it is just a single object, and the named objects are *inside* the referenced
+object. This is to avoid a two-key mount in the `spec.containers[*].devices`
+entry. If that's not important, then we can tweak this a bit. In any case, this
+form allows claims which follow the lifecycle of the pod, similar to the first
+form. Since a top-level API claim spec can can contain multiple claim instances,
+this should equally as expressive as if we included `matchAttributes` in the
+`PodSpec`, without having to do so.
+
+The third form (`claimName`) allows the user to share a pre-provisioned claim
+between pods.
+
+Given that the first and second forms both have a template-like structure, we
+may want to combine them and use two-key indexing in the mounts. If we do so, we
+still want the direct specification of the class, so that the most common case
+does not need separate object just to reference a class.
+
+## Types
 
 Types are divided into "claim" types, which form the UX, "capacity" types which
 are populated by drivers, and "allocation types" which are used to capture the
@@ -53,7 +169,7 @@ various options for claims. DeviceClass resources come in two varieties:
 
 Example classes are in [classes.yaml](testdata/classes.yaml).
 
-Users can make claims in their PodSpec in a few different ways, see
+Users can make claims in their `PodSpec` in a few different ways, see
 [podspec.go](testdata/podspec.go) for a description of the various ways.
 
 Example pod definitions can be found in the `pod-*.yaml` files in
