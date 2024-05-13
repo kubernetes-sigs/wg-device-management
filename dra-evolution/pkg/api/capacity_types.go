@@ -34,6 +34,28 @@ type ResourcePool struct {
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
 	ResourceModel `json:",inline" protobuf:"bytes,4,name=resourceModel"`
+
+	// To be decided: We could split ResourcePool into spec and status or
+	// extend NamedDevice below so that it reflects the current state of
+	// that device. Like the spec that is data that is coming from a driver,
+	// so adding more information is not a conceptual change. Could be
+	// added in any future release as an extension.
+	//
+	// Much harder is tracking "allocated for". That would be useful to
+	// enable running multiple schedulers for different sets of nodes where
+	// all instances share ownership of some ResourcePool with network-attached
+	// devices. It also would enable a DRA driver's controller to co-exist
+	// with structured parameters in the scheduler.
+	//
+	// If we had transactions in the apiserver, we could combine a status
+	// update of the ResourcePool with a status update of the claim.  But
+	// we don't and adding it [is
+	// hard](https://kubernetes.slack.com/archives/C0EG7JC6T/p1714373064352099).
+	// Without transactions, there will be a risk of leaking resources
+	// and/or races around freeing leaked resources. This would be great to
+	// have in 1.31 because requiring schedulers to use the ResourcePool
+	// status for allocation will be a change of behavior, but it'll be
+	// hard to design and implement in time.
 }
 
 // ResourceModel must have one and only one field set.
