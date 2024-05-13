@@ -38,8 +38,8 @@ is really a brainstorming exercise and under active development. See the [open
 questions](open-questions.md) document for some of the still under discussion
 items.
 
-We are also looking at how we might extend the existing 1.30 DRA model with some
-of these ideas, rather than changing it out for these specific types.
+See [dra-evolution](../dra-evolution/README.md) for an attempt to integrate these ideas
+into DRA.
 
 ## Pod Spec
 

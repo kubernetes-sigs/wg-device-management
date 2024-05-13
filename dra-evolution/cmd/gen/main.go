@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/gen"
+	"github.com/kubernetes-sigs/wg-device-management/dra-evolution/pkg/gen"
 
 	"sigs.k8s.io/yaml"
 )
