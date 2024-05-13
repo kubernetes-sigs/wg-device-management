@@ -180,6 +180,8 @@ claim types.
 
 Claim and allocation types are found in [claim_types.go](pkg/api/claim_types.go);
 individual types and fields are described in detail there in the comments.
+Capacity types are in [capacity_types.go](pkg/api/capacity_types.go). A quota
+mechanism is defined in [quota_types.go](pkg/api/quota_types.go).
 
 Vendors and administrators create `ResourceClass` resources to pre-configure
 various options for claims. Depending on what gets set in a class, users can:
