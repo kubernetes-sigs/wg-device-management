@@ -34,7 +34,7 @@ metadata:
   name: example.com-gpu
 filter:
   devices:
-    selector: "device.has('example.com-foozer') || device.has('example.com-barzer')"
+    selector: "'example.com-foozer' in device.string || 'example.com-barzer' in device.string"
 ---
 # An example.com SR-IOV NIC
 apiVersion: resource.k8s.io/v1alpha2
@@ -62,7 +62,7 @@ metadata:
   name: sriov-nic
 filter:
   devices:
-    selector: "device.has('example.com-sriov') || device.has('example.org-sriov')"
+    selector: "'example.com-sriov' in device.string || 'example.org-sriov' in device.string"
 ---
 # Example.com SR-IOV NIC on a 1Gbps link
 apiVersion: resource.k8s.io/v1alpha2
@@ -72,7 +72,7 @@ metadata:
 filter:
   devices:
     driverName: example.com-sriov
-    selector: "device.quantity['bandwidth'] == '1G'"
+    selector: "device.quantity['bandwidth'].compareTo(quantity('1G')) == 0"
 ---
 # Request an example.com 10Gbps SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
@@ -82,7 +82,7 @@ metadata:
 filter:
   devices:
     driverName: example.com-sriov
-    selector: "device.quantity['bandwidth'] == '10G'"
+    selector: "device.quantity['bandwidth'].compareTo(quantity('10G')) == 0"
 ---
 # Request an example.com 1Gbps or faster SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
@@ -92,7 +92,7 @@ metadata:
 filter:
   devices:
     driverName: example.com-sriov
-    selector: "device.quantity['bandwidth'] >= '1G'"
+    selector: "device.quantity['bandwidth'].compareTo(quantity('1G')) >= 0"
 ---
 #######
 # NOTE: We cannot create a class that is "any 1G NIC", because a class with a

@@ -111,7 +111,7 @@ type DeviceFilter struct {
 	// attributes before using them.
 	//
 	// For example:
-	//    attributes.quantity.has("a.dra.example.com") &&
+	//    "a.dra.example.com" in attributes.quantity &&
 	//    attributes.quantity["a.dra.example.com"].isGreaterThan(quantity("0")) &&
 	//    # No separate check, b.dra.example.com is set whenever a.dra.example.com is,
 	//    attributes.stringslice["b.dra.example.com"].isSorted()
@@ -324,7 +324,7 @@ type DeviceRequest struct {
 	// attributes before using them.
 	//
 	// For example:
-	//    attributes.quantity.has("a.dra.example.com") &&
+	//    "a.dra.example.com" in attributes.quantity &&
 	//    attributes.quantity["a.dra.example.com"].isGreaterThan(quantity("0")) &&
 	//    # No separate check, b.dra.example.com is set whenever a.dra.example.com is,
 	//    attributes.stringslice["b.dra.example.com"].isSorted()
