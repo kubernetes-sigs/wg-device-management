@@ -1,4 +1,4 @@
-package schedule
+package cel
 
 import (
 	"testing"
@@ -7,17 +7,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/utils/ptr"
 )
-
-func ptr[T any](val T) *T {
-	var v T = val
-	return &v
-}
 
 func TestMeetsConstraints(t *testing.T) {
 	testCases := map[string]struct {
 		constraints *string
-		attrs       []api.Attribute
+		attrs       []api.DeviceAttribute
 		expErr      string
 		result      bool
 	}{
@@ -26,73 +22,84 @@ func TestMeetsConstraints(t *testing.T) {
 			result:      true,
 		},
 		"empty constraint": {
-			constraints: ptr(""),
+			constraints: ptr.To(""),
 			result:      true,
 		},
 		"simple constraint met": {
-			constraints: ptr("device.vendor == 'example.com'"),
-			attrs: []api.Attribute{
+			constraints: ptr.To("device.string['vendor'] == 'example.com'"),
+			attrs: []api.DeviceAttribute{
 				{
-					Name:        "vendor",
-					StringValue: ptr("example.com"),
+					Name:                 "vendor",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("example.com")},
 				},
 			},
 			result: true,
 		},
 		"simple constraint failed": {
-			constraints: ptr("device.vendor == 'example.com'"),
-			attrs: []api.Attribute{
+			constraints: ptr.To("device.string['vendor'] == 'example.com'"),
+			attrs: []api.DeviceAttribute{
 				{
-					Name:        "vendor",
-					StringValue: ptr("example.org"),
+					Name:                 "vendor",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("example.org")},
 				},
 			},
 			result: false,
 		},
 		"multi-attribute constraint met": {
-			constraints: ptr("device.vendor == 'example.com' && device.model == 'foozer-1000'"),
-			attrs: []api.Attribute{
+			constraints: ptr.To("device.string['vendor'] == 'example.com' && device.string['model'] == 'foozer-1000'"),
+			attrs: []api.DeviceAttribute{
 				{
-					Name:        "vendor",
-					StringValue: ptr("example.com"),
+					Name:                 "vendor",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("example.com")},
 				},
 				{
-					Name:        "model",
-					StringValue: ptr("foozer-1000"),
+					Name:                 "model",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("foozer-1000")},
 				},
 			},
 			result: true,
 		},
 		"simple device and pool constraint failed": {
-			constraints: ptr("device.vendor == 'example.com' && device.model == 'foozer-1000'"),
-			attrs: []api.Attribute{
+			constraints: ptr.To("device.string['vendor'] == 'example.com' && device.string['model'] == 'foozer-1000'"),
+			attrs: []api.DeviceAttribute{
 				{
-					Name:        "vendor",
-					StringValue: ptr("example.org"),
+					Name:                 "vendor",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("example.org")},
 				},
 				{
-					Name:        "model",
-					StringValue: ptr("foozer-1000"),
+					Name:                 "model",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("foozer-1000")},
 				},
 			},
 			result: false,
 		},
-		//TODO: add CEL type conversion for resource.Quantity so this test below can be enabled
+		// CEL type conversion for resource.Quantity is intentionally not
+		// defined in Kubernetes because it would make runtime cost evaluation
+		// very hard.
 		"quantity constraint met": {
-			constraints: ptr("device.memory >= '10Gi'"),
-			attrs: []api.Attribute{
+			constraints: ptr.To("device.quantity['memory'].compareTo(quantity('10Gi')) >= 0"),
+			attrs: []api.DeviceAttribute{
 				{
-					Name:          "memory",
-					QuantityValue: ptr(resource.MustParse("10Gi")),
+					Name:                 "memory",
+					DeviceAttributeValue: api.DeviceAttributeValue{QuantityValue: ptr.To(resource.MustParse("10Gi"))},
 				},
 			},
-			expErr: "unsupported conversion to ref.Val: (resource.Quantity){{10737418240 0} {<nil>} 10Gi BinarySI}",
+			result: true,
+		},
+		"fully-qualified-name": {
+			constraints: ptr.To("device.string['vendor.dra.example.com'] == 'example.com'"),
+			attrs: []api.DeviceAttribute{
+				{
+					Name:                 "vendor.dra.example.com",
+					DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("example.com")},
+				},
+			},
 			result: true,
 		},
 	}
 	for tn, tc := range testCases {
 		t.Run(tn, func(t *testing.T) {
-			result, err := MeetsConstraints(tc.constraints, tc.attrs)
+			result, err := MeetsConstraints(tc.constraints, Input{Attributes: tc.attrs})
 			if tc.expErr == "" {
 				require.NoError(t, err)
 				require.Equal(t, tc.result, result)
