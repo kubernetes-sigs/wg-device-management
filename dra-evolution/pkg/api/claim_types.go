@@ -585,3 +585,32 @@ type ResourceClaimSpecification struct {
 
 	ResourceClaimSpec // inline
 }
+
+// ResourceClaimTemplate is used to produce ResourceClaim objects.
+type ResourceClaimTemplate struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard object metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Describes the ResourceClaim that is to be generated.
+	//
+	// This field is immutable. A ResourceClaim will get created by the
+	// control plane for a Pod when needed and then not get updated
+	// anymore.
+	Spec ResourceClaimTemplateSpec `json:"spec" protobuf:"bytes,2,name=spec"`
+}
+
+// ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.
+type ResourceClaimTemplateSpec struct {
+	// ObjectMeta may contain labels and annotations that will be copied into the PVC
+	// when creating it. No other fields are allowed and will be rejected during
+	// validation.
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Spec for the ResourceClaim. The entire content is copied unchanged
+	// into the ResourceClaim that gets created from this template. The
+	// same fields as in a ResourceClaim are also valid here.
+	Spec ResourceClaimSpec `json:"spec" protobuf:"bytes,2,name=spec"`
+}
