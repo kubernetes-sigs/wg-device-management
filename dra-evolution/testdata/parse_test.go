@@ -17,7 +17,9 @@ limitations under the License.
 package podspec
 
 import (
+	"bytes"
 	"embed"
+	"fmt"
 	"io"
 	"testing"
 
@@ -47,9 +49,26 @@ func TestParse(t *testing.T) {
 			content, err := io.ReadAll(fh)
 			require.NoError(t, err)
 
-			obj, gvk, err := serializer.Decode(content, nil, nil)
-			require.NoError(t, err)
-			t.Logf("Got object %T = %s", obj, gvk)
+			// Split at the "---" separator before working on
+			// individual item. Only works for .yaml.
+			items := bytes.Split(content, []byte("\n---"))
+			if len(items) > 1 {
+				for i, item := range items {
+					if len(item) > 0 {
+						t.Run(fmt.Sprintf("item_%d", i), func(t *testing.T) {
+							testDecode(t, serializer, item)
+						})
+					}
+				}
+			} else {
+				testDecode(t, serializer, content)
+			}
 		})
 	}
+}
+
+func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
+	obj, gvk, err := serializer.Decode(content, nil, nil)
+	require.NoError(t, err)
+	t.Logf("Got object %T = %s", obj, gvk)
 }
