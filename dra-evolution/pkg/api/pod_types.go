@@ -172,7 +172,7 @@ type ResourceRequirements struct {
 	// +listMapKey=name
 	// +featureGate=DynamicResourceAllocation
 	// +optional
-	Claims []ResourceClaim `json:"claims,omitempty" protobuf:"bytes,3,opt,name=claims"`
+	Claims []ResourceClaimEntry `json:"claims,omitempty" protobuf:"bytes,3,opt,name=claims"`
 }
 
 // ResourceName is the name identifying various resources in a ResourceList.
@@ -180,6 +180,14 @@ type ResourceName string
 
 // ResourceList is a set of (resource name, quantity) pairs.
 type ResourceList map[ResourceName]resource.Quantity
+
+// ResourceClaimEntry references one entry in PodSpec.ResourceClaims.
+type ResourceClaimEntry struct {
+	// Name must match the name of one entry in pod.spec.resourceClaims of
+	// the Pod where this field is used. It makes that resource available
+	// inside a container.
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
+}
 
 type PodResourceClaim struct {
 	// Name uniquely identifies this resource claim inside the pod.
