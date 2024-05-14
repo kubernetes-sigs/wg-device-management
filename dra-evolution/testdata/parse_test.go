@@ -81,6 +81,12 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 			validateDeviceFilter(t, obj.Filter.Devices, "class.filter.devices")
 		}
 		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
+	case *api.ResourceClaim:
+		if obj.Spec != nil {
+			validateResourceClaimSpec(t, *obj.Spec, "claim.spec")
+		}
+	case *api.ResourceClaimTemplate:
+		validateResourceClaimSpec(t, obj.Spec.Spec, "claimTemplate.spec.spec")
 	}
 }
 
@@ -128,4 +134,8 @@ func validateDeviceRequest(t *testing.T, request *api.DeviceRequest, path string
 	}
 	result := cel.Compiler.CompileCELExpression(request.Selector, environment.StoredExpressions)
 	assert.Nil(t, result.Error, path+".selector parse error")
+}
+
+func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
+	validateRequests(t, claimSpec.Requests, path+".requests")
 }
