@@ -90,24 +90,26 @@ type ResourceFilterModel struct {
 	// Devices describes a filter based on device attributes.
 	//
 	// +optional
-	Devices *DeviceFilter `json:"devices,omitempty"`
+	Device *DeviceFilter `json:"device,omitempty"`
 }
 
 type DeviceFilter struct {
-	// DriverName, if set, excludes any device not provided by this driver.
+	// DriverName excludes any device not provided by this driver.
+	// Filters that are meant to match devices provided by different
+	// drivers need to leave this field blank.
 	//
 	// +optional
-	DriverName string `json:"driverName,omitempty" protobuf:"bytes,1,opt,name=driverName"`
+	DriverName *string `json:"driverName,omitempty" protobuf:"bytes,1,opt,name=driverName"`
 
 	// Selector is a CEL expression which must evaluate to true if a
-	// resource instance is suitable. The language is as defined in
+	// device is suitable. The language is as defined in
 	// https://kubernetes.io/docs/reference/using-api/cel/
 	//
-	// In addition, for each type in NamedResourcesAttributeValue there is a map that
+	// In addition, for each type in NamedDeviceAttributeValue there is a map that
 	// resolves to the corresponding value of the instance under evaluation. Unknown
 	// names cause a runtime error. Note that the CEL expression is applied to
-	// *all* available resource instances by default, regardless of which driver provides it.
-	// In that case. the CEL expression must first check that the instance has certain
+	// *all* available resource instances from any driver when the driver name is unset.
+	// In that case, the CEL expression must first check that the instance has certain
 	// attributes before using them.
 	//
 	// For example:
@@ -283,7 +285,7 @@ type ResourceRequestDetail struct {
 	// +optional
 	Count *IntRange `json:"count,omitempty"`
 
-	ResourceRequestModel `json:",inline" protobuf:"bytes,2,name=resourceRequestModel"`
+	ResourceFilterModel `json:",inline" protobuf:"bytes,2,name=resourceFilterModel"`
 }
 
 // IntRange defines how many instances are desired.
@@ -295,52 +297,6 @@ type IntRange struct {
 	// Maximum defines the upper limit. At most this many instances
 	// may be allocated (x <= maximum). The default if unset is unlimited.
 	Maximum *int `json:"maximum"`
-}
-
-// ResourceRequestModel must have one and only one field set.
-type ResourceRequestModel struct {
-	// Device describes a request for a specific device.
-	//
-	// +optional
-	Device *DeviceRequest `json:"device,omitempty"`
-}
-
-// DeviceRequest is used in ResourceRequestModel.
-type DeviceRequest struct {
-	// DriverName excludes any named resource not provided by this driver.
-	//
-	// +optional
-	DriverName *string `json:"driverName,omitempty" protobuf:"bytes,1,opt,name=driverName"`
-
-	// Selector is a CEL expression which must evaluate to true if a
-	// resource instance is suitable. The language is as defined in
-	// https://kubernetes.io/docs/reference/using-api/cel/
-	//
-	// In addition, for each type in NamedResourcesAttributeValue there is a map that
-	// resolves to the corresponding value of the instance under evaluation. Unknown
-	// names cause a runtime error. Note that the CEL expression is applied to
-	// *all* available resource instances by default, regardless of which driver provides it.
-	// In that case. the CEL expression must first check that the instance has certain
-	// attributes before using them.
-	//
-	// For example:
-	//    "a.dra.example.com" in attributes.quantity &&
-	//    attributes.quantity["a.dra.example.com"].isGreaterThan(quantity("0")) &&
-	//    # No separate check, b.dra.example.com is set whenever a.dra.example.com is,
-	//    attributes.stringslice["b.dra.example.com"].isSorted()
-	//
-	// If a driver name is set, then such a check is not be needed if all instances
-	// are known to have the attribute. Attributes names don't have to have
-	// the driver name suffix.
-	//
-	// For example:
-	//    attributes.quantity["a"].isGreaterThan(quantity("0")) &&
-	//    attributes.stringslice["b"].isSorted()
-	//
-	// If empty, any device matches.
-	//
-	// +optional
-	Selector string `json:"selector" protobuf:"bytes,2,name=selector"`
 }
 
 // ResourceClaimStatus tracks whether the resource has been allocated and what

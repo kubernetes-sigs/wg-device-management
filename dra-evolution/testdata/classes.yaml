@@ -4,7 +4,7 @@ kind: ResourceClass
 metadata:
   name: example.com-foozer
 filter:
-  devices:
+  device:
     driverName: example.com-foozer
 ---
 # A Foozer 1000 device
@@ -13,7 +13,7 @@ kind: ResourceClass
 metadata:
   name: example.com-foozer-1000
 filter:
-  devices:
+  device:
     driverName: example.com-foozer
     selector: "device.string['model'] == 'foozer-1000'"
 ---
@@ -23,7 +23,7 @@ kind: ResourceClass
 metadata:
   name: example.com-barzer
 filter:
-  devices:
+  device:
     driverName: example.com-barzer
 ---
 # Any example.com GPU, even though Foozer and
@@ -33,7 +33,7 @@ kind: ResourceClass
 metadata:
   name: example.com-gpu
 filter:
-  devices:
+  device:
     selector: "'example.com-foozer' in device.string || 'example.com-barzer' in device.string"
 ---
 # An example.com SR-IOV NIC
@@ -42,7 +42,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic
 filter:
-  devices:
+  device:
     driverName: example.com-sriov
 ---
 # An example.org SR-IOV NIC (different vendor)
@@ -51,7 +51,7 @@ kind: ResourceClass
 metadata:
   name: example.org-sriov-nic
 filter:
-  devices:
+  device:
     driverName: example.org-sriov
 ---
 # Request any SR-IOV NIC. This will allow the claim to be satisfied by
@@ -61,7 +61,7 @@ kind: ResourceClass
 metadata:
   name: sriov-nic
 filter:
-  devices:
+  device:
     selector: "'example.com-sriov' in device.string || 'example.org-sriov' in device.string"
 ---
 # Example.com SR-IOV NIC on a 1Gbps link
@@ -70,7 +70,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g
 filter:
-  devices:
+  device:
     driverName: example.com-sriov
     selector: "device.quantity['bandwidth'].compareTo(quantity('1G')) == 0"
 ---
@@ -80,7 +80,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-10g
 filter:
-  devices:
+  device:
     driverName: example.com-sriov
     selector: "device.quantity['bandwidth'].compareTo(quantity('10G')) == 0"
 ---
@@ -90,7 +90,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g-or-faster
 filter:
-  devices:
+  device:
     driverName: example.com-sriov
     selector: "device.quantity['bandwidth'].compareTo(quantity('1G')) >= 0"
 ---
@@ -110,7 +110,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-pf
 filter:
-  devices:
+  device:
     driverName: example.com-sriov
     selector: "device.string['sriovType'] == 'pf'"
 ---
@@ -120,7 +120,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-vf
 filter:
-  devices:
+  device:
     driverName: example.com-sriov
     selector: "device.string['sriovType'] == 'vf'"
 ---
@@ -136,7 +136,7 @@ kind: ResourceClass
 metadata:
   name: vlan-2000
 filter:
-  devices:
+  device:
     selector: "device.string['type.k8s.io'] == 'vlan'"
 claimConfig:
   vendor:

@@ -78,7 +78,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	switch obj := obj.(type) {
 	case *api.ResourceClass:
 		if obj.Filter != nil {
-			validateDeviceFilter(t, obj.Filter.Devices, "class.filter.devices")
+			validateDeviceFilter(t, obj.Filter.Device, "class.filter.device")
 		}
 		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
 	case *api.ResourceClaim:
@@ -122,18 +122,7 @@ func validateRequests(t *testing.T, requests []api.ResourceRequest, path string)
 }
 
 func validateRequest(t *testing.T, request *api.ResourceRequestDetail, path string) {
-	validateDeviceRequest(t, request.Device, path+".device")
-}
-
-func validateDeviceRequest(t *testing.T, request *api.DeviceRequest, path string) {
-	if !assert.NotNil(t, request, path) {
-		return
-	}
-	if request.Selector == "" {
-		return
-	}
-	result := cel.Compiler.CompileCELExpression(request.Selector, environment.StoredExpressions)
-	assert.Nil(t, result.Error, path+".selector parse error")
+	validateDeviceFilter(t, request.Device, path+".device")
 }
 
 func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
