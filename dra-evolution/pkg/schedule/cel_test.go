@@ -26,7 +26,7 @@ func TestMeetsConstraints(t *testing.T) {
 			result:      true,
 		},
 		"simple constraint met": {
-			constraints: ptr.To("device.string['vendor'] == 'example.com'"),
+			constraints: ptr.To("device.attributes['vendor'] == 'example.com'"),
 			attrs: []api.DeviceAttribute{
 				{
 					Name:                 "vendor",
@@ -36,7 +36,7 @@ func TestMeetsConstraints(t *testing.T) {
 			result: true,
 		},
 		"simple constraint failed": {
-			constraints: ptr.To("device.string['vendor'] == 'example.com'"),
+			constraints: ptr.To("device.attributes['vendor'] == 'example.com'"),
 			attrs: []api.DeviceAttribute{
 				{
 					Name:                 "vendor",
@@ -46,7 +46,7 @@ func TestMeetsConstraints(t *testing.T) {
 			result: false,
 		},
 		"multi-attribute constraint met": {
-			constraints: ptr.To("device.string['vendor'] == 'example.com' && device.string['model'] == 'foozer-1000'"),
+			constraints: ptr.To("device.attributes['vendor'] == 'example.com' && device.attributes['model'] == 'foozer-1000'"),
 			attrs: []api.DeviceAttribute{
 				{
 					Name:                 "vendor",
@@ -60,7 +60,7 @@ func TestMeetsConstraints(t *testing.T) {
 			result: true,
 		},
 		"simple device and pool constraint failed": {
-			constraints: ptr.To("device.string['vendor'] == 'example.com' && device.string['model'] == 'foozer-1000'"),
+			constraints: ptr.To("device.attributes['vendor'] == 'example.com' && device.attributes['model'] == 'foozer-1000'"),
 			attrs: []api.DeviceAttribute{
 				{
 					Name:                 "vendor",
@@ -77,7 +77,7 @@ func TestMeetsConstraints(t *testing.T) {
 		// defined in Kubernetes because it would make runtime cost evaluation
 		// very hard.
 		"quantity constraint met": {
-			constraints: ptr.To("device.quantity['memory'].compareTo(quantity('10Gi')) >= 0"),
+			constraints: ptr.To("device.attributes['memory'].compareTo(quantity('10Gi')) >= 0"),
 			attrs: []api.DeviceAttribute{
 				{
 					Name:                 "memory",
@@ -87,7 +87,7 @@ func TestMeetsConstraints(t *testing.T) {
 			result: true,
 		},
 		"fully-qualified-name": {
-			constraints: ptr.To("device.string['vendor.dra.example.com'] == 'example.com'"),
+			constraints: ptr.To("device.attributes['vendor.dra.example.com'] == 'example.com'"),
 			attrs: []api.DeviceAttribute{
 				{
 					Name:                 "vendor.dra.example.com",

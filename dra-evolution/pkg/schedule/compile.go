@@ -37,8 +37,12 @@ import (
 )
 
 const (
+	// prefix + <attribute type> + suffix
 	attributesVarPrefix = "device." // + <attribute type>
-	driverNameVar       = "device.driverName"
+	attributesVarSuffix = "Attributes"
+
+	driverNameVar = "device.driverName"
+	attributesVar = "device.attributes"
 )
 
 var (
@@ -183,9 +187,24 @@ func (c CompilationResult) DeviceMatches(ctx context.Context, input DeviceAttrib
 		if err != nil {
 			return false, fmt.Errorf("extract attributes with type %s: %v", name, err)
 		}
-		variables[attributesVarPrefix+name] = m
+		variables[attributesVarPrefix+name+attributesVarSuffix] = m
 	}
 	variables[driverNameVar] = input.DriverName
+
+	attributes := make(map[string]any, len(input.Attributes))
+	for _, attribute := range input.Attributes {
+		for _, valueType := range valueTypes {
+			value, err := valueType.get(attribute)
+			if err != nil || value == nil {
+				// We can ignore errors, they were already checked in buildValueMapper.
+				continue
+			}
+			attributes[attribute.Name] = value
+			break
+		}
+	}
+	variables[attributesVar] = attributes
+
 	result, _, err := c.Program.ContextEval(ctx, variables)
 	if err != nil {
 		return false, err
@@ -226,9 +245,12 @@ func mustBuildEnv() *environment.EnvSet {
 func buildVersionedAttributes() []cel.EnvOption {
 	options := make([]cel.EnvOption, 0, len(valueTypes))
 	for name, valueType := range valueTypes {
-		options = append(options, cel.Variable(attributesVarPrefix+name, types.NewMapType(cel.StringType, valueType.celType)))
+		options = append(options, cel.Variable(attributesVarPrefix+name+attributesVarSuffix, cel.MapType(cel.StringType, valueType.celType)))
 	}
-	options = append(options, cel.Variable(driverNameVar, cel.StringType))
+	options = append(options,
+		cel.Variable(driverNameVar, cel.StringType),
+		cel.Variable(attributesVar, cel.MapType(cel.StringType, cel.AnyType)),
+	)
 	return options
 }
 
@@ -249,6 +271,7 @@ func buildValueMapper(adapter types.Adapter, input DeviceAttributes, get func(ap
 			valueMap[name] = value
 		}
 	}
+	// TODO: handle <key> in <mapper>
 	return &stringInterfaceMap{
 		Mapper: types.NewStringInterfaceMap(adapter, valueMap),
 		suffix: input.CELSuffix,

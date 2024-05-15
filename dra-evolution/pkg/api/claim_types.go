@@ -109,28 +109,38 @@ type DeviceFilter struct {
 	// device is suitable. The language is as defined in
 	// https://kubernetes.io/docs/reference/using-api/cel/
 	//
-	// In addition, for each type in NamedDeviceAttributeValue there is a map that
-	// resolves to the corresponding value of the instance under evaluation. Unknown
-	// names cause a runtime error. Note that the CEL expression is applied to
-	// *all* available devices from any driver when the driver name is unset.
-	// In that case, the CEL expression must first check that the instance has certain
+	// In addition, for each type in NamedDeviceAttributeValue there is a
+	// `device.<type>Attributes` map that resolves to the corresponding
+	// value of the instance under evaluation. The type of those map
+	// entries are known at compile time, which makes it easier to
+	// detect errors like string to int comparisons.
+	//
+	// In cases where such type safety is not needed or not desired,
+	// `device.attributes` can be used instead. The type of the entries
+	// then only gets checked at runtime.
+	//
+	// In both maps unknown keys cause a runtime error.
+	//
+	// Note that the CEL expression is applied to *all* available devices
+	// from any driver when the driver name is unset.  In that case, the
+	// CEL expression must first check that the instance has certain
 	// attributes before using them.
 	//
 	// For example:
-	//    "a.dra.example.com" in device.quantity &&
-	//    device.quantity["a.dra.example.com"].isGreaterThan(quantity("0")) &&
+	//    "a.dra.example.com" in device.attributes &&
+	//    device.quantityAttributes["a.dra.example.com"].isGreaterThan(quantity("0")) &&
 	//    # No separate check, b.dra.example.com is set whenever a.dra.example.com is,
-	//    device.stringslice["b.dra.example.com"].isSorted()
+	//    device.stringsliceAttributes["b.dra.example.com"].isSorted()
 	//
 	// If a driver name is set, then such a check is not be needed if all instances
 	// are known to have the attribute. Attributes names don't have to have
 	// the driver name suffix.
 	//
 	// For example:
-	//    device.quantity["a"].isGreaterThan(quantity("0")) &&
-	//    device.stringslice["b"].isSorted()
+	//    device.quantityAttributes["a"].isGreaterThan(quantity("0")) &&
+	//    device.stringsliceAttributes["b"].isSorted()
 	//
-	// The device.driverName string variable can be used to check for a specific
+	// The `device.driverName` string variable can be used to check for a specific
 	// driver explicitly in a filter that is meant to work for devices from
 	// different vendors.
 	//
