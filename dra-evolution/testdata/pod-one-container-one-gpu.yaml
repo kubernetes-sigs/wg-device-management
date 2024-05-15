@@ -1,7 +1,7 @@
 # A Pod asking for a single Foozer GPU of any type, and associating that with a
 # single container.
 
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
@@ -14,9 +14,10 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpu
-  deviceClaims:
-    devices:
-    - name: foozer-gpu
-      class: example.com-foozer
+      claims:
+      - name: foozer-gpu
+  resourceClaims:
+  - name: foozer-gpu
+    source:
+      forClass:
+        className: example.com-foozer
