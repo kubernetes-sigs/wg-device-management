@@ -21,3 +21,16 @@ spec:
     source:
       forClass:
         className: example.com-foozer
+---
+# One Foozer device. All the classes in classes.yaml only provide
+# filters that users can reuse. This one also provides a default
+# request which asks for one device.
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClass
+metadata:
+  name: example.com-foozer
+filter:
+  device:
+    driverName: example.com-foozer
+defaultRequests:
+- device: {}
