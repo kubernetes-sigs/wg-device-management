@@ -192,33 +192,33 @@ type ResourceClaimEntry struct {
 type PodResourceClaim struct {
 	// Name uniquely identifies this resource claim inside the pod.
 	// This must be a DNS_LABEL.
-	Name string
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	// Source describes where to find the ResourceClaim.
-	Source ClaimSource
+	Source ClaimSource `json:"source" protobuf:"bytes,2,opt,name=source"`
 }
 
 type ClaimSource struct {
-	ForClass                  *ResourceClaimForClass
-	ResourceClaimName         *string
-	ResourceClaimTemplateName *string
+	ForClass                  *ResourceClaimForClass `json:"forClass" protobuf:"bytes,1,opt,name=forClass"`
+	ResourceClaimName         *string                `json:"resourceClaimName" protobuf:"bytes,2,opt,name=resourceClaimName"`
+	ResourceClaimTemplateName *string                `json:"resourceClaimTemplateName" protobuf:"bytes,3,opt,name=resourceClaimTemplateName"`
 }
 
 type ResourceClaimForClass struct {
-	ClassName string
+	ClassName string `json:"className" protobuf:"bytes,1,opt,name=className"`
 
 	// ObjectMeta may contain labels and annotations that will be copied into the PVC
 	// when creating it. No other fields are allowed and will be rejected during
 	// validation.
 	// +optional
-	metav1.ObjectMeta
+	metav1.ObjectMeta `json:",inline"`
 }
 
 // ResourceClaimDevice references specific devices inside a claim. If the named request
 // is satisfied by allocating multiple devices, then all of those are matched.
 type ResourceClaimDevice struct {
 	// pod.spec.resourceClaims
-	ClaimName string
+	ClaimName string `json:"claimName" protobuf:"bytes,1,opt,name=claimName"`
 	// claim.spec.requests
-	RequestName string
+	RequestName string `json:"requestName" protobuf:"bytes,2,opt,name=requestName"`
 }
