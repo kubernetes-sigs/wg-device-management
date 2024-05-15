@@ -31,7 +31,7 @@ import (
 func TestCompile(t *testing.T) {
 	for name, scenario := range map[string]struct {
 		expression         string
-		attributeSuffix    string
+		driverName         string
 		attributes         []api.DeviceAttribute
 		celSuffix          string
 		expectCompileError string
@@ -124,24 +124,26 @@ device.stringslice["stringslice"].isSorted()`,
 			},
 			expectMatch: true,
 		},
-		"attributeSuffix": {
-			expression:      `device.bool["name.k8s.io"]`,
-			attributeSuffix: "k8s.io",
-			attributes:      []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
-			expectMatch:     true,
+		"driverNameSuffix": {
+			expression:  `device.bool["name.dra.example.com"]`,
+			driverName:  "dra.example.com",
+			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
+			expectMatch: true,
 		},
+		// TODO: negative test cases and <key> in `device.bool`.
+		// Code doesn't support that properly yet either.
 		"celSuffix": {
 			expression:  `device.bool["name"]`,
-			celSuffix:   "k8s.io",
-			attributes:  []api.DeviceAttribute{{Name: "name.k8s.io", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
+			celSuffix:   "dra.example.com",
+			attributes:  []api.DeviceAttribute{{Name: "name.dra.example.com", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
 			expectMatch: true,
 		},
 		"bothSuffix": {
-			expression:      `device.bool["name"]`,
-			celSuffix:       "k8s.io",
-			attributeSuffix: "k8s.io",
-			attributes:      []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
-			expectMatch:     true,
+			expression:  `device.bool["name"]`,
+			celSuffix:   "dra.example.com",
+			driverName:  "dra.example.com",
+			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
+			expectMatch: true,
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -159,12 +161,12 @@ device.stringslice["stringslice"].isSorted()`,
 				}
 				return
 			}
-			input := Input{
-				AttributeSuffix: scenario.attributeSuffix,
-				Attributes:      scenario.attributes,
-				CELSuffix:       scenario.celSuffix,
+			input := DeviceAttributes{
+				DriverName: scenario.driverName,
+				Attributes: scenario.attributes,
+				CELSuffix:  scenario.celSuffix,
 			}
-			match, err := result.Evaluate(ctx, input)
+			match, err := result.DeviceMatches(ctx, input)
 			if err != nil {
 				if scenario.expectMatchError == "" {
 					t.Fatalf("unexpected evaluation error: %v", err)

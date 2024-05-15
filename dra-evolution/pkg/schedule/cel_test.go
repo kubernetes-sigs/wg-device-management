@@ -99,7 +99,7 @@ func TestMeetsConstraints(t *testing.T) {
 	}
 	for tn, tc := range testCases {
 		t.Run(tn, func(t *testing.T) {
-			result, err := MeetsConstraints(tc.constraints, Input{Attributes: tc.attrs})
+			result, err := MeetsConstraints(tc.constraints, DeviceAttributes{Attributes: tc.attrs})
 			if tc.expErr == "" {
 				require.NoError(t, err)
 				require.Equal(t, tc.result, result)

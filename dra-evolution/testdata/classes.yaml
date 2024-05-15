@@ -27,14 +27,17 @@ filter:
     driverName: example.com-barzer
 ---
 # Any example.com GPU, even though Foozer and
-# Barzer GPUs use different drivers.
+# Barzer GPUs use different drivers. In this case,
+# "example.com GPU" is defined as "a GPU provided
+# by these two drivers" (no standardization and
+# no need for the driver vendors to cooperate).
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-gpu
 filter:
   device:
-    selector: "'example.com-foozer' in device.string || 'example.com-barzer' in device.string"
+    selector: "device.driverName == 'example.com-foozer' || device.driverName == 'example.com-barzer'"
 ---
 # An example.com SR-IOV NIC
 apiVersion: resource.k8s.io/v1alpha2

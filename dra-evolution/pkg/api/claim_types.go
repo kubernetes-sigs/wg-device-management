@@ -108,25 +108,29 @@ type DeviceFilter struct {
 	// In addition, for each type in NamedDeviceAttributeValue there is a map that
 	// resolves to the corresponding value of the instance under evaluation. Unknown
 	// names cause a runtime error. Note that the CEL expression is applied to
-	// *all* available resource instances from any driver when the driver name is unset.
+	// *all* available devices from any driver when the driver name is unset.
 	// In that case, the CEL expression must first check that the instance has certain
 	// attributes before using them.
 	//
 	// For example:
-	//    "a.dra.example.com" in attributes.quantity &&
-	//    attributes.quantity["a.dra.example.com"].isGreaterThan(quantity("0")) &&
+	//    "a.dra.example.com" in device.quantity &&
+	//    device.quantity["a.dra.example.com"].isGreaterThan(quantity("0")) &&
 	//    # No separate check, b.dra.example.com is set whenever a.dra.example.com is,
-	//    attributes.stringslice["b.dra.example.com"].isSorted()
+	//    device.stringslice["b.dra.example.com"].isSorted()
 	//
 	// If a driver name is set, then such a check is not be needed if all instances
 	// are known to have the attribute. Attributes names don't have to have
 	// the driver name suffix.
 	//
 	// For example:
-	//    attributes.quantity["a"].isGreaterThan(quantity("0")) &&
-	//    attributes.stringslice["b"].isSorted()
+	//    device.quantity["a"].isGreaterThan(quantity("0")) &&
+	//    device.stringslice["b"].isSorted()
 	//
-	// If empty, the selector matches any device.
+	// The device.driverName string variable can be used to check for a specific
+	// driver explicitly in a filter that is meant to work for devices from
+	// different vendors.
+	//
+	// If empty, any device matches.
 	//
 	// +optional
 	Selector string `json:"selector" protobuf:"bytes,2,name=selector"`

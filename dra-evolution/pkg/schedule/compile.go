@@ -37,7 +37,8 @@ import (
 )
 
 const (
-	attributesVarPrefix = "device."
+	attributesVarPrefix = "device." // + <attribute type>
+	driverNameVar       = "device.driverName"
 )
 
 var (
@@ -53,15 +54,16 @@ type CompilationResult struct {
 	Environment *cel.Env
 }
 
-// Input defines the input values for a CEL expression.
-type Input struct {
-	// attributeSuffix gets appended to any attribute which does not already have
-	// a fully qualified name.
-	AttributeSuffix string
-	Attributes      []api.DeviceAttribute
+// DeviceAttributes defines the input values for a CEL selector expression.
+type DeviceAttributes struct {
+	// DriverName gets appended to any attribute which does not already have
+	// a fully qualified name. If set, then it is also made available as
+	// a string attribute.
+	DriverName string
+	Attributes []api.DeviceAttribute
 
 	// CELSuffix gets appended to all attributes name in a CEL expression which are
-	// not already fully qualified.
+	// not already fully qualified. Optional.
 	CELSuffix string
 }
 
@@ -174,8 +176,8 @@ var valueTypes = map[string]struct {
 
 var boolType = reflect.TypeOf(true)
 
-func (c CompilationResult) Evaluate(ctx context.Context, input Input) (bool, error) {
-	variables := make(map[string]any, len(valueTypes))
+func (c CompilationResult) DeviceMatches(ctx context.Context, input DeviceAttributes) (bool, error) {
+	variables := make(map[string]any, len(valueTypes)+1)
 	for name, valueType := range valueTypes {
 		m, err := buildValueMapper(c.Environment.CELTypeAdapter(), input, valueType.get)
 		if err != nil {
@@ -183,6 +185,7 @@ func (c CompilationResult) Evaluate(ctx context.Context, input Input) (bool, err
 		}
 		variables[attributesVarPrefix+name] = m
 	}
+	variables[driverNameVar] = input.DriverName
 	result, _, err := c.Program.ContextEval(ctx, variables)
 	if err != nil {
 		return false, err
@@ -225,10 +228,11 @@ func buildVersionedAttributes() []cel.EnvOption {
 	for name, valueType := range valueTypes {
 		options = append(options, cel.Variable(attributesVarPrefix+name, types.NewMapType(cel.StringType, valueType.celType)))
 	}
+	options = append(options, cel.Variable(driverNameVar, cel.StringType))
 	return options
 }
 
-func buildValueMapper(adapter types.Adapter, input Input, get func(api.DeviceAttribute) (any, error)) (traits.Mapper, error) {
+func buildValueMapper(adapter types.Adapter, input DeviceAttributes, get func(api.DeviceAttribute) (any, error)) (traits.Mapper, error) {
 	// This implementation constructs a map and then let's cel handle the
 	// lookup and iteration. This is done for the sake of simplicity.
 	// Whether it's faster than writing a custom mapper depends on
@@ -241,7 +245,7 @@ func buildValueMapper(adapter types.Adapter, input Input, get func(api.DeviceAtt
 			return nil, fmt.Errorf("attribute %q: %v", attribute.Name, err)
 		}
 		if value != nil {
-			name := qualifyAttributeName(attribute.Name, input.AttributeSuffix)
+			name := qualifyAttributeName(attribute.Name, input.DriverName)
 			valueMap[name] = value
 		}
 	}
