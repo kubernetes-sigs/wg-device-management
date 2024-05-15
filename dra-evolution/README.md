@@ -27,6 +27,11 @@ Vendor configuration for multiple devices | vendor parameters in claim and class
 Partioning | only in "classic DRA" | SharedResources | not added yet, still uses "named resources" | For the sake of simplicity, the current proposal doesn't attempt to modify how instances are described.
 CEL syntax | `attributes.<type>[<attribute name>]` = type known at compile time | `device.<attribute name>` = type determined at runtime | `device.<type>[<attribute name>]` | The simple CEL syntax from the prototype depends on operator overloading and implicit compile-time type conversions, something that is intentionally not supported in Kubernetes because estimating the cost of an expressions needs to know the types. Mapping attribute names to CEL field names isn't always obvious ("device-type" -> "deviceType" ?).
 
+To compare YAML files, something like this can be used:
+```
+diff -C2 ../k8srm-prototype/testdata/classes.yaml <(sed -e 's;resource.k8s.io/v1alpha2;devmgmtproto.k8s.io/v1alpha1;' -e 's/ResourceClass/DeviceClass/' testdata/classes.yaml)
+```
+
 ## Overall Model
 
 As a refresher (see the KEPs for the details), the scope of the overall DRA /
