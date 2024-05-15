@@ -58,14 +58,18 @@ filter:
     driverName: example.org-sriov
 ---
 # Request any SR-IOV NIC. This will allow the claim to be satisfied by
-# example.com or example.org NICs.
+# example.com or example.org NICs. In contrast to the example.com-gpu above,
+# here it is assumed that "SR-IOV NIC" is a concept defined in a KEP which
+# then also standardizes an attribute that vendors can use to declare
+# that their device satisfies the requirements in that KEP. All of the
+# NIC examples use attribute names from that fictional KEP.
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: sriov-nic
 filter:
   device:
-    selector: "'example.com-sriov' in device.string || 'example.org-sriov' in device.string"
+    selector: "'type.nic.k8s.io' in device.string" # Doesn't care whether it's "pf" or "vf".
 ---
 # Example.com SR-IOV NIC on a 1Gbps link
 apiVersion: resource.k8s.io/v1alpha2
@@ -75,7 +79,7 @@ metadata:
 filter:
   device:
     driverName: example.com-sriov
-    selector: "device.quantity['bandwidth'].compareTo(quantity('1G')) == 0"
+    selector: "device.quantity['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) == 0"
 ---
 # Request an example.com 10Gbps SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
@@ -85,7 +89,7 @@ metadata:
 filter:
   device:
     driverName: example.com-sriov
-    selector: "device.quantity['bandwidth'].compareTo(quantity('10G')) == 0"
+    selector: "device.quantity['bandwidth.nic.k8s.io'].compareTo(quantity('10G')) == 0"
 ---
 # Request an example.com 1Gbps or faster SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
@@ -95,18 +99,17 @@ metadata:
 filter:
   device:
     driverName: example.com-sriov
-    selector: "device.quantity['bandwidth'].compareTo(quantity('1G')) >= 0"
+    selector: "device.quantity['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
 ---
-#######
-# NOTE: We cannot create a class that is "any 1G NIC", because a class with a
-# selector cannot also have a claim detail, which contains the constraints.
-# Instead, we would need to create per-vendor classes with a particular label
-# (e.g., bandwidth=1G) and then create an aggregate class from those. This is
-# not great, but maybe acceptable for now.
-#
-# *Claims* can still add the Constraints; we just can't do it in the class.
-#######
-#
+# Request any 1Gbps or faster SR-IOV NIC, regardless of the vendor.
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClass
+metadata:
+  name: example.com-sriov-nic-1g-or-faster
+filter:
+  device:
+    selector: "'bandwidth.nic.k8s.io' in device.quantity && device.quantity['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
+---
 # Request an example.com PF
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
@@ -115,7 +118,7 @@ metadata:
 filter:
   device:
     driverName: example.com-sriov
-    selector: "device.string['sriovType'] == 'pf'"
+    selector: "device.string['type.nic.k8s.io'] == 'pf'"
 ---
 # Request an example.com VF
 apiVersion: resource.k8s.io/v1alpha2
@@ -125,14 +128,18 @@ metadata:
 filter:
   device:
     driverName: example.com-sriov
-    selector: "device.string['sriovType'] == 'vf'"
+    selector: "device.string['type.nic.k8s.io'] == 'vf'"
 ---
-########
-## NOTE: We cannot create a class for example.org PF or VF, because instead of
-## using attributes, they use custom vf/pf resource types to control this. Claims
-## can request one or the other by using `requests`.
-########
-#
+# Request an example.com PF or VF
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClass
+metadata:
+  name: example.com-sriov-vf
+filter:
+  device:
+    driverName: example.com-sriov
+    selector: "device.string['type.nic.k8s.io'] == 'vf' || device.string['type.nic.k8s.io'] == 'pf'"
+---
 # Request a VLAN interface on VLAN 2000
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
@@ -140,16 +147,19 @@ metadata:
   name: vlan-2000
 filter:
   device:
+    driverName: example.com-sriov
     selector: "device.string['type.k8s.io'] == 'vlan'"
 claimConfig:
   vendor:
-  - parameters:
-      ## ConfigMap to configure a DRA driver that manages VLAN interfaces.
+  - driverName: example.com-sriov
+    parameters:
+      ## ConfigMap to configure an example.com-sriov driver that manages VLAN interfaces.
       ## NOTE: How do we control permissions on what these configs can do?
       apiVersion: v1
       kind: ConfigMap
-      metadata:
-        namespace: default
-        name: vlan-driver-vlan-2000
       data:
         vlanID: 2000
+  # The fictional NIC KEP could also add an in-tree type for "NIC configuration", which
+  # then would replace the "vendor" entry above:
+  # nic:
+  #   vlanID: 2000

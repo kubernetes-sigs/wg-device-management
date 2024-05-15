@@ -65,6 +65,10 @@ type ResourceClass struct {
 }
 
 // ConfigurationParameters must have one and only one field set.
+//
+// TBD: does this have to be a one-of? It might be useful to allow vendor configuration
+// in addition to in-tree configuration. Extending this type then becomes harder because
+// an old scheduler would silently ignore unknown fields.
 type ConfigurationParameters struct {
 	// +listType=atomic
 	Vendor []VendorConfigurationParameters `json:"vendor,omitempty" protobuf:"bytes,1,opt,name=vendor"`
