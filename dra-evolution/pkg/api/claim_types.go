@@ -140,24 +140,18 @@ type DeviceFilter struct {
 	//
 	// `device.attributes` returns nil.
 	//
-	// Note that the CEL expression is applied to *all* available devices
-	// from any driver when the driver name is unset.  In that case, the
-	// CEL expression must first check that the instance has certain
-	// attributes before using them.
+	// These defaults are useful because CEL expression are applied to *all*
+	// available devices from any driver when the driver name is unset.
+	// Looking up an attribute defined by one vendor when checking a device
+	// from some other vendor doesn't find the attribute.
 	//
-	// For example:
+	// Some examples:
 	//    "a.dra.example.com" in device.attributes &&
 	//    device.quantityAttributes["a.dra.example.com"].isGreaterThan(quantity("0")) &&
-	//    # No separate check, b.dra.example.com is set whenever a.dra.example.com is,
+	//    # No separate check, b.dra.example.com yields the empty slice when not set.
 	//    device.stringsliceAttributes["b.dra.example.com"].isSorted()
 	//
-	// If a driver name is set, then such a check is not be needed if all instances
-	// are known to have the attribute. Attributes names don't have to have
-	// the driver name suffix.
-	//
-	// For example:
-	//    device.quantityAttributes["a"].isGreaterThan(quantity("0")) &&
-	//    device.stringsliceAttributes["b"].isSorted()
+	// Attribute names have to be fully-qualified.
 	//
 	// The `device.driverName` string variable can be used to check for a specific
 	// driver explicitly in a filter that is meant to work for devices from

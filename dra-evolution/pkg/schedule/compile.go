@@ -68,6 +68,8 @@ type DeviceAttributes struct {
 
 	// CELSuffix gets appended to all attributes name in a CEL expression which are
 	// not already fully qualified. Optional.
+	//
+	// TODO: remove this once we agree to require fully-qualified attribute names.
 	CELSuffix string
 }
 
