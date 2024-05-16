@@ -182,11 +182,16 @@ type ResourceName string
 type ResourceList map[ResourceName]resource.Quantity
 
 // ResourceClaimEntry references one entry in PodSpec.ResourceClaims.
+// It also, optional references specific devices inside a claim. If the named request
+// is satisfied by allocating multiple devices, then all of those are matched.
 type ResourceClaimEntry struct {
 	// Name must match the name of one entry in pod.spec.resourceClaims of
 	// the Pod where this field is used. It makes that resource available
 	// inside a container.
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
+	// claim.spec.requests
+	// +optional
+	SourceRequestName string `json:"sourceRequestName" protobuf:"bytes,2,opt,name=sourceRequestName"`
 }
 
 type PodResourceClaim struct {
@@ -212,13 +217,4 @@ type ResourceClaimForClass struct {
 	// validation.
 	// +optional
 	metav1.ObjectMeta `json:",inline"`
-}
-
-// ResourceClaimDevice references specific devices inside a claim. If the named request
-// is satisfied by allocating multiple devices, then all of those are matched.
-type ResourceClaimDevice struct {
-	// pod.spec.resourceClaims
-	ClaimName string `json:"claimName" protobuf:"bytes,1,opt,name=claimName"`
-	// claim.spec.requests
-	RequestName string `json:"requestName" protobuf:"bytes,2,opt,name=requestName"`
 }
