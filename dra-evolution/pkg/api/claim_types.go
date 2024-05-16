@@ -131,7 +131,14 @@ type DeviceFilter struct {
 	// `device.attributes` can be used instead. The type of the entries
 	// then only gets checked at runtime.
 	//
-	// In both maps unknown keys cause a runtime error.
+	// Unknown keys are not an error. Instead, `device.<type>Attributes`
+	// returns a default value for each type:
+	// - empty string
+	// - zero
+	// - empty slice
+	// - 0.0.0 for a version
+	//
+	// `device.attributes` returns nil.
 	//
 	// Note that the CEL expression is applied to *all* available devices
 	// from any driver when the driver name is unset.  In that case, the
