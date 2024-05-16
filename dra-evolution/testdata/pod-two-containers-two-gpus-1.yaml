@@ -2,23 +2,22 @@
 # with a different container.
 #
 
-apiVersion: devmgmtproto.k8s.io/v1alpha1
-kind: DeviceClaim
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaimTemplate
 metadata:
-  name: template-example.com-foozer-two-separate-gpus-same-model
+  name: example.com-foozer-two-separate-gpus-same-model
   namespace: default
 spec:
-  matchAttributes:
-  - model
-  devices:
-  - name: foozer-gpu
-    allOf:
-    - class: example.com-foozer
-  - name: other-foozer-gpu
-    allOf:
-    - class: example.com-foozer
+  spec:
+    match:
+    - attribute: model.example.com-foozer
+    requests:
+    - name: foozer-gpu
+      resourceClassName: example.com-foozer
+    - name: other-foozer-gpu
+      resourceClassName: example.com-foozer
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
@@ -31,16 +30,19 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpu
+      claims:
+      - name: two-foozer-gpus
+        sourceRequestName: foozer-gpu
   - image: registry.k8s.io/pause:3.6
     name: my-other-container
     resources:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: other-foozer-gpu
-  deviceClaims:
-    template:
-      claimName: template-example.com-foozer-two-separate-gpus-same-model
+      claims:
+      - name: two-foozer-gpus
+        sourceRequestName: other-foozer-gpu
+  resourceClaims:
+  - name: two-foozer-gpus
+    source:
+      resourceClaimTemplateName: example.com-foozer-two-separate-gpus-same-model
