@@ -294,6 +294,17 @@ type ResourceRequestDetail struct {
 	// +optional
 	AdminAccess *bool `json:"adminAccess,omitempty"`
 
+	// MatchAttributes allows specifying a constraint that will apply
+	// across all device instances that get allocated to this request.
+	//
+	// For example, if you specified "numa.dra.example.com" (a hypothetical example!),
+	// then only devices which have that attribute with the same value will
+	// be considered.
+	//
+	// +optional
+	// +listType=atomic
+	MatchAttributes []string `json:"matchAttributes,omitempty"`
+
 	// Count defines how many instances are desired. If unset, exactly one
 	// instance must be available. When a range is set, it is possible to
 	// ask for:
