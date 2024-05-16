@@ -9,17 +9,13 @@ metadata:
   namespace: default
 spec:
   spec:
-    matchAttributes:
-    - model
     requests:
     - resourceClassName: example.com-foozer
       device: {}
+      matchAttributes:
+      - model
       count:
-        minimum: 1
-    - resourceClassName: example.com-foozer
-      device: {}
-      count:
-        minimum: 1
+        minimum: 2
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
