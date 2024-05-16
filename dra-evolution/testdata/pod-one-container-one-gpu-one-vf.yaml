@@ -5,24 +5,23 @@
 # one, since netdev doesn't get added to any container, it would
 # just be ignored for that purpose.
 
-apiVersion: devmgmtproto.k8s.io/v1alpha1
-kind: DeviceClaim
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaimTemplate
 metadata:
-  name: template-foozer-plus-vf
+  name: foozer-plus-vf
   namespace: default
 spec:
-  matchAttributes:
-  - pcie-root
-  devices:
-  - name: gpu
-    allOf:
-    - class: example.com-foozer
-  - name: netdev # required but not used
-    allOf:
-    - class: sriov-nic
-      constraints: "device.sriovType == 'vf'"
+  spec:
+    match:
+    - attribute: pcie-root.dra.k8s.io
+    requests:
+    - resourceClassName: example.com-foozer
+    - resourceClassName: example.org-sriov-nic
+      filter:
+      - device:
+          selector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
@@ -35,8 +34,9 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: gpu
-  deviceClaims:
-    template:
-      claimName: template-foozer-plus-vf
+      claims:
+      - name: gpu-and-nic
+  resourceClaims:
+  - name: gpu-and-nic
+    source:
+      resourceClaimTemplateName: template-foozer-plus-vf
