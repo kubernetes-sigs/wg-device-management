@@ -17,7 +17,6 @@ spec:
   spec:
     requests:
     - resourceClassName: example.com-foozer
-      device: {}
       count:
         minimum: 2
 ---

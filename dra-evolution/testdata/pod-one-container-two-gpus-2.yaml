@@ -11,10 +11,9 @@ spec:
   spec:
     requests:
     - resourceClassName: example.com-foozer
-      device: {}
-      matchAttributes:
-      - model
-      - pcie-root
+      match:
+      - attribute: model.example.com-foozer
+      - attribute: pcie-root.example.com-foozer
       count:
         minimum: 2
 ---

@@ -9,7 +9,6 @@ metadata:
 spec:
   requests:
   - resourceClassName: example.com-foozer
-    device: {}
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

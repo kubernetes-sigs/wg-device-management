@@ -21,6 +21,7 @@ import (
 	"embed"
 	"fmt"
 	"io"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -77,9 +78,8 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 
 	switch obj := obj.(type) {
 	case *api.ResourceClass:
-		if obj.Filter != nil {
-			validateDeviceFilter(t, obj.Filter.Device, "class.filter.device")
-		}
+		validateFilter(t, obj.Filter, "class.filter")
+		validateMatch(t, obj.Match, "class.match")
 		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
 	case *api.ResourceClaim:
 		if obj.Spec != nil {
@@ -87,6 +87,27 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 		}
 	case *api.ResourceClaimTemplate:
 		validateResourceClaimSpec(t, obj.Spec.Spec, "claimTemplate.spec.spec")
+	}
+}
+
+func validateFilter(t *testing.T, filter []api.FilterModel, path string) {
+	for i, filter := range filter {
+		validateDeviceFilter(t, filter.Device, fmt.Sprintf("%s[%d].device", path, i))
+	}
+}
+
+func validateMatch(t *testing.T, match []api.MatchModel, path string) {
+	for i, match := range match {
+		validateMatchAttribute(t, match.Attribute, fmt.Sprintf("%s[%d].attribute", path, i))
+	}
+}
+
+func validateMatchAttribute(t *testing.T, attributeName *string, path string) {
+	if !assert.NotNil(t, attributeName, path) {
+		return
+	}
+	if !strings.Contains(*attributeName, ".") {
+		t.Errorf("%q: must be a non-empty DNS domain (including at least one dot)", *attributeName)
 	}
 }
 
@@ -122,9 +143,10 @@ func validateRequests(t *testing.T, requests []api.ResourceRequest, path string)
 }
 
 func validateRequest(t *testing.T, request *api.ResourceRequestDetail, path string) {
-	validateDeviceFilter(t, request.Device, path+".device")
+	validateFilter(t, request.Filter, path+".filter")
 }
 
 func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
+	validateMatch(t, claimSpec.Match, path+".match")
 	validateRequests(t, claimSpec.Requests, path+".requests")
 }

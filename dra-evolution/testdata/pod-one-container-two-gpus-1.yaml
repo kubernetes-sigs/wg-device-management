@@ -11,9 +11,8 @@ spec:
   spec:
     requests:
     - resourceClassName: example.com-foozer
-      device: {}
-      matchAttributes:
-      - model
+      match:
+      - attribute: model.example.com-foozer
       count:
         minimum: 2
 ---

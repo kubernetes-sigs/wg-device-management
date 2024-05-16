@@ -50,15 +50,27 @@ type ResourceClass struct {
 	// +optional
 	RequestConfig *ConfigurationParameters `json:"requestConfig,omitempty" protobuf:"bytes,3,opt,name=config"`
 
-	// Filters describes additional contraints that must be met when using the class.
+	// Filters describe additional contraints that all must be met by
+	// devices when using the class.
 	//
 	// +optional
-	Filter *ResourceFilterModel `json:"filter,omitempty" protobuf:"bytes,4,opt,name=filter"`
+	// +listType=atomic
+	Filter []FilterModel `json:"filter,omitempty" protobuf:"bytes,4,opt,name=filter"`
+
+	// All match criteria must be satisfied before a set of devices will be used
+	// together.
+	//
+	// +optional
+	// +listType=atomic
+	Match []MatchModel `json:"match,omitempty"`
 
 	// DefaultRequests are individual requests for separate resources for a
 	// claim using this class. In contrast to config and filter, these
 	// requests are only used if the claim does not specify its own list of
 	// requests.
+	//
+	// If empty and the claim doesn't specify any requests either, then
+	// a single, empty request is used.
 	//
 	// +listType=atomic
 	DefaultRequests []ResourceRequest `json:"defaultRequests" protobuf:"bytes,5,name=requests"`
@@ -89,8 +101,8 @@ type VendorConfigurationParameters struct {
 	Parameters runtime.RawExtension `json:"parameters,omitempty" protobuf:"bytes,2,opt,name=parameters"`
 }
 
-// ResourceFilterModel must have one and only one field set.
-type ResourceFilterModel struct {
+// FilterModel must have one and only one field set.
+type FilterModel struct {
 	// Devices describes a filter based on device attributes.
 	//
 	// +optional
@@ -230,16 +242,18 @@ type ResourceClaimSpec struct {
 	// +listType=atomic
 	Requests []ResourceRequest `json:"requests,omitempty" protobuf:"bytes,5,name=requests"`
 
-	// MatchAttributes allows specifying a constraint that will apply
-	// across all of devices that need to be allocated for this claim.
-	//
-	// For example, if you specified "numa.dra.example.com" (a hypothetical example!),
-	// then only devices which have that attribute with the same value will
-	// be considered.
+	// All these match criteria must be satisfied by all devices allocated through this
+	// claim.
 	//
 	// +optional
 	// +listType=atomic
-	MatchAttributes []string `json:"matchAttributes,omitempty"`
+	Match []MatchModel `json:"match,omitempty"`
+
+	// Future extension, ignored by older schedulers. This is fine because scoring
+	// allows users to define a preference, without making it a hard requirement.
+	//
+	//
+	// Score *SomeScoringStruct
 
 	// Shareable indicates whether the allocated claim is meant to be shareable
 	// by multiple consumers at the same time.
@@ -294,16 +308,11 @@ type ResourceRequestDetail struct {
 	// +optional
 	AdminAccess *bool `json:"adminAccess,omitempty"`
 
-	// MatchAttributes allows specifying a constraint that will apply
-	// across all device instances that get allocated to this request.
-	//
-	// For example, if you specified "numa.dra.example.com" (a hypothetical example!),
-	// then only devices which have that attribute with the same value will
-	// be considered.
+	// All these match criteria must be satisfied by all devices allocated for this request.
 	//
 	// +optional
 	// +listType=atomic
-	MatchAttributes []string `json:"matchAttributes,omitempty"`
+	Match []MatchModel `json:"match,omitempty"`
 
 	// Count defines how many instances are desired. If unset, exactly one
 	// instance must be available. When a range is set, it is possible to
@@ -314,7 +323,12 @@ type ResourceRequestDetail struct {
 	// +optional
 	Count *IntRange `json:"count,omitempty"`
 
-	ResourceFilterModel `json:",inline" protobuf:"bytes,2,name=resourceFilterModel"`
+	// Filters describe additional contraints that all must be met by a device
+	// to satisfy the request.
+	//
+	// +optional
+	// +listType=atomic
+	Filter []FilterModel `json:"filter,omitempty" protobuf:"bytes,4,opt,name=filter"`
 }
 
 // IntRange defines how many instances are desired.
@@ -326,6 +340,28 @@ type IntRange struct {
 	// Maximum defines the upper limit. At most this many instances
 	// may be allocated (x <= maximum). The default if unset is unlimited.
 	Maximum *int `json:"maximum"`
+}
+
+// MatchModel must have one and only one field set.
+type MatchModel struct {
+	// All devices must have this attribute and its value must be the same.
+	//
+	// For example, if you specified "numa.dra.example.com" (a hypothetical example!),
+	// then only devices in the same NUMA node will be chosen.
+	//
+	// +optional
+	// +listType=atomic
+	Attribute *string `json:"attribute,omitempty"`
+
+	// Future extension, not part of the current design:
+	// A CEL expression which compares different devices and returns
+	// true if they match.
+	//
+	// Because it would be part of a one-of, old schedulers will not
+	// accidentally ignore this additional, for them unknown match
+	// criteria.
+	//
+	// matcher string
 }
 
 // ResourceClaimStatus tracks whether the resource has been allocated and what
@@ -409,7 +445,7 @@ type AllocationResult struct {
 	Shareable bool `json:"shareable,omitempty" protobuf:"varint,3,opt,name=shareable"`
 }
 
-// ResourceHandle holds opaque resource data for processing by a specific kubelet plugin.
+// ResourceHandle holds information for processing by a specific kubelet plugin.
 type ResourceHandle struct {
 	// DriverName specifies the name of the resource driver whose kubelet
 	// plugin should be invoked to process this ResourceHandle's data once it

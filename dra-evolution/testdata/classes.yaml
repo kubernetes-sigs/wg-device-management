@@ -4,7 +4,7 @@ kind: ResourceClass
 metadata:
   name: example.com-foozer
 filter:
-  device:
+- device:
     driverName: example.com-foozer
 ---
 # A Foozer 1000 device
@@ -13,7 +13,7 @@ kind: ResourceClass
 metadata:
   name: example.com-foozer-1000
 filter:
-  device:
+- device:
     driverName: example.com-foozer
     selector: "device.stringAttributes['model'] == 'foozer-1000'"
 ---
@@ -23,7 +23,7 @@ kind: ResourceClass
 metadata:
   name: example.com-barzer
 filter:
-  device:
+- device:
     driverName: example.com-barzer
 ---
 # Any example.com GPU, even though Foozer and
@@ -36,7 +36,7 @@ kind: ResourceClass
 metadata:
   name: example.com-gpu
 filter:
-  device:
+- device:
     selector: "device.driverName == 'example.com-foozer' || device.driverName == 'example.com-barzer'"
 ---
 # An example.com SR-IOV NIC
@@ -45,7 +45,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic
 filter:
-  device:
+- device:
     driverName: example.com-sriov
 ---
 # An example.org SR-IOV NIC (different vendor)
@@ -54,7 +54,7 @@ kind: ResourceClass
 metadata:
   name: example.org-sriov-nic
 filter:
-  device:
+- device:
     driverName: example.org-sriov
 ---
 # Request any SR-IOV NIC. This will allow the claim to be satisfied by
@@ -68,7 +68,7 @@ kind: ResourceClass
 metadata:
   name: sriov-nic
 filter:
-  device:
+- device:
     selector: "'type.nic.k8s.io' in device.attributes" # Doesn't care whether it's "pf" or "vf".
 ---
 # Example.com SR-IOV NIC on a 1Gbps link
@@ -77,7 +77,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) == 0"
 ---
@@ -87,7 +87,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-10g
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('10G')) == 0"
 ---
@@ -97,7 +97,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g-or-faster
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
 ---
@@ -107,7 +107,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g-or-faster
 filter:
-  device:
+- device:
     selector: "'bandwidth.nic.k8s.io' in device.attributes && device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
 ---
 # Request an example.com PF
@@ -116,7 +116,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-pf
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.nic.k8s.io'] == 'pf'"
 ---
@@ -126,7 +126,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-vf
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.nic.k8s.io'] == 'vf'"
 ---
@@ -136,7 +136,7 @@ kind: ResourceClass
 metadata:
   name: example.com-sriov-vf
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.nic.k8s.io'] == 'vf' || device.stringAttributes['type.nic.k8s.io'] == 'pf'"
 ---
@@ -146,7 +146,7 @@ kind: ResourceClass
 metadata:
   name: vlan-2000
 filter:
-  device:
+- device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.k8s.io'] == 'vlan'"
 claimConfig:
@@ -163,3 +163,20 @@ claimConfig:
   # then would replace the "vendor" entry above:
   # nic:
   #   vlanID: 2000
+---
+# Request a Foozer GPU and some NIC.
+#
+# The other classes implicitly have
+#   defaultRequests: [ {} ]
+#
+# as default and thus ask for one device that matches the class criteria.
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClass
+metadata:
+  name: example.com-foozer-and-nic
+defaultRequests:
+- filter:
+  - device:
+      driverName: example.com-foozer
+  - device:
+      selector: "'type.nic.k8s.io' in device.attributes"
