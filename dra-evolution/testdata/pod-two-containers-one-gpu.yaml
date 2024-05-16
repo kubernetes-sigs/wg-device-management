@@ -1,0 +1,30 @@
+# A Pod asking for a single Foozer GPU of any type, and sharing it between
+# two containers in the same Pod.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  - image: registry.k8s.io/pause:3.6
+    name: my-other-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  deviceClaims:
+    devices:
+    - name: foozer-gpu
+      class: example.com-foozer

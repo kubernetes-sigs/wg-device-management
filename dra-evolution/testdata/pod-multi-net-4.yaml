@@ -1,0 +1,34 @@
+# A Pod to acquire an SR-IOV VF interface from any vendor that
+# supports the `sriovType` attribute. In this case, it is only example.com,
+# since example.org does things differently. But if we can agree on the right
+# conventions, we will be better off.
+#
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-sriov-two-vfs
+  namespace: default
+spec:
+  devices:
+  - name: netdevs # required but not used
+    allOf:
+    - class: sriov-nic # this is our cross-driver label selector based class
+      constraints: "device.sriovType == 'vf'"
+      devices: 2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-net
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+  deviceClaims:
+    template:
+      claimName: template-sriov-two-vfs

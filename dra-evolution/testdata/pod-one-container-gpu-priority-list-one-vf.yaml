@@ -1,0 +1,48 @@
+# A Pod asking for a Foozer 4000 if it is available, otherwise for two Foozer
+# 2000s on one PCIe root complex, otherwise for 4 Foozer 1000s on one PCIe
+# root complex, along with an SR-IOV PF on the same root complex.
+#
+
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-foozer-best-available-with-pf
+  namespace: default
+spec:
+  matchAttributes:
+  - pcie-root
+  devices:
+  - name: gpu
+    allOf:
+    - class: sriov-nic
+      constraints: "device.sriovType == 'pf'"
+    oneOf:
+    - class: example.com-foozer
+      constraints: "device.model == 'foozer-4000'"
+    - class: example.com-foozer
+      constraints: "device.model == 'foozer-2000'"
+      requests:
+        devices: 2
+    - class: example.com-foozer
+      constraints: "device.model == 'foozer-1000'"
+      requests:
+        devices: 4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: gpu
+  deviceClaims:
+    template:
+      claimName: template-foozer-best-available-with-pf

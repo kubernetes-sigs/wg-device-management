@@ -1,0 +1,52 @@
+# A Pod asking for a two Foozer GPUs and associating them with one container.
+#
+# Notes
+#
+# Since we want to allocate a pair of GPUs, this is more than we can do with a
+# simple `devices` construct. Instead, we need to create a claim that
+# looks like what we want, and use it as a template. Ideally, we would embed
+# all of this directly in the PodSpec, but we cannot because PodSpec is already
+# v1 and we cannot make major changes that we are not completely sure we will
+# not have to rollback.
+#
+# In 1.30 DRA, we have the top-level API object ResourceClaimTemplate. To
+# reduce the API surface, in this proposal we instead directly use a
+# DeviceClaim, instead of having a separate but almost identical
+# DeviceClaimTemplate type. The ObjectMeta (labels, etc.) that would be in a
+# template are directly in the PodSpec.
+#
+# To make this a little less confusing, the name of claims intended to be used
+# as templates start with `template-`. We may need a better way to do this. Or
+# we may decide another top-level object is OK.
+
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-example.com-foozer-two-gpus
+  namespace: default
+spec:
+  devices:
+  - name: foozer-gpus
+    allOf:
+    - class: example.com-foozer
+      requests:
+        devices: 2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpus
+  deviceClaims:
+    template:
+      claimName: template-example.com-foozer-two-gpus
