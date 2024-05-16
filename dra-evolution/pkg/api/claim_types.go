@@ -255,7 +255,7 @@ type ResourceRequest struct {
 	// entry, if that is desired.
 	//
 	// +optional
-	Name string
+	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
 	*ResourceRequestDetail `json:",inline,omitempty"`
 
@@ -310,7 +310,7 @@ type ResourceRequestDetail struct {
 type IntRange struct {
 	// Minimum defines the lower limit. At least this many instances
 	// must be available (x >= minimum). The default if unset is one.
-	Minimum *int `json:"miminum"`
+	Minimum *int `json:"minimum"`
 
 	// Maximum defines the upper limit. At most this many instances
 	// may be allocated (x <= maximum). The default if unset is unlimited.
