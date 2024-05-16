@@ -10,7 +10,7 @@ metadata:
 spec:
   spec:
     match:
-    - attribute: pcie-root.example.com-foozer
+    - attribute: pcie-root.dra.k8s.io
     requests:
     - name: foozer-gpu
       resourceClassName: example.com-foozer

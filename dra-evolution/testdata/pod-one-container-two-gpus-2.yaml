@@ -13,7 +13,7 @@ spec:
     - resourceClassName: example.com-foozer
       match:
       - attribute: model.example.com-foozer
-      - attribute: pcie-root.example.com-foozer
+      - attribute: pcie-root.dra.k8s.io
       count:
         minimum: 2
 ---
