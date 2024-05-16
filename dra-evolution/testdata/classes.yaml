@@ -15,7 +15,7 @@ metadata:
 filter:
 - device:
     driverName: example.com-foozer
-    selector: "device.stringAttributes['model'] == 'foozer-1000'"
+    selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
 ---
 # Any Barzer device
 apiVersion: resource.k8s.io/v1alpha2
