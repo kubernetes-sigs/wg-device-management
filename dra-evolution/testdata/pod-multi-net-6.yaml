@@ -1,0 +1,70 @@
+# A Pod with three secondary SR-IOV network interfaces, attached to specific
+# IP networks.
+#
+# In this example, we imagine that example.com has implemented a set of network
+# controllers that know how to attach to different networks. These run as DRA
+# drivers on nodes, and based on the node context they may attach networks via
+# VLAN tags/VRF-lite, or VPN tunnels, or whatever. It need not be known to the
+# workload author.
+#
+# These IP networks are defined via CRs:
+#
+apiVersion: fabric.example.com/v1alpha1
+kind: IPNetwork
+metadata:
+  name: bluenet
+  namespace: default
+---
+apiVersion: fabric.example.com/v1alpha1
+kind: IPNetwork
+metadata:
+  name: rednet
+  namespace: default
+---
+apiVersion: fabric.example.com/v1alpha1
+kind: IPNetwork
+metadata:
+  name: greennet
+  namespace: default
+---
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-sriov-blue-red-green
+  namespace: default
+spec:
+  devices:
+  - name: ip-networks
+    allOf:
+    - class: sriov-nic
+      config:
+      - apiVersion: fabric.example.com/v1alpha1
+        kind: IPNetwork
+        name: bluenet
+    - class: sriov-nic
+      config:
+      - apiVersion: fabric.example.com/v1alpha1
+        kind: IPNetwork
+        name: rednet
+    - class: sriov-nic
+      config:
+      - apiVersion: fabric.example.com/v1alpha1
+        kind: IPNetwork
+        name: greennet
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: blue-red-green
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+  deviceClaims:
+    template:
+      claimName: template-sriov-blue-red-green

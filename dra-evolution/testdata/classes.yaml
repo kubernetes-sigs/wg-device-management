@@ -1,0 +1,162 @@
+# Any Foozer device, assuming all are managed by the same driver.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-foozer
+  labels:
+    vendor: example.com
+    device-type: gpu
+spec:
+  driver: example.com-foozer
+---
+# A Foozer 1000 device
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-foozer-1000
+  labels:
+    vendor: example.com
+    device-type: gpu
+spec:
+  driver: example.com-foozer
+  constraints: "device.model == 'foozer-1000'"
+---
+# Any Barzer device
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-barzer
+  labels:
+    vendor: example.com
+    device-type: gpu
+spec:
+  driver: example.com-barzer
+---
+# Any example.com GPU, even though Foozer and
+# Barzer GPUs use different drivers.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-gpu
+spec:
+  selector:
+    matchLabels:
+      vendor: example.com
+      device-type: gpu
+---
+# An example.com SR-IOV NIC
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-nic
+  labels:
+    vendor: example.com
+    device-type: sriov-nic
+spec:
+  driver: example.com-sriov
+---
+# An example.org SR-IOV NIC (different vendor)
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.org-sriov-nic
+  labels:
+    vendor: example.org
+    device-type: sriov-nic
+spec:
+  driver: example.org-sriov
+---
+# Request any SR-IOV NIC. This will allow the claim to be satisfied by
+# example.com or example.org NICs.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: sriov-nic
+spec:
+  selector:
+    matchLabels:
+      device-type: sriov-nic
+---
+# Example.com SR-IOV NIC on a 1Gbps link
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-nic-1g
+spec:
+  driver: example.com-sriov
+  constraints: "device.bandwidth == '1G'"
+---
+# Request an example.com 10Gbps SR-IOV NIC.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-nic-10g
+spec:
+  driver: example.com-sriov
+  constraints: "device.bandwidth == '10G'"
+---
+# Request an example.com 1Gbps or faster SR-IOV NIC.
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-nic-1g-or-faster
+spec:
+  driver: example.com-sriov
+  constraints: "device.bandwidth >= '1G'"
+---
+#######
+# NOTE: We cannot create a class that is "any 1G NIC", because a class with a
+# selector cannot also have a claim detail, which contains the constraints.
+# Instead, we would need to create per-vendor classes with a particular label
+# (e.g., bandwidth=1G) and then create an aggregate class from those. This is
+# not great, but maybe acceptable for now.
+#
+# *Claims* can still add the Constraints; we just can't do it in the class.
+#######
+#
+# Request an example.com PF
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-pf
+spec:
+  driver: example.com-sriov
+  constraints: "device.sriovType == 'pf'"
+---
+# Request an example.com VF
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: example.com-sriov-vf
+spec:
+  driver: example.com-sriov
+  constraints: "device.sriovType == 'vf'"
+---
+#######
+# NOTE: We cannot create a class for example.org PF or VF, because instead of
+# using attributes, they use custom vf/pf resource types to control this. Claims
+# can request one or the other by using `requests`.
+#######
+#
+# ConfigMap to configure a DRA driver that manages VLAN interfaces.
+# NOTE: How do we control permissions on what these configs can do?
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: vlan-driver-vlan-2000
+data:
+  vlanID: 2000
+---
+# Request a VLAN interface on VLAN 2000
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClass
+metadata:
+  name: vlan-2000
+spec:
+  deviceType: vlan
+  configs:
+  - apiVersion: v1
+    kind: ConfigMap
+    namespace: default
+    name: vlan-driver-vlan-2000

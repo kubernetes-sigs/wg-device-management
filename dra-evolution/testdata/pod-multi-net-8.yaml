@@ -1,0 +1,38 @@
+# A Pod to acquire 4 SR-IOV interfaces, all from the same vendor, but
+# all on different physical cards.
+#
+# NOTE: `distinctAttributes` is not actually in the model yet. Is it
+# useful?
+#
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-sriov-four-same-vendor-diff-cards
+  namespace: default
+spec:
+  devices:
+  - name: netdevs # required but not used
+    allOf:
+    - class: sriov-nic
+      matchAttributes:
+      - vendor
+      distinctAttributes:
+      - hwdevname
+      devices: 4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-net
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+  deviceClaims:
+    template:
+      claimName: template-sriov-four-same-vendor-diff-cards

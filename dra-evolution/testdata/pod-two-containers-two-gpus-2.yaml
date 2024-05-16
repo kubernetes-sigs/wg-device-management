@@ -1,0 +1,48 @@
+# A Pod asking for two Foozer 1000 GPUs, on the same PCIe root complex and
+# associating each with a with a different container.
+#
+
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DeviceClaim
+metadata:
+  name: template-example.com-foozer-two-separate-foozer-1k
+  namespace: default
+spec:
+  matchAttributes:
+  - pcie-root
+  devices:
+  - name: foozer-gpu
+    allOf:
+    - class: example.com-foozer
+      constraints: "device.model == 'foozer-1000'"
+  - name: other-foozer-gpu
+    allOf:
+    - class: example.com-foozer
+      constraints: "device.model == 'foozer-1000'"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foozer
+  namespace: default
+spec:
+  containers:
+  - image: registry.k8s.io/pause:3.6
+    name: my-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: foozer-gpu
+  - image: registry.k8s.io/pause:3.6
+    name: my-other-container
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    devices:
+    - name: other-foozer-gpu
+  deviceClaims:
+    template:
+      claimName: template-example.com-foozer-two-separate-foozer-1k

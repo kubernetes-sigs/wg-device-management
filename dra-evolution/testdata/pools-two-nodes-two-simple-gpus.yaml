@@ -1,0 +1,51 @@
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: node-00-foozer
+spec:
+  driver: example.com-foozer
+  nodeName: node-00
+  attributes:
+  - name: vendor
+    stringValue: example.com
+  - name: model
+    stringValue: foozer-1000
+  - name: firmwareVersion
+    semVerValue: 1.8.2
+  - name: driverVersion
+    semVerValue: 4.2.1-gen3
+  devices:
+  - attributes:
+    - name: numa
+      stringValue: "0"
+    name: dev-00
+  - attributes:
+    - name: numa
+      stringValue: "0"
+    name: dev-01
+---
+apiVersion: devmgmtproto.k8s.io/v1alpha1
+kind: DevicePool
+metadata:
+  name: node-01-foozer
+spec:
+  driver: example.com-foozer
+  nodeName: node-01
+  attributes:
+  - name: vendor
+    stringValue: example.com
+  - name: model
+    stringValue: foozer-1000
+  - name: firmwareVersion
+    semVerValue: 1.8.2
+  - name: driverVersion
+    semVerValue: 4.2.1-gen3
+  devices:
+  - attributes:
+    - name: numa
+      stringValue: "0"
+    name: dev-00
+  - attributes:
+    - name: numa
+      stringValue: "0"
+    name: dev-01
