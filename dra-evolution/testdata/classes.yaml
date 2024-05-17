@@ -3,7 +3,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-foozer
-filter:
+requirements:
 - device:
     driverName: example.com-foozer
 ---
@@ -12,7 +12,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-foozer-1000
-filter:
+requirements:
 - device:
     driverName: example.com-foozer
     selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
@@ -22,7 +22,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-barzer
-filter:
+requirements:
 - device:
     driverName: example.com-barzer
 ---
@@ -35,7 +35,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-gpu
-filter:
+requirements:
 - device:
     selector: "device.driverName == 'example.com-foozer' || device.driverName == 'example.com-barzer'"
 ---
@@ -44,7 +44,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-nic
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
 ---
@@ -53,7 +53,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.org-sriov-nic
-filter:
+requirements:
 - device:
     driverName: example.org-sriov
 ---
@@ -67,7 +67,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: sriov-nic
-filter:
+requirements:
 - device:
     selector: "'type.nic.k8s.io' in device.attributes" # Doesn't care whether it's "pf" or "vf".
 ---
@@ -76,7 +76,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) == 0"
@@ -86,7 +86,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-10g
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('10G')) == 0"
@@ -96,7 +96,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g-or-faster
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
@@ -106,7 +106,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-nic-1g-or-faster
-filter:
+requirements:
 - device:
     selector: "'bandwidth.nic.k8s.io' in device.attributes && device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
 ---
@@ -115,7 +115,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-pf
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.nic.k8s.io'] == 'pf'"
@@ -125,7 +125,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-vf
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.nic.k8s.io'] == 'vf'"
@@ -135,7 +135,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: example.com-sriov-vf
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.nic.k8s.io'] == 'vf' || device.stringAttributes['type.nic.k8s.io'] == 'pf'"
@@ -145,7 +145,7 @@ apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClass
 metadata:
   name: vlan-2000
-filter:
+requirements:
 - device:
     driverName: example.com-sriov
     selector: "device.stringAttributes['type.k8s.io'] == 'vlan'"
@@ -175,7 +175,7 @@ kind: ResourceClass
 metadata:
   name: example.com-foozer-and-nic
 defaultRequests:
-- filter:
+- requirements:
   - device:
       driverName: example.com-foozer
   - device:

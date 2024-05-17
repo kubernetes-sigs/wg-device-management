@@ -2,6 +2,7 @@ package api
 
 import (
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -50,12 +51,12 @@ type ResourceClass struct {
 	// +optional
 	RequestConfig *ConfigurationParameters `json:"requestConfig,omitempty" protobuf:"bytes,3,opt,name=config"`
 
-	// Filters describe additional contraints that all must be met by
+	// Requirements describe additional contraints that all must be met by
 	// devices when using the class.
 	//
 	// +optional
 	// +listType=atomic
-	Filter []FilterModel `json:"filter,omitempty" protobuf:"bytes,4,opt,name=filter"`
+	Requirements []RequirementModel `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 
 	// All match criteria must be satisfied before a set of devices will be used
 	// together.
@@ -65,9 +66,9 @@ type ResourceClass struct {
 	Match []MatchModel `json:"match,omitempty"`
 
 	// DefaultRequests are individual requests for separate resources for a
-	// claim using this class. In contrast to config and filter, these
-	// requests are only used if the claim does not specify its own list of
-	// requests.
+	// claim using this class. In contrast to configuration and
+	// requrirements, these requests are only used if the claim does not
+	// specify its own list of requests.
 	//
 	// If empty and the claim doesn't specify any requests either, then
 	// a single, empty request is used.
@@ -101,12 +102,19 @@ type VendorConfigurationParameters struct {
 	Parameters runtime.RawExtension `json:"parameters,omitempty" protobuf:"bytes,2,opt,name=parameters"`
 }
 
-// FilterModel must have one and only one field set.
-type FilterModel struct {
-	// Devices describes a filter based on device attributes.
+// RequirementModel must have one and only one field set.
+type RequirementModel struct {
+	// Device describes a filter based on device attributes.
+	// This covers "qualititative" aspects of a device.
 	//
 	// +optional
 	Device *DeviceFilter `json:"device,omitempty"`
+
+	// Resource describes how much of a consumable resource provided by a
+	// device are needed.
+	//
+	// FUTURE EXTENSION, not planned for 1.31!
+	Resource *ResourceRequirement `json:"resource,omitempty"`
 }
 
 type DeviceFilter struct {
@@ -163,6 +171,12 @@ type DeviceFilter struct {
 	Selector string `json:"selector" protobuf:"bytes,2,name=selector"`
 }
 
+// FUTURE EXTENSION, not planned for 1.31! Needs further thought.
+type ResourceRequirement struct {
+	Name   string            `json:"name"`
+	Amount resource.Quantity `json:"amount"`
+}
+
 // Namespace scoped.
 
 // ResourceClaim describes which resources (typically one or more devices)
@@ -207,13 +221,13 @@ type ResourceClaimSpecAlternatives struct {
 
 // Used inside a ResourceClaimSpecAlternatives or a ResourceClaimSpecification object.
 type ResourceClaimSpec struct {
-	// ResourceClassName references additional configuration and filters
+	// ResourceClassName references additional configuration and requirements
 	// that apply to the whole claim and all requests in it. If the class
 	// contains default requests, then those are used if (and only if)
 	// the claim does not provide those itself.
 	//
-	// Filters in the class must match in addition to the filters in the claim
-	// parameters.
+	// Requirements in the class must be satisfied in addition to the
+	// requirements in the claim.
 	//
 	// +optional
 	ResourceClassName string `json:"resourceClassName,omitempty" protobuf:"bytes,1,name=resourceClassName"`
@@ -283,10 +297,10 @@ type ResourceRequest struct {
 }
 
 type ResourceRequestDetail struct {
-	// ResourceClassName references additional configuration and filters that apply
+	// ResourceClassName references additional configuration and requirements that apply
 	// to the request.
 	//
-	// Filters in the class must match in addition to the filters in the claim
+	// Requirements in the class must be satisfied in addition to the requirements in the claim
 	// parameters.
 	ResourceClassName string `json:"resourceClassName" protobuf:"bytes,1,name=resourceClassName"`
 
@@ -302,7 +316,7 @@ type ResourceRequestDetail struct {
 	// controlled via ResourceQuota in the resource.k8s.io API.
 	//
 	// Can be combined with a range to ask for access to all devices
-	// on a node which match the filter.
+	// on a node which match the requrirements.
 	//
 	// Default is false.
 	//
@@ -324,12 +338,12 @@ type ResourceRequestDetail struct {
 	// +optional
 	Count *IntRange `json:"count,omitempty"`
 
-	// Filters describe additional contraints that all must be met by a device
+	// Requirements describe additional contraints that all must be met by a device
 	// to satisfy the request.
 	//
 	// +optional
 	// +listType=atomic
-	Filter []FilterModel `json:"filter,omitempty" protobuf:"bytes,4,opt,name=filter"`
+	Requirements []RequirementModel `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
 // IntRange defines how many instances are desired.

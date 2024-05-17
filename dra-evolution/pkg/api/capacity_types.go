@@ -102,6 +102,16 @@ type DeviceAttribute struct {
 	// drivers from different vendors are supposed to use.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
+	// IsConsumable indicates that an attribute, usually a quantity, can be allocated
+	// to different claims in user-specified amounts while sharing access to the
+	// instance.
+	//
+	// FUTURE EXTENSION, the semantic and use cases for this need further work!
+	// This will not be in 1.31. Adding it as a field that would be ignored
+	// by schedulers not dealing with "consumable resource requests" is safe.
+	//
+	// IsConsumable bool
+
 	DeviceAttributeValue `json:",inline" protobuf:"bytes,2,opt,name=attributeValue"`
 }
 

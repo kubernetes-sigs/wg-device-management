@@ -14,12 +14,12 @@ spec:
     requests:
     - name: foozer-gpu
       resourceClassName: example.com-foozer
-      filter:
+      requirements:
       - device:
           selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
     - name: other-foozer-gpu
       resourceClassName: example.com-foozer
-      filter:
+      requirements:
       - device:
           selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
 ---

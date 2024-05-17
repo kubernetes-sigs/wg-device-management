@@ -81,7 +81,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 
 	switch obj := obj.(type) {
 	case *api.ResourceClass:
-		validateFilter(t, obj.Filter, "class.filter")
+		validateRequirements(t, obj.Requirements, "class.requirements")
 		validateMatch(t, obj.Match, "class.match")
 		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
 	case *api.ResourceClaim:
@@ -93,9 +93,15 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	}
 }
 
-func validateFilter(t *testing.T, filter []api.FilterModel, path string) {
-	for i, filter := range filter {
-		validateDeviceFilter(t, filter.Device, fmt.Sprintf("%s[%d].device", path, i))
+func validateRequirements(t *testing.T, requirements []api.RequirementModel, path string) {
+	for i, requirement := range requirements {
+		if requirement.Device == nil && requirement.Resource == nil {
+			t.Errorf("%s[%d]: must not be empty", path, i)
+			return
+		}
+		if requirement.Device != nil {
+			validateDeviceFilter(t, requirement.Device, fmt.Sprintf("%s[%d].device", path, i))
+		}
 	}
 }
 
@@ -146,7 +152,7 @@ func validateRequests(t *testing.T, requests []api.ResourceRequest, path string)
 }
 
 func validateRequest(t *testing.T, request *api.ResourceRequestDetail, path string) {
-	validateFilter(t, request.Filter, path+".filter")
+	validateRequirements(t, request.Requirements, path+".requirements")
 }
 
 func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
