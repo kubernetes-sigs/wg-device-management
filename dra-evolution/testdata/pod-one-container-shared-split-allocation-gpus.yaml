@@ -2,19 +2,20 @@
 # available memory is at least 128Gi.
 
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClaim
+kind: ResourceClaimTemplate
 metadata:
-  name: template-foozer-split-shared-128Gi
+  name: foozer-split-shared-128Gi
   namespace: default
 spec:
-  requests:
-  - resourceClassName: example.com-foozer
-    count:
-      maximum: 8
-    requirements:
-    - resource:
-        name: memory.example.com-foozer
-        amount: 128Gi
+  spec:
+    requests:
+    - resourceClassName: example.com-foozer
+      count:
+        maximum: 8
+      requirements:
+      - resource:
+          name: memory
+          quantity: 128Gi
 ---
 apiVersion: v1
 kind: Pod
@@ -34,4 +35,4 @@ spec:
   resourceClaims:
   - name: gpu
     source:
-      resourceClaimTemplateName: template-foozer-split-shared-128Gi
+      resourceClaimTemplateName: foozer-split-shared-128Gi
