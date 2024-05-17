@@ -68,25 +68,71 @@ type ResourceModel struct {
 
 // NamedDevices is used in ResourceModel.
 type NamedDevices struct {
+	// CommonAttributes defines the set of attributes common to all devices in this ResourcePool.
+	// The name of each attribute must be unique.
+	//
+	// +listType=atomic
+	// +optional
+	CommonAttributes []DeviceAttribute `json:"commonAttributes" protobuf:"bytes,2,name=commonAttributes"`
+
+	// A set of shared resources that get consumed as devices in this
+	// ResourcePool get allocated out.
+	SharedResources []DeviceResource `json:"sharedResources" protobuf:"bytes,3,name=sharedResources"`
+
 	// The list of all devices currently available.
 	//
 	// +listType=atomic
-	Devices []NamedDevice `json:"devices" protobuf:"bytes,1,name=instances"`
+	Devices []Device `json:"devices" protobuf:"bytes,1,name=instances"`
 }
 
-// NamedDevice represents one individual hardware instance that can be selected based
+// Device represents one individual hardware instance that can be selected based
 // on its attributes.
-type NamedDevice struct {
+type Device struct {
 	// Name is unique identifier among all devices managed by
 	// the driver on the node. It must be a DNS subdomain.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
+
+	// The set of resources this device consumes from various sources.
+	//
+	// +listType=atomic
+	// +optional
+	Resources *DeviceResourceSources `json:"resources" protobuf:"bytes,2,name=resources"`
 
 	// Attributes defines the attributes of this device.
 	// The name of each attribute must be unique.
 	//
 	// +listType=atomic
 	// +optional
-	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,2,opt,name=attributes"`
+	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
+}
+
+// DeviceResource represents a resource that is consumed when a device gets allocated.
+type DeviceResource struct {
+	// Name is the name of the resource represented by this device resource.
+	// It must be a DNS subdomain.
+	Name string `json:"name" protobuf:"bytes,1,name=name"`
+
+	// DeviceResourceValue is an embedded type representing the actual value of the device resource.
+	DeviceResourceValue `json:",inline" protobuf:"bytes,2,opt,name=value"`
+}
+
+// DeviceResourceValue represents the value of a device resource.
+// DeviceResourceValue must have one and only one field set.
+type DeviceResourceValue struct {
+	// QuantityValue is a quantity.
+	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,1,opt,name=quantity"`
+
+	// IntRangeValue is a range of 64-bit integers.
+	IntRangeValue *IntRange `json:"intRange,omitempty" protobuf:"varint,2,rep,name=intRange"`
+}
+
+// DeviceResourceSources represents a set of DeviceResources from many possible sources.
+type DeviceResourceSources struct {
+	// FromSharedPool holds the list of DeviceResources that are consumed from the shared pool.
+	FromSharedPool []DeviceResource `json:"fromSharedPool,omitempty" protobuf:"bytes,1,opt,name=fromSharedPool"`
+
+	// Local holds the list of DeviceResources that are local to just this device.
+	Local []DeviceResource `json:"local,omitempty" protobuf:"bytes,2,opt,name=local"`
 }
 
 // DeviceAttribute is a combination of an attribute name and its value.
@@ -102,16 +148,7 @@ type DeviceAttribute struct {
 	// drivers from different vendors are supposed to use.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
-	// IsConsumable indicates that an attribute, usually a quantity, can be allocated
-	// to different claims in user-specified amounts while sharing access to the
-	// instance.
-	//
-	// FUTURE EXTENSION, the semantic and use cases for this need further work!
-	// This will not be in 1.31. Adding it as a field that would be ignored
-	// by schedulers not dealing with "consumable resource requests" is safe.
-	//
-	// IsConsumable bool
-
+	// DeviceAttributeValue is an embedded type representing the actual value of the device attribute.
 	DeviceAttributeValue `json:",inline" protobuf:"bytes,2,opt,name=attributeValue"`
 }
 
