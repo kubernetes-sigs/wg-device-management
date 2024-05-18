@@ -126,6 +126,10 @@ type DeviceResourceValue struct {
 	IntRangeValue *IntRange `json:"intRange,omitempty" protobuf:"varint,2,rep,name=intRange"`
 }
 
+// Format TBD. We should not repeat the mistake made with resource.Quantity
+// and define a type that changes during round-tripping.
+type IntRange string
+
 // DeviceResourceSources represents a set of DeviceResources from many possible sources.
 type DeviceResourceSources struct {
 	// FromSharedPool holds the list of DeviceResources that are consumed from the shared pool.
