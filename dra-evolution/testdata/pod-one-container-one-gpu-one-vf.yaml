@@ -12,8 +12,9 @@ metadata:
   namespace: default
 spec:
   spec:
-    match:
-    - attribute: pcie-root.dra.k8s.io
+    requirements:
+    - match:
+        attribute: pcie-root.dra.k8s.io
     requests:
     - resourceClassName: example.com-foozer
     - resourceClassName: example.org-sriov-nic

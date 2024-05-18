@@ -9,8 +9,9 @@ metadata:
   namespace: default
 spec:
   spec:
-    match:
-    - attribute: pcie-root.dra.k8s.io
+    requirements:
+    - match:
+        attribute: pcie-root.dra.k8s.io
     requests:
     - name: foozer-gpu
       resourceClassName: example.com-foozer

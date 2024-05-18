@@ -81,8 +81,8 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 
 	switch obj := obj.(type) {
 	case *api.ResourceClass:
-		validateRequirements(t, obj.Requirements, "class.requirements")
-		validateMatch(t, obj.Match, "class.match")
+		validateRequestRequirements(t, obj.Request.Requirements, "class.request.requirements")
+		validateClaimRequirements(t, obj.Claim.Requirements, "class.claim.requirements")
 		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
 	case *api.ResourceClaim:
 		if obj.Spec != nil {
@@ -93,7 +93,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	}
 }
 
-func validateRequirements(t *testing.T, requirements []api.RequirementModel, path string) {
+func validateRequestRequirements(t *testing.T, requirements []api.RequestRequirement, path string) {
 	for i, requirement := range requirements {
 		if requirement.Device == nil && requirement.Resource == nil {
 			t.Errorf("%s[%d]: must not be empty", path, i)
@@ -102,6 +102,16 @@ func validateRequirements(t *testing.T, requirements []api.RequirementModel, pat
 		if requirement.Device != nil {
 			validateDeviceFilter(t, requirement.Device, fmt.Sprintf("%s[%d].device", path, i))
 		}
+	}
+}
+
+func validateClaimRequirements(t *testing.T, requirements []api.ClaimRequirement, path string) {
+	for i, requirement := range requirements {
+		if requirement.Match == nil {
+			t.Errorf("%s[%d]: must not be empty", path, i)
+			return
+		}
+		validateMatchAttribute(t, requirement.Match.Attribute, fmt.Sprintf("%s[%d].match.attribute", path, i))
 	}
 }
 
@@ -152,10 +162,10 @@ func validateRequests(t *testing.T, requests []api.ResourceRequest, path string)
 }
 
 func validateRequest(t *testing.T, request *api.ResourceRequestDetail, path string) {
-	validateRequirements(t, request.Requirements, path+".requirements")
+	validateRequestRequirements(t, request.Requirements, path+".requirements")
 }
 
 func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
-	validateMatch(t, claimSpec.Match, path+".match")
+	validateClaimRequirements(t, claimSpec.Requirements, path+".requirements")
 	validateRequests(t, claimSpec.Requests, path+".requests")
 }

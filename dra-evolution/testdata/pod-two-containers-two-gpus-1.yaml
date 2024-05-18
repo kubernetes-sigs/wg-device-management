@@ -9,8 +9,9 @@ metadata:
   namespace: default
 spec:
   spec:
-    match:
-    - attribute: model.example.com-foozer
+    requirements:
+    - match:
+        attribute: model.example.com-foozer
     requests:
     - name: foozer-gpu
       resourceClassName: example.com-foozer

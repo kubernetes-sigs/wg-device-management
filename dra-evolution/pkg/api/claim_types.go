@@ -39,31 +39,11 @@ type ResourceClass struct {
 	// +optional
 	SuitableNodes *v1.NodeSelector `json:"suitableNodes,omitempty" protobuf:"bytes,4,opt,name=suitableNodes"`
 
-	// ClaimConfig defines configuration parameters that apply to each claim using this class.
-	// They are ignored while allocating the claim.
-	//
-	// +optional
-	ClaimConfig *ConfigurationParameters `json:"claimConfig,omitempty" protobuf:"bytes,3,opt,name=config"`
+	// Claim contains options that apply to the entire claim.
+	Claim ResourceClassClaimOptions `json:"claim"`
 
-	// RequestConfig defines configuration parameters that apply to each request in a claim using this class.
-	// They are ignored while allocating the claim.
-	//
-	// +optional
-	RequestConfig *ConfigurationParameters `json:"requestConfig,omitempty" protobuf:"bytes,3,opt,name=config"`
-
-	// Requirements describe additional contraints that all must be met by
-	// devices when using the class.
-	//
-	// +optional
-	// +listType=atomic
-	Requirements []RequirementModel `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
-
-	// All match criteria must be satisfied before a set of devices will be used
-	// together.
-	//
-	// +optional
-	// +listType=atomic
-	Match []MatchModel `json:"match,omitempty"`
+	// Request contains options that apply to requests in a claim.
+	Request ResourceClassRequestOptions `json:"request"`
 
 	// DefaultRequests are individual requests for separate resources for a
 	// claim using this class. In contrast to configuration and
@@ -75,6 +55,47 @@ type ResourceClass struct {
 	//
 	// +listType=atomic
 	DefaultRequests []ResourceRequest `json:"defaultRequests" protobuf:"bytes,5,name=requests"`
+}
+
+type ResourceClassClaimOptions struct {
+	// Config defines configuration parameters that apply to each claim using this class.
+	// They are ignored while allocating the claim.
+	//
+	// +optional
+	Config *ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,3,opt,name=config"`
+
+	// Requirements describe additional contraints that all must be met
+	// by a claim referencing this class. Ignored when the class is
+	// referenced inside a device request.
+	//
+	// +optional
+	// +listType=atomic
+	Requirements []ClaimRequirement `json:"requirements,omitempty"`
+}
+
+type ResourceClassRequestOptions struct {
+	// Config defines configuration parameters that apply to each request in a claim using this class.
+	// They are ignored while allocating the claim.
+	//
+	// +optional
+	Config *ConfigurationParameters `json:"config,omitempty"`
+
+	// Requirements describe additional contraints that all must be met by
+	// devices. Applies to all devices of a claim when the claim references
+	// the class and only to the devices in a request when referenced there.
+	//
+	// +optional
+	// +listType=atomic
+	Requirements []RequestRequirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=deviceRequirements"`
+}
+
+// ClaimRequirement must have one and only one field set.
+type ClaimRequirement struct {
+	// All match criteria must be satisfied before a set of devices will be used
+	// together.
+	//
+	// +optional
+	Match *MatchModel `json:"match,omitempty"`
 }
 
 // ConfigurationParameters must have one and only one field set.
@@ -102,8 +123,8 @@ type VendorConfigurationParameters struct {
 	Parameters runtime.RawExtension `json:"parameters,omitempty" protobuf:"bytes,2,opt,name=parameters"`
 }
 
-// RequirementModel must have one and only one field set.
-type RequirementModel struct {
+// RequestRequirement must have one and only one field set.
+type RequestRequirement struct {
 	// Device describes a filter based on device attributes.
 	// This covers "qualititative" aspects of a device.
 	//
@@ -173,7 +194,7 @@ type DeviceFilter struct {
 
 // FUTURE EXTENSION, not planned for 1.31! Needs further thought.
 type ResourceRequirement struct {
-	Name   string            `json:"name"`
+	Name                     string `json:"name"`
 	ResourceRequirementValue `json:",inline" protobuf:"bytes,2,opt,name=value"`
 }
 
@@ -259,6 +280,9 @@ type ResourceClaimSpec struct {
 	// +optional
 	Config *ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
 
+	// All requirements must be satisfied when allocating the claim.
+	Requirements []ClaimRequirement `json:"requirements"`
+
 	// Requests are individual requests for separate resources for the claim.
 	// An empty list is valid and means that the claim can always be allocated
 	// without needing anything. A class can be referenced to use the default
@@ -266,13 +290,6 @@ type ResourceClaimSpec struct {
 	//
 	// +listType=atomic
 	Requests []ResourceRequest `json:"requests,omitempty" protobuf:"bytes,5,name=requests"`
-
-	// All these match criteria must be satisfied by all devices allocated through this
-	// claim.
-	//
-	// +optional
-	// +listType=atomic
-	Match []MatchModel `json:"match,omitempty"`
 
 	// Future extension, ignored by older schedulers. This is fine because scoring
 	// allows users to define a preference, without making it a hard requirement.
@@ -353,7 +370,7 @@ type ResourceRequestDetail struct {
 	//
 	// +optional
 	// +listType=atomic
-	Requirements []RequirementModel `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
+	Requirements []RequestRequirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
 // CountDetails defines how many instances are desired.
