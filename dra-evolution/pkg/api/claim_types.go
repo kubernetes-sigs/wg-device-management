@@ -65,8 +65,7 @@ type ResourceClassClaimOptions struct {
 	Config *ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,3,opt,name=config"`
 
 	// Requirements describe additional contraints that all must be met
-	// by a claim referencing this class. Ignored when the class is
-	// referenced inside a device request.
+	// by a claim referencing this class.
 	//
 	// +optional
 	// +listType=atomic
@@ -252,27 +251,17 @@ type ResourceClaimSpecAlternatives struct {
 
 // Used inside a ResourceClaimSpecAlternatives or a ResourceClaimSpecification object.
 type ResourceClaimSpec struct {
-	// ResourceClassName references additional configuration and requirements
-	// that apply to the whole claim and all requests in it. If the class
-	// contains default requests, then those are used if (and only if)
-	// the claim does not provide those itself.
+	// When referencing ResourceClasses, a claim inherits additional
+	// configuration and requirements. Constraints for devices apply to
+	// all devices requested via the claim.
 	//
-	// Requirements in the class must be satisfied in addition to the
-	// requirements in the claim.
+	// If the claim contains no requests, the first non-empty default
+	// requests defined by one of these classes are used. If no class
+	// provides such defaults, then a single, empty request is
 	//
 	// +optional
-	ResourceClassName string `json:"resourceClassName,omitempty" protobuf:"bytes,1,name=resourceClassName"`
-
-	// To be decided: does it make sense to allow referencing multiple
-	// classes?  As it stands now, there could be a need to create a large
-	// variety of different classes where each class is one combination of
-	// different options.
-	//
-	// When allowing different classes, each class could describe one aspect:
-	// - "devices from vendor foo"
-	// - "more than 10 GiB of RAM"
-	//
-	// Probably need better use cases for classes. Stuff for a new KEP in >= 1.32...
+	// +listType=atomic
+	Classes []ClassReference `json:"classes,omitempty" protobuf:"bytes,1,name=classes"`
 
 	// Config defines configuration parameters that apply to the entire claim.
 	// They are ignored while allocating the claim.
@@ -303,6 +292,18 @@ type ResourceClaimSpec struct {
 	Shareable bool `json:"shareable,omitempty" protobuf:"bytes,3,opt,name=shareable"`
 }
 
+// ClassReference must have one and only one field set.
+//
+// If we ever need to introduce new class settings which cannot be added to ResourceClass
+// (for example, because it wouldn't be okay for an older scheduler to ignore them),
+// then we could add new types or entries here to indicate to old schedulers that
+// they cannot handle the claim. At that point we can even rename the "Name" field,
+// if a longer name then makes more sense (conversion could handle the difference).
+type ClassReference struct {
+	// Name is the name of a ResourceClass.
+	Name *string `json:"name,omitempty"`
+}
+
 // ResourceRequest is a request for one of many resources required for a claim.
 // This is typically a request for a single resource like a device, but can
 // also ask for one of several different alternatives.
@@ -324,12 +325,15 @@ type ResourceRequest struct {
 }
 
 type ResourceRequestDetail struct {
-	// ResourceClassName references additional configuration and requirements that apply
-	// to the request.
+	// When referencing ResourceClasses, a request inherits additional
+	// configuration and requirements. Constraints for devices apply to
+	// only the devices requested via the request. Constraints for the
+	// claim apply to the claim as if the class had been referenced in
+	// the claim.
 	//
-	// Requirements in the class must be satisfied in addition to the requirements in the claim
-	// parameters.
-	ResourceClassName string `json:"resourceClassName" protobuf:"bytes,1,name=resourceClassName"`
+	// +optional
+	// +listType=atomic
+	Classes []ClassReference `json:"classes,omitempty" protobuf:"bytes,1,name=classes"`
 
 	// Config defines configuration parameters that apply to the requested resource(s).
 	// They are ignored while allocating the claim.

@@ -196,3 +196,13 @@ defaultRequests:
       driverName: example.com-foozer
   - device:
       selector: "'type.nic.k8s.io' in device.attributes"
+---
+# Whatever devices get allocated, they must be on the same PCI root.
+apiVersion: resource.k8s.io/v1alpha
+kind: ResourceClass
+metadata:
+  name: same-pci-root
+claim:
+  requirements:
+  - match:
+      attribute: pcie-root.dra.k8s.io

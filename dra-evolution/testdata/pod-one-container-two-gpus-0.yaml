@@ -16,7 +16,8 @@ metadata:
 spec:
   spec:
     requests:
-    - resourceClassName: example.com-foozer
+    - classes:
+      - name: example.com-foozer
       count:
         minimum: 2
 ---

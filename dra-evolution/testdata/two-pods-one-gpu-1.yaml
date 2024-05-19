@@ -8,7 +8,8 @@ metadata:
   namespace: default
 spec:
   requests:
-  - resourceClassName: example.com-foozer
+  - classes:
+    - name: example.com-foozer
     config:
       vendor:
       - parameters:

@@ -1,5 +1,5 @@
 # A Pod asking for 1-8 whole OR partial Foozer GPUs such that the total
-# available memory is at least 128Gi.
+# available memory is at least 128Gi. They must be on the same PCI root.
 
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClaimTemplate
@@ -9,7 +9,9 @@ metadata:
 spec:
   spec:
     requests:
-    - resourceClassName: example.com-foozer
+    - classes:
+      - name: example.com-foozer
+      - name: same-pci-root
       count:
         maximum: 8
       requirements:
