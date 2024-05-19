@@ -166,8 +166,8 @@ request:
       selector: "device.stringAttributes['type.k8s.io'] == 'vlan'"
 claim:
   config:
-    vendor:
-    - driverName: example.com-sriov
+  - vendor:
+      driverName: example.com-sriov
       parameters:
         ## ConfigMap to configure an example.com-sriov driver that manages VLAN interfaces.
         ## NOTE: How do we control permissions on what these configs can do?

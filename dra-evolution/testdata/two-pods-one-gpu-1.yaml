@@ -11,8 +11,9 @@ spec:
   - classes:
     - name: example.com-foozer
     config:
-      vendor:
-      - parameters:
+    - vendor:
+        driverName: example.com-foozer
+        parameters:
           apiVersion: gpu.example.com/v1alpha1
           kind: GPUSharingConfig
           metadata:

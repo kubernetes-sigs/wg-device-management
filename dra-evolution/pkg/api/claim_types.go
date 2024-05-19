@@ -62,7 +62,8 @@ type ResourceClassClaimOptions struct {
 	// They are ignored while allocating the claim.
 	//
 	// +optional
-	Config *ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,3,opt,name=config"`
+	// +listType=atomic
+	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,3,opt,name=config"`
 
 	// Requirements describe additional contraints that all must be met
 	// by a claim referencing this class.
@@ -77,7 +78,8 @@ type ResourceClassRequestOptions struct {
 	// They are ignored while allocating the claim.
 	//
 	// +optional
-	Config *ConfigurationParameters `json:"config,omitempty"`
+	// +listType=atomic
+	Config []ConfigurationParameters `json:"config,omitempty"`
 
 	// Requirements describe additional contraints that all must be met by
 	// devices. Applies to all devices of a claim when the claim references
@@ -98,13 +100,8 @@ type ClaimRequirement struct {
 }
 
 // ConfigurationParameters must have one and only one field set.
-//
-// TBD: does this have to be a one-of? It might be useful to allow vendor configuration
-// in addition to in-tree configuration. Extending this type then becomes harder because
-// an old scheduler would silently ignore unknown fields.
 type ConfigurationParameters struct {
-	// +listType=atomic
-	Vendor []VendorConfigurationParameters `json:"vendor,omitempty" protobuf:"bytes,1,opt,name=vendor"`
+	Vendor *VendorConfigurationParameters `json:"vendor,omitempty" protobuf:"bytes,1,opt,name=vendor"`
 }
 
 // VendorConfigurationParameters contains configuration parameters for a driver.
@@ -267,7 +264,8 @@ type ResourceClaimSpec struct {
 	// They are ignored while allocating the claim.
 	//
 	// +optional
-	Config *ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
+	// +listType=atomic
+	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
 
 	// All requirements must be satisfied when allocating the claim.
 	Requirements []ClaimRequirement `json:"requirements"`
@@ -337,7 +335,10 @@ type ResourceRequestDetail struct {
 
 	// Config defines configuration parameters that apply to the requested resource(s).
 	// They are ignored while allocating the claim.
-	Config *ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,1,opt,name=config"`
+	//
+	// +optional
+	// +listType=atomic
+	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,1,opt,name=config"`
 
 	// AdminAccess indicates that this is a claim for administrative access
 	// to the device(s). Claims with AdminAccess are expected to be used for
