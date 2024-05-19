@@ -125,7 +125,7 @@ type VendorConfigurationParameters struct {
 // RequestRequirement must have one and only one field set.
 type RequestRequirement struct {
 	// Device describes a filter based on device attributes.
-	// This covers "qualititative" aspects of a device.
+	// This covers "qualitative" aspects of a device.
 	//
 	// +optional
 	Device *DeviceFilter `json:"device,omitempty"`
