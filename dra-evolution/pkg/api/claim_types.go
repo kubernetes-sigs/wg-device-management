@@ -40,10 +40,10 @@ type ResourceClass struct {
 	SuitableNodes *v1.NodeSelector `json:"suitableNodes,omitempty" protobuf:"bytes,4,opt,name=suitableNodes"`
 
 	// Claim contains options that apply to the entire claim.
-	Claim ResourceClassClaimOptions `json:"claim"`
+	Claim ResourceClassClaimOptions `json:"claim,omitempty"`
 
 	// Request contains options that apply to requests in a claim.
-	Request ResourceClassRequestOptions `json:"request"`
+	Request ResourceClassRequestOptions `json:"request,omitempty"`
 
 	// DefaultRequests are individual requests for separate resources for a
 	// claim using this class. In contrast to configuration and
