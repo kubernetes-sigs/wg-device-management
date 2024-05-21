@@ -460,22 +460,18 @@ type ResourceClaimStatus struct {
 
 // AllocationResult contains attributes of an allocated resource.
 type AllocationResult struct {
-	// ResourceHandles contain the state associated with an allocation that
+	// DriverData contains the state associated with an allocation that
 	// should be maintained throughout the lifetime of a claim. Each
-	// ResourceHandle contains data that should be passed to a specific kubelet
-	// plugin once it lands on a node. This data is returned by the driver
-	// after a successful allocation and is opaque to Kubernetes. Driver
-	// documentation may explain to users how to interpret this data if needed.
+	// entry contains data that should be passed to a specific kubelet
+	// plugin once the claim lands on a node.
 	//
 	// Setting this field is optional. It has a maximum size of 32 entries.
-	// If null (or empty), it is assumed this allocation will be processed by a
-	// single kubelet plugin with no ResourceHandle data attached. The name of
-	// the kubelet plugin invoked will match the DriverName set in the
-	// ResourceClaimStatus this AllocationResult is embedded in.
+	// If empty, nothing was allocated for the claim and kubelet does not
+	// need to prepare anything for it.
 	//
 	// +listType=atomic
 	// +optional
-	ResourceHandles []ResourceHandle `json:"resourceHandles,omitempty" protobuf:"bytes,1,opt,name=resourceHandles"`
+	DriverData []DriverData `json:"driverData,omitempty" protobuf:"bytes,1,opt,name=driverData"`
 
 	// This field will get set by the resource driver after it has allocated
 	// the resource to inform the scheduler where it can schedule Pods using
@@ -492,19 +488,19 @@ type AllocationResult struct {
 	Shareable bool `json:"shareable,omitempty" protobuf:"varint,3,opt,name=shareable"`
 }
 
-// ResourceHandle holds information for processing by a specific kubelet plugin.
-type ResourceHandle struct {
+// DriverData holds information for processing by a specific kubelet plugin.
+type DriverData struct {
 	// DriverName specifies the name of the resource driver whose kubelet
 	// plugin should be invoked to process this ResourceHandle's data once it
 	// lands on a node.
 	DriverName string `json:"driverName" protobuf:"bytes,1,name=driverName"`
 
-	// Data contains the opaque data associated with this ResourceHandle. It is
+	// Data contains the opaque data associated with this DriverData. It is
 	// set by the controller component of the resource driver whose name
 	// matches the DriverName set in the ResourceClaimStatus this
-	// ResourceHandle is embedded in. It is set at allocation time and is
+	// DriverData is embedded in. It is set at allocation time and is
 	// intended for processing by the kubelet plugin whose name matches
-	// the DriverName set in this ResourceHandle.
+	// the DriverName set in this DriverData.
 	//
 	// The maximum size of this field is 16KiB. This may get increased in the
 	// future, but not reduced.
@@ -517,14 +513,14 @@ type ResourceHandle struct {
 	// If StructuredData is set, then it needs to be used instead of Data.
 	//
 	// +optional
-	StructuredData *StructuredResourceHandle `json:"structuredData,omitempty" protobuf:"bytes,5,opt,name=structuredData"`
+	Structured *StructuredDriverData `json:"structured,omitempty" protobuf:"bytes,5,opt,name=structured"`
 }
 
-// ResourceHandleDataMaxSize represents the maximum size of resourceHandle.data.
-const ResourceHandleDataMaxSize = 16 * 1024
+// DriverDataHandleMaxSize represents the maximum size of driverData.handle.
+const DriverDataHandleMaxSize = 16 * 1024
 
-// StructuredResourceHandle is the in-tree representation of the allocation result.
-type StructuredResourceHandle struct {
+// StructuredDriverData is the in-tree representation of the allocation result.
+type StructuredDriverData struct {
 	// Config contains all the configuration pieces that apply to the entire claim
 	// and that were meant for the driver which handles these resources.
 	// They get collected during the allocation and stored here
@@ -595,7 +591,7 @@ type AllocationResultModel struct {
 	// Device references one device instance.
 	//
 	// +optional
-	Device *NamedDeviceAllocationResult `json:"namedResources,omitempty" protobuf:"bytes,1,opt,name=namedResources"`
+	Device *NamedDeviceAllocationResult `json:"device,omitempty" protobuf:"bytes,1,opt,name=device"`
 }
 
 // NamedDeviceAllocationResult is used in AllocationResultModel.

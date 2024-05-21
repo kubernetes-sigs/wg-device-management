@@ -6,29 +6,58 @@
 # just be ignored for that purpose.
 
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClaimTemplate
+kind: ResourceClaim
 metadata:
   name: foozer-plus-vf
   namespace: default
+  finalizers:
+  - dra.k8s.io/delete-protection
 spec:
-  spec:
+  requirements:
+  - match:
+      attribute: pcie-root.dra.k8s.io
+  requests:
+  - classes:
+    - name: example.com-foozer
+  - classes:
+    - name: example.org-sriov-nic
     requirements:
-    - match:
-        attribute: pcie-root.dra.k8s.io
-    requests:
-    - classes:
-      - name: example.com-foozer
-    - classes:
-      - name: example.org-sriov-nic
-      requirements:
-      - device:
-          selector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
+    - device:
+        selector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
+status:
+  allocation:
+    availableOnNodes:
+      nodeSelectorTerms:
+      - matchFields:
+        - key: name
+          operator: in
+          values:
+          - worker-1
+    shareable: true
+    driverData:
+    - driverName: example.com-foozer
+      structured:
+        nodeName: worker-1
+        results:
+        - device:
+            name: gpu-1
+    - driverName: example.org-sriov
+      structured:
+        nodeName: worker-1
+        results:
+        - device:
+            name: nic-1
+  reservedFor:
+  - resource: pods
+    name: foozer
+    uid: abcd-1234
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
   namespace: default
+  uid: abcd-1234
 spec:
   containers:
   - image: registry.k8s.io/pause:3.6
@@ -42,4 +71,4 @@ spec:
   resourceClaims:
   - name: gpu-and-nic
     source:
-      resourceClaimTemplateName: template-foozer-plus-vf
+      resourceClaimName: foozer-plus-vf
