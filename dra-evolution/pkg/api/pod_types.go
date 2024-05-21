@@ -204,17 +204,6 @@ type PodResourceClaim struct {
 }
 
 type ClaimSource struct {
-	ForClass                  *ResourceClaimForClass `json:"forClass" protobuf:"bytes,1,opt,name=forClass"`
-	ResourceClaimName         *string                `json:"resourceClaimName" protobuf:"bytes,2,opt,name=resourceClaimName"`
-	ResourceClaimTemplateName *string                `json:"resourceClaimTemplateName" protobuf:"bytes,3,opt,name=resourceClaimTemplateName"`
-}
-
-type ResourceClaimForClass struct {
-	ClassName string `json:"className" protobuf:"bytes,1,opt,name=className"`
-
-	// ObjectMeta may contain labels and annotations that will be copied into the PVC
-	// when creating it. No other fields are allowed and will be rejected during
-	// validation.
-	// +optional
-	metav1.ObjectMeta `json:",inline"`
+	ResourceClaimName         *string `json:"resourceClaimName" protobuf:"bytes,2,opt,name=resourceClaimName"`
+	ResourceClaimTemplateName *string `json:"resourceClaimTemplateName" protobuf:"bytes,3,opt,name=resourceClaimTemplateName"`
 }

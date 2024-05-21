@@ -2,6 +2,16 @@
 # two containers in the same Pod.
 
 apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaimTemplate
+metadata:
+  name: template-foozer
+  namespace: default
+spec:
+  spec:
+    classes:
+    - name: example.com-foozer
+---
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
@@ -27,5 +37,4 @@ spec:
   resourceClaims:
   - name: foozer-gpu
     source:
-      forClass:
-        className: example.com-foozer
+      resourceClaimTemplateName: template-foozer
