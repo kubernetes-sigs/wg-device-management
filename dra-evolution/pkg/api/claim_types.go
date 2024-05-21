@@ -65,12 +65,12 @@ type ResourceClassClaimOptions struct {
 	// +listType=atomic
 	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,3,opt,name=config"`
 
-	// Requirements describe additional contraints that all must be met
-	// by a claim referencing this class.
+	// Constraints are additional restrictions for the combination of devices that get
+	// allocated for a claim referencing this class.
 	//
 	// +optional
 	// +listType=atomic
-	Requirements []ClaimRequirement `json:"requirements,omitempty"`
+	Constraints []Constraint `json:"constraints,omitempty"`
 }
 
 type ResourceClassRequestOptions struct {
@@ -81,18 +81,18 @@ type ResourceClassRequestOptions struct {
 	// +listType=atomic
 	Config []ConfigurationParameters `json:"config,omitempty"`
 
-	// Requirements describe additional contraints that all must be met by
-	// devices. Applies to all devices of a claim when the claim references
-	// the class and only to the devices in a request when referenced there.
+	// Requirements must be satisfied by devices. Applies to all devices of
+	// a claim when the claim references the class and only to the devices
+	// in a request when referenced there.
 	//
 	// +optional
 	// +listType=atomic
-	Requirements []RequestRequirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=deviceRequirements"`
+	Requirements []Requirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
-// ClaimRequirement must have one and only one field set.
-type ClaimRequirement struct {
-	// All match criteria must be satisfied before a set of devices will be used
+// Constraint must have one and only one field set.
+type Constraint struct {
+	// The match criteria must be satisfied before a set of devices will be used
 	// together.
 	//
 	// +optional
@@ -119,8 +119,8 @@ type VendorConfigurationParameters struct {
 	Parameters runtime.RawExtension `json:"parameters,omitempty" protobuf:"bytes,2,opt,name=parameters"`
 }
 
-// RequestRequirement must have one and only one field set.
-type RequestRequirement struct {
+// Requirement must have one and only one field set.
+type Requirement struct {
 	// Device describes a filter based on device attributes.
 	// This covers "qualitative" aspects of a device.
 	//
@@ -249,8 +249,8 @@ type ResourceClaimSpecAlternatives struct {
 // Used inside a ResourceClaimSpecAlternatives or a ResourceClaimSpecification object.
 type ResourceClaimSpec struct {
 	// When referencing ResourceClasses, a claim inherits additional
-	// configuration and requirements. Constraints for devices apply to
-	// all devices requested via the claim.
+	// configuration, constraints and requirements for all devices
+	// requested via the claim.
 	//
 	// If the claim contains no requests, the first non-empty default
 	// requests defined by one of these classes are used. If no class
@@ -267,8 +267,8 @@ type ResourceClaimSpec struct {
 	// +listType=atomic
 	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
 
-	// All requirements must be satisfied when allocating the claim.
-	Requirements []ClaimRequirement `json:"requirements"`
+	// All constraints must be satisfied when allocating the claim.
+	Constraints []Constraint `json:"constraints"`
 
 	// Requests are individual requests for separate resources for the claim.
 	// An empty list is valid and means that the claim can always be allocated
@@ -324,10 +324,9 @@ type ResourceRequest struct {
 
 type ResourceRequestDetail struct {
 	// When referencing ResourceClasses, a request inherits additional
-	// configuration and requirements. Constraints for devices apply to
-	// only the devices requested via the request. Constraints for the
-	// claim apply to the claim as if the class had been referenced in
-	// the claim.
+	// configuration, constraints and requirements for the devices
+	// allocated for it. Constraints only matter when multiple
+	// devices get allocated.
 	//
 	// +optional
 	// +listType=atomic
@@ -375,7 +374,7 @@ type ResourceRequestDetail struct {
 	//
 	// +optional
 	// +listType=atomic
-	Requirements []RequestRequirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
+	Requirements []Requirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
 // CountDetails defines how many instances are desired.

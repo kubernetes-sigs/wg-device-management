@@ -9,7 +9,7 @@ metadata:
   namespace: default
 spec:
   spec:
-    requirements:
+    constraints:
     - match:
         attribute: pcie-root.dra.k8s.io
     requests:

@@ -82,7 +82,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	switch obj := obj.(type) {
 	case *api.ResourceClass:
 		validateRequestRequirements(t, obj.Request.Requirements, "class.request.requirements")
-		validateClaimRequirements(t, obj.Claim.Requirements, "class.claim.requirements")
+		validateClaimConstraints(t, obj.Claim.Constraints, "class.claim.constraints")
 		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
 	case *api.ResourceClaim:
 		if obj.Spec != nil {
@@ -93,7 +93,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	}
 }
 
-func validateRequestRequirements(t *testing.T, requirements []api.RequestRequirement, path string) {
+func validateRequestRequirements(t *testing.T, requirements []api.Requirement, path string) {
 	for i, requirement := range requirements {
 		if requirement.Device == nil && requirement.Resource == nil {
 			t.Errorf("%s[%d]: must not be empty", path, i)
@@ -105,7 +105,7 @@ func validateRequestRequirements(t *testing.T, requirements []api.RequestRequire
 	}
 }
 
-func validateClaimRequirements(t *testing.T, requirements []api.ClaimRequirement, path string) {
+func validateClaimConstraints(t *testing.T, requirements []api.Constraint, path string) {
 	for i, requirement := range requirements {
 		if requirement.Match == nil {
 			t.Errorf("%s[%d]: must not be empty", path, i)
@@ -166,6 +166,6 @@ func validateRequest(t *testing.T, request *api.ResourceRequestDetail, path stri
 }
 
 func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
-	validateClaimRequirements(t, claimSpec.Requirements, path+".requirements")
+	validateClaimConstraints(t, claimSpec.Constraints, path+".constraints")
 	validateRequests(t, claimSpec.Requests, path+".requests")
 }

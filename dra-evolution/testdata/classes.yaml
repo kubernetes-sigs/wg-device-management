@@ -203,6 +203,6 @@ kind: ResourceClass
 metadata:
   name: same-pci-root
 claim:
-  requirements:
+  constraints:
   - match:
       attribute: pcie-root.dra.k8s.io

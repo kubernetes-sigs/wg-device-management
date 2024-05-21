@@ -13,7 +13,7 @@ metadata:
   finalizers:
   - dra.k8s.io/delete-protection
 spec:
-  requirements:
+  constraints:
   - match:
       attribute: pcie-root.dra.k8s.io
   requests:
