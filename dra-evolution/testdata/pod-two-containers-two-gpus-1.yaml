@@ -14,11 +14,11 @@ spec:
         attribute: model.example.com-foozer
     requests:
     - name: foozer-gpu
-      classes:
-      - name: example.com-foozer
+      inherit:
+      - resourceClassName: example.com-foozer
     - name: other-foozer-gpu
-      classes:
-      - name: example.com-foozer
+      inherit:
+      - resourceClassName: example.com-foozer
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

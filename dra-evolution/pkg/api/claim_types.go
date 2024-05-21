@@ -258,7 +258,7 @@ type ResourceClaimSpec struct {
 	//
 	// +optional
 	// +listType=atomic
-	Classes []ClassReference `json:"classes,omitempty" protobuf:"bytes,1,name=classes"`
+	Inherit []ClassReference `json:"inherit,omitempty" protobuf:"bytes,1,name=inherit"`
 
 	// Config defines configuration parameters that apply to the entire claim.
 	// They are ignored while allocating the claim.
@@ -298,8 +298,8 @@ type ResourceClaimSpec struct {
 // they cannot handle the claim. At that point we can even rename the "Name" field,
 // if a longer name then makes more sense (conversion could handle the difference).
 type ClassReference struct {
-	// Name is the name of a ResourceClass.
-	Name *string `json:"name,omitempty"`
+	// The name of a ResourceClass object.
+	ResourceClassName *string `json:"resourceClassName,omitempty"`
 }
 
 // ResourceRequest is a request for one of many resources required for a claim.
@@ -331,7 +331,7 @@ type ResourceRequestDetail struct {
 	//
 	// +optional
 	// +listType=atomic
-	Classes []ClassReference `json:"classes,omitempty" protobuf:"bytes,1,name=classes"`
+	Inherit []ClassReference `json:"inherit,omitempty" protobuf:"bytes,1,name=inherit"`
 
 	// Config defines configuration parameters that apply to the requested resource(s).
 	// They are ignored while allocating the claim.

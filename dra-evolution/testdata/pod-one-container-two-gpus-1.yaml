@@ -10,8 +10,8 @@ metadata:
 spec:
   spec:
     requests:
-    - classes:
-      - name: example.com-foozer
+    - inherit:
+      - resourceClassName: example.com-foozer
       match:
       - attribute: model.example.com-foozer
       count:

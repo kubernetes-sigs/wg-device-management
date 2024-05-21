@@ -17,10 +17,10 @@ spec:
   - match:
       attribute: pcie-root.dra.k8s.io
   requests:
-  - classes:
-    - name: example.com-foozer
-  - classes:
-    - name: example.org-sriov-nic
+  - inherit:
+    - resourceClassName: example.com-foozer
+  - inherit:
+    - resourceClassName: example.org-sriov-nic
     requirements:
     - device:
         selector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"

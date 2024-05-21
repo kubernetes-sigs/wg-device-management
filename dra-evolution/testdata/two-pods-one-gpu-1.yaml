@@ -8,8 +8,8 @@ metadata:
   namespace: default
 spec:
   requests:
-  - classes:
-    - name: example.com-foozer
+  - inherit:
+    - resourceClassName: example.com-foozer
     config:
     - vendor:
         driverName: example.com-foozer

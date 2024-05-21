@@ -9,9 +9,9 @@ metadata:
 spec:
   spec:
     requests:
-    - classes:
-      - name: example.com-foozer
-      - name: same-pci-root
+    - inherit:
+      - resourceClassName: example.com-foozer
+      - resourceClassName: same-pci-root
       count:
         maximum: 8
       requirements:
