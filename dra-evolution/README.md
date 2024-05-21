@@ -155,19 +155,7 @@ spec:
 
 Resource classes are capable of describing everything that a user might put
 into a claim. Therefore a simple claim or claim template might contain nothing
-but a resource class name. For this simple case, a new `claimWithClassName` gets
-added which creates such a claim. Here object meta is supported:
-
-```yaml
-  resourceClaims:
-  - name: gpu
-    source:
-      forClass:
-        className: two-foozers-class
-        metdadata:
-          labels:
-            foo: bar
-```
+but a resource class name.
 
 How devices are named inside this class needs to be part of the class
 documentation if users are meant to have the ability to select specific devices
