@@ -35,5 +35,4 @@ spec:
       - name: foozer-gpu
   resourceClaims:
   - name: foozer-gpu
-    source:
-      resourceClaimTemplateName: template-foozer
+    resourceClaimTemplateName: template-foozer

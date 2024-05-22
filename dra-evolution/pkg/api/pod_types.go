@@ -199,11 +199,21 @@ type PodResourceClaim struct {
 	// This must be a DNS_LABEL.
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
-	// Source describes where to find the ResourceClaim.
-	Source ClaimSource `json:"source" protobuf:"bytes,2,opt,name=source"`
+	ClaimSource `json:",inline" protobuf:"bytes,2,name=source"`
 }
 
+// ClaimSource must have one and only one field set.
 type ClaimSource struct {
-	ResourceClaimName         *string `json:"resourceClaimName" protobuf:"bytes,2,opt,name=resourceClaimName"`
-	ResourceClaimTemplateName *string `json:"resourceClaimTemplateName" protobuf:"bytes,3,opt,name=resourceClaimTemplateName"`
+	// The ResourceClaim named here is shared by all pods which
+	// reference it. The lifecycle of that ResourceClaim is not
+	// managed by Kubernetes.
+	//
+	// +optional
+	ResourceClaimName *string `json:"resourceClaimName" protobuf:"bytes,1,opt,name=resourceClaimName"`
+	// The ResourceClaimTemplate named here is used to create
+	// a per-pod ResourceClaim. It gets deleted automatically
+	// together with the pod.
+	//
+	// +optional
+	ResourceClaimTemplateName *string `json:"resourceClaimTemplateName" protobuf:"bytes,2,opt,name=resourceClaimTemplateName"`
 }

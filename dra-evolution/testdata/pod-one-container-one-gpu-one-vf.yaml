@@ -68,5 +68,4 @@ spec:
       - name: gpu-and-nic
   resourceClaims:
   - name: gpu-and-nic
-    source:
-      resourceClaimName: foozer-plus-vf
+    resourceClaimName: foozer-plus-vf

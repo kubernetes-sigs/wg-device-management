@@ -38,8 +38,7 @@ spec:
       - name: foozer-gpu
   resourceClaims:
   - name: foozer-gpu
-    source:
-      resourceClaimName: my-shared-gpu
+    resourceClaimName: my-shared-gpu
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
@@ -58,5 +57,4 @@ spec:
       - name: foozer-gpu
   resourceClaims:
   - name: foozer-gpu
-    source:
-      resourceClaimName: my-shared-gpu
+    resourceClaimName: my-shared-gpu

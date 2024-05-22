@@ -33,5 +33,4 @@ spec:
       - name: foozer-gpus
   resourceClaims:
   - name: foozer-gpus
-    source:
-      resourceClaimTemplateName: example.com-foozer-two-gpus-same-model
+    resourceClaimTemplateName: example.com-foozer-two-gpus-same-model

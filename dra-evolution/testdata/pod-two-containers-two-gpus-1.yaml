@@ -45,5 +45,4 @@ spec:
         sourceRequestName: other-foozer-gpu
   resourceClaims:
   - name: two-foozer-gpus
-    source:
-      resourceClaimTemplateName: example.com-foozer-two-separate-gpus-same-model
+    resourceClaimTemplateName: example.com-foozer-two-separate-gpus-same-model
