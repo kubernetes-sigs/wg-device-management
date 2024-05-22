@@ -1,6 +1,7 @@
 package api
 
 import (
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -19,14 +20,27 @@ type ResourcePool struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	// NodeName identifies the node which provides the resources
-	// if they are local to a node.
+	// NodeName identifies the node which provides the devices
+	// if (and only if) they are local to a node. If this is empty,
+	// the devices exist outside of any specific node.
+	//
+	// NodeName and NodeSelector are mutually exclusive. If none is
+	// set, the devices are available in the entire cluster.
 	//
 	// A field selector can be used to list only ResourceSlice
 	// objects with a certain node name.
 	//
 	// +optional
 	NodeName string `json:"nodeName,omitempty" protobuf:"bytes,2,opt,name=nodeName"`
+
+	// NodeSelector identifies all nodes that devices which are shared
+	// between nodes could be accessed from.
+	//
+	// NodeName and NodeSelector are mutually exclusive. If none is
+	// set, the devices are available in the entire cluster.
+	//
+	// +optional
+	NodeSelector *v1.NodeSelector `json:"nodeSelector,omitempty"`
 
 	// DriverName identifies the DRA driver providing the capacity information.
 	// A field selector can be used to list only ResourceSlice
