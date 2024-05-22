@@ -72,98 +72,22 @@ of these ideas, rather than changing it out for these specific types.
 
 This prototype changes the `PodSpec` a little from how it is in DRA in 1.30.
 
-In 1.30, the `PodSpec` has a list of named sources. The sources are structs that
+As 1.30, the `PodSpec` has a list of named sources. The sources are structs that
 could contain either a claim name or a template name. The names are used to
-associate individual claims with containers. The example below allocates a
-single "foozer" device to the container in the pod.
+associate individual claims with containers.
 
-```yaml
-apiVersion: resource.k8s.io/v1alpha1
-kind: ResourceClaimTemplate
-metadata:
-  name: foozer
-  namespace: default
-spec:
-  spec:
-    resourceClassName: example.com-foozer
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: foozer
-  namespace: default
-spec:
-  containers:
-  - image: registry.k8s.io/pause:3.6
-    name: my-container
-    resources:
-      requests:
-        cpu: 10m
-        memory: 10Mi
-      claims:
-      - name: gpu
-  resourceClaims:
-  - name: gpu
-    source:
-      resourceClaimTemplate: foozer
-```
+Each claim may contain multiple request for different devices. Containers can
+also be associated with individual requests inside a claim.
 
-In the prototype model, we are adding `matchAttributes` constraints to control
-consistency within a selection of devices. In particular, we want to be able to
-specify a `matchAttributes` constraint across two separate named sources, so
-that we can ensure for example, a GPU chosen for one container is the same model
-as one chosen for another container. This would imply we need `matchAttributes`
-that apply across the list present in `PodSpec`. However, we don't want to put
-things like `matchAttributes` into `PodSpec`, since it is already `v1`.
-Therefore matching is limited to devices within a claim. This limitation may be
-removed once matching is stable enough to be included in the `PodSpec`.
+Allocating multiple devices per claim allows specifying constraints for a set
+of devices, like "some attribute has to be the same". Long-term, it would be
+good to allow such constraints also across claims when a pod references more
+than one, but that would imply extending the `PodSpec` with complex fields
+where we are not sure yet what they need to look like. Therefore these
+constraints are currently limited to claims. This limitation may be
+removed once constraints are stable enough to be included in the `PodSpec`.
 
-To support selecting a specific device from a claim for a container, a
-`resources.devices` list gets added:
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: foozer
-  namespace: default
-spec:
-  containers:
-  - image: registry.k8s.io/pause:3.6
-    name: my-container
-    resources:
-      requests:
-        cpu: 10m
-        memory: 10Mi
-      devices:
-      - claimName: gpu
-        deviceName: gpu-one
-  - image: registry.k8s.io/pause:3.6
-    name: my-container
-    resources:
-      requests:
-        cpu: 10m
-        memory: 10Mi
-      devices:
-      - claimName: gpu
-        deviceName: gpu-two
-  resourceClaims:
-  - name: gpu
-    source:
-      resourceClaimTemplate: two-foozers
-```
-
-Resource classes are capable of describing everything that a user might put
-into a claim. Therefore a simple claim or claim template might contain nothing
-but a resource class name.
-
-How devices are named inside this class needs to be part of the class
-documentation if users are meant to have the ability to select specific devices
-for their containers.
-
-These `PodSpec` Go types can be seen in [podspec.go](testdata/podspec.go). This
-is not the complete `PodSpec` but just the relevant parts of the 1.30 and
-proposed versions.
+These `PodSpec` Go types can be seen in [pod_types.go](pkg/api/pod_types.go).
 
 ## Types
 
