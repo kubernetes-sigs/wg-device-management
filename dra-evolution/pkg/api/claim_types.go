@@ -248,17 +248,7 @@ type ResourceClaimSpecAlternatives struct {
 
 // Used inside a ResourceClaimSpecAlternatives or a ResourceClaimSpecification object.
 type ResourceClaimSpec struct {
-	// When referencing ResourceClasses, a claim inherits additional
-	// configuration, constraints and requirements for all devices
-	// requested via the claim.
-	//
-	// If the claim contains no requests, the first non-empty default
-	// requests defined by one of these classes are used. If no class
-	// provides such defaults, then a single, empty request is
-	//
-	// +optional
-	// +listType=atomic
-	Inherit []ClassReference `json:"inherit,omitempty" protobuf:"bytes,1,name=inherit"`
+	*ClassReference `json:",inline,omitempty" protobuf:"bytes,1,opt,name="classReference"`
 
 	// Config defines configuration parameters that apply to the entire claim.
 	// They are ignored while allocating the claim.
@@ -298,7 +288,15 @@ type ResourceClaimSpec struct {
 // they cannot handle the claim. At that point we can even rename the "Name" field,
 // if a longer name then makes more sense (conversion could handle the difference).
 type ClassReference struct {
-	// The name of a ResourceClass object.
+	// When referencing a ResourceClass, a claim inherits additional
+	// configuration, constraints and requirements.
+	//
+	// If the claim contains no requests, the first non-empty default
+	// requests defined by one of these classes are used. If no class
+	// provides such defaults, then a single, empty request is used.
+	//
+	// +optional
+	// +listType=atomic
 	ResourceClassName *string `json:"resourceClassName,omitempty"`
 }
 
@@ -323,14 +321,7 @@ type ResourceRequest struct {
 }
 
 type ResourceRequestDetail struct {
-	// When referencing ResourceClasses, a request inherits additional
-	// configuration, constraints and requirements for the devices
-	// allocated for it. Constraints only matter when multiple
-	// devices get allocated.
-	//
-	// +optional
-	// +listType=atomic
-	Inherit []ClassReference `json:"inherit,omitempty" protobuf:"bytes,1,name=inherit"`
+	*ClassReference `json:",inline,omitempty" protobuf:"bytes,1,opt,name=classReference"`
 
 	// Config defines configuration parameters that apply to the requested resource(s).
 	// They are ignored while allocating the claim.

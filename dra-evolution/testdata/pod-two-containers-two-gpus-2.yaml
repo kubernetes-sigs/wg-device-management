@@ -14,14 +14,12 @@ spec:
         attribute: pcie-root.dra.k8s.io
     requests:
     - name: foozer-gpu
-      inherit:
-      - resourceClassName: example.com-foozer
+      resourceClassName: example.com-foozer
       requirements:
       - device:
           selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
     - name: other-foozer-gpu
-      inherit:
-      - resourceClassName: example.com-foozer
+      resourceClassName: example.com-foozer
       requirements:
       - device:
           selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
