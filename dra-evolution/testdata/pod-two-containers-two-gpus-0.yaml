@@ -8,7 +8,8 @@ metadata:
   namespace: default
 spec:
   spec:
-    resourceClassName: example.com-foozer
+    requests:
+    - deviceClassName: example.com-foozer
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

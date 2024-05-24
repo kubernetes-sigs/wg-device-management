@@ -80,10 +80,8 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	t.Logf("Got object %T = %s", obj, gvk)
 
 	switch obj := obj.(type) {
-	case *api.ResourceClass:
-		validateRequestRequirements(t, obj.Request.Requirements, "class.request.requirements")
-		validateClaimConstraints(t, obj.Claim.Constraints, "class.claim.constraints")
-		validateRequests(t, obj.DefaultRequests, "class.defaultRequests")
+	case *api.DeviceClass:
+		validateRequestRequirements(t, obj.Requirements, "class.requirements")
 	case *api.ResourceClaim:
 		if obj.Spec != nil {
 			validateResourceClaimSpec(t, *obj.Spec, "claim.spec")
@@ -95,7 +93,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 
 func validateRequestRequirements(t *testing.T, requirements []api.Requirement, path string) {
 	for i, requirement := range requirements {
-		if requirement.Device == nil && requirement.Resource == nil {
+		if requirement.Device == nil {
 			t.Errorf("%s[%d]: must not be empty", path, i)
 			return
 		}
@@ -143,21 +141,20 @@ func validateDeviceFilter(t *testing.T, filter *api.DeviceFilter, path string) {
 
 func validateRequests(t *testing.T, requests []api.ResourceRequest, path string) {
 	for i, request := range requests {
-		if request.ResourceRequestDetail != nil &&
-			len(request.OneOf) > 0 {
-			t.Errorf("%s[%d]: requesting one device and oneOf are mutually exclusive", path, i)
-		}
-		if request.ResourceRequestDetail == nil &&
-			len(request.OneOf) == 0 {
+		// if request.ResourceRequestDetail != nil &&
+		// 	len(request.OneOf) > 0 {
+		// 	t.Errorf("%s[%d]: requesting one device and oneOf are mutually exclusive", path, i)
+		// }
+		if request.ResourceRequestDetail == nil /* && len(request.OneOf) == 0 */ {
 			t.Errorf("%s[%d]: must request one device or oneOf", path, i)
 			continue
 		}
 		if request.ResourceRequestDetail != nil {
 			validateRequest(t, request.ResourceRequestDetail, fmt.Sprintf("%s[%d]", path, i))
 		}
-		for e, request := range request.OneOf {
-			validateRequest(t, &request, fmt.Sprintf("%s[%d].oneOf[%d]", path, i, e))
-		}
+		// for e, request := range request.OneOf {
+		// 	validateRequest(t, &request, fmt.Sprintf("%s[%d].oneOf[%d]", path, i, e))
+		// }
 	}
 }
 

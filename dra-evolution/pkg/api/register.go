@@ -44,7 +44,7 @@ var (
 // Adds the list of known types to the given scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
-		&ResourceClass{},
+		&DeviceClass{},
 		&ResourceClaim{},
 		&ResourceClaimTemplate{},
 		&ResourceClaimSpecification{},
@@ -64,7 +64,7 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 
 // Fake DeepCopy...
 
-func (in ResourceClass) DeepCopyObject() runtime.Object {
+func (in DeviceClass) DeepCopyObject() runtime.Object {
 	return &in
 }
 

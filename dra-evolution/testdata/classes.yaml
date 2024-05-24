@@ -1,33 +1,31 @@
 # Any Foozer device, assuming all are managed by the same driver.
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-foozer
-request:
-  requirements:
-  - device:
-      driverName: example.com-foozer
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-foozer'"
 ---
 # A Foozer 1000 device
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-foozer-1000
-request:
-  requirements:
-  - device:
-      driverName: example.com-foozer
-      selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
+requirements:
+- device:
+    # Checking the driver name is not needed: devices from other vendors
+    # are not going to have the model.example.com-foozer attribute.
+    selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
 ---
 # Any Barzer device
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-barzer
-request:
-  requirements:
-  - device:
-      driverName: example.com-barzer
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-barzer'"
 ---
 # Any example.com GPU, even though Foozer and
 # Barzer GPUs use different drivers. In this case,
@@ -35,33 +33,30 @@ request:
 # by these two drivers" (no standardization and
 # no need for the driver vendors to cooperate).
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-gpu
-request:
-  requirements:
-  - device:
-      selector: "device.driverName == 'example.com-foozer' || device.driverName == 'example.com-barzer'"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-foozer' || device.driverName == 'example.com-barzer'"
 ---
 # An example.com SR-IOV NIC
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-nic
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov'"
 ---
 # An example.org SR-IOV NIC (different vendor)
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.org-sriov-nic
-request:
-  requirements:
-  - device:
-      driverName: example.org-sriov
+requirements:
+- device:
+    selector: "device.driverName == 'example.org-sriov'"
 ---
 # Request any SR-IOV NIC. This will allow the claim to be satisfied by
 # example.com or example.org NICs. In contrast to the example.com-gpu above,
@@ -70,139 +65,99 @@ request:
 # that their device satisfies the requirements in that KEP. All of the
 # NIC examples use attribute names from that fictional KEP.
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: sriov-nic
-request:
-  requirements:
-  - device:
-      selector: "'type.nic.k8s.io' in device.attributes" # Doesn't care whether it's "pf" or "vf".
+requirements:
+- device:
+    selector: "'type.nic.k8s.io' in device.attributes" # Doesn't care whether it's "pf" or "vf".
 ---
 # Example.com SR-IOV NIC on a 1Gbps link
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-nic-1g
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) == 0"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) == 0"
 ---
 # Request an example.com 10Gbps SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-nic-10g
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('10G')) == 0"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('10G')) == 0"
 ---
 # Request an example.com 1Gbps or faster SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-nic-1g-or-faster
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
 ---
 # Request any 1Gbps or faster SR-IOV NIC, regardless of the vendor.
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
-  name: example.com-sriov-nic-1g-or-faster
-request:
-  requirements:
-  - device:
-      selector: "'bandwidth.nic.k8s.io' in device.attributes && device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
+  name: sriov-nic-1g-or-faster
+requirements:
+- device:
+    # It's a NIC if it has this attribute.
+    selector: "device.quantityAttributes['bandwidth.nic.k8s.io'].compareTo(quantity('1G')) >= 0"
 ---
 # Request an example.com PF
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-pf
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.stringAttributes['type.nic.k8s.io'] == 'pf'"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.stringAttributes['type.nic.k8s.io'] == 'pf'"
 ---
 # Request an example.com VF
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-vf
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.stringAttributes['type.nic.k8s.io'] == 'vf'"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.stringAttributes['type.nic.k8s.io'] == 'vf'"
 ---
 # Request an example.com PF or VF
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: example.com-sriov-vf
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.stringAttributes['type.nic.k8s.io'] == 'vf' || device.stringAttributes['type.nic.k8s.io'] == 'pf'"
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.stringAttributes['type.nic.k8s.io'] == 'vf' || device.stringAttributes['type.nic.k8s.io'] == 'pf'"
 ---
 # Request a VLAN interface on VLAN 2000
 apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
+kind: DeviceClass
 metadata:
   name: vlan-2000
-request:
-  requirements:
-  - device:
-      driverName: example.com-sriov
-      selector: "device.stringAttributes['type.k8s.io'] == 'vlan'"
-claim:
-  config:
-  - vendor:
-      driverName: example.com-sriov
-      parameters:
-        ## ConfigMap to configure an example.com-sriov driver that manages VLAN interfaces.
-        ## NOTE: How do we control permissions on what these configs can do?
-        apiVersion: v1
-        kind: ConfigMap
-        data:
-          vlanID: 2000
+requirements:
+- device:
+    selector: "device.driverName == 'example.com-sriov' && device.stringAttributes['type.k8s.io'] == 'vlan'"
+config:
+- vendor:
+    driverName: example.com-sriov
+    parameters:
+      ## ConfigMap to configure an example.com-sriov driver that manages VLAN interfaces.
+      ## An admission webhook of the vendor could check this configuration in advance
+      ## because it is clearly marked as "configuration for driver example.com-sriov".
+      ## Without such a webhook, the kubelet plugin needs to check these settings.
+      ## They will be marked as coming from the admin.
+      apiVersion: v1
+      kind: ConfigMap
+      data:
+        vlanID: 2000
     # The fictional NIC KEP could also add an in-tree type for "NIC configuration",   which
     # then would replace the "vendor" entry above:
     # nic:
     #   vlanID: 2000
----
-# Request a Foozer GPU and some NIC.
-#
-# The other classes implicitly have
-#   defaultRequests: [ {} ]
-#
-# as default and thus ask for one device that matches the class criteria.
-apiVersion: resource.k8s.io/v1alpha2
-kind: ResourceClass
-metadata:
-  name: example.com-foozer-and-nic
-defaultRequests:
-- requirements:
-  - device:
-      driverName: example.com-foozer
-  - device:
-      selector: "'type.nic.k8s.io' in device.attributes"
----
-# Whatever devices get allocated, they must be on the same PCI root.
-apiVersion: resource.k8s.io/v1alpha
-kind: ResourceClass
-metadata:
-  name: same-pci-root
-claim:
-  constraints:
-  - match:
-      attribute: pcie-root.dra.k8s.io

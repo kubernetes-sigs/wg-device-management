@@ -23,9 +23,10 @@ func main() {
 	k8s.RegisterType(schema.GroupVersionKind{Group: "resource.k8s.io", Version: "v1alpha2", Kind: "Pod"}, "pods", meta.RESTScopeNamespace)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Node"}, "nodes", meta.RESTScopeNamespace)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "foozer.example.com", Version: "v1alpha1", Kind: "FoozerConfig"}, "foozerconfigs", meta.RESTScopeNamespace)
-	k8s.RegisterType(schema.GroupVersionKind{Group: "resource.k8s.io", Version: "v1alpha2", Kind: "ResourceClass"}, "resourceclasses", meta.RESTScopeRoot)
+	k8s.RegisterType(schema.GroupVersionKind{Group: "resource.k8s.io", Version: "v1alpha2", Kind: "DeviceClass"}, "deviceclasses", meta.RESTScopeRoot)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "resource.k8s.io", Version: "v1alpha2", Kind: "ResourceClaim"}, "resourceclaims", meta.RESTScopeNamespace)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "resource.k8s.io", Version: "v1alpha1", Kind: "ResourcePool"}, "resourcepools", meta.RESTScopeRoot)
+	k8s.RegisterType(schema.GroupVersionKind{Group: "resource.k8s.io", Version: "v1alpha1", Kind: "ResourcePolicy"}, "resourcepolicies", meta.RESTScopeRoot)
 
 	wg.Add(1)
 	addr, err := k8s.StartServing()

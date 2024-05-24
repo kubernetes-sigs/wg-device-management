@@ -8,13 +8,11 @@ metadata:
   namespace: default
 spec:
   requests:
-  - resourceClassName: example.com-foozer
+  - deviceClassName: example.com-foozer
     count:
       maximum: 8
     requirements:
-    - resource:
-        name: memory.example.com-foozer
-        amount: 128Gi
+    # TODO for 1.31: show how to request a partitioned device
 ---
 apiVersion: v1
 kind: Pod

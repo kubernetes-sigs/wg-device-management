@@ -14,9 +14,9 @@ spec:
         attribute: model.example.com-foozer
     requests:
     - name: foozer-gpu
-      resourceClassName: example.com-foozer
+      deviceClassName: example.com-foozer
     - name: other-foozer-gpu
-      resourceClassName: example.com-foozer
+      deviceClassName: example.com-foozer
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

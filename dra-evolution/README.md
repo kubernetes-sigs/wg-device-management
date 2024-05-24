@@ -10,22 +10,22 @@ back here. The last column explains why dra-evolution takes this approach.
 
 | Use case, problem | DRA 1.30 | k8srm-prototype | dra-evolution | rationale |
 | --- | --- | --- | --- | --- |
-Classes | required, provide admin-level config and the driver name | DeviceClass: required, selects vendor driver and one device | ResourceClass: optional, can be vendor-independent, adds configuration, selection criteria and default parameters. | This avoids a two-level selection mechanism for devices (first the class, then the instance). Making a class potentially as descriptive as a claim enables additional use cases, like a pre-defined set of different devices from different vendors.
+Classes | required, provide admin-level config and the driver name | DeviceClass: required, selects vendor driver and one device | DeviceClass: optional, can be vendor-independent, adds configuration, selection criteria for *devices* (not claims!) | Classes can be useful, but they are not portable across clusters unless we pre-define class names, which shouldn't be a goal. Therefore they are optional for those case where they make sense, but not required. Access control is based on claim fields (management mode) and device attributes, not classes.
 Custom APIs with CRDs | Vendors convert CRDs into class or claim parameters. | CRDs only provide configuration, content gets copied during allocation by scheduler. | As in 1.30 minus class CRDs. Claim parameters usually get specified directly in the claim. The ResourceClaimSpecification (= former ResourceClaimParameters) type is only used when a CRD reference is involved. | It is unclear whether any approach that depends on core Kubernetes reading vendor CRDs will pass reviews. Once this is clarified, this aspect can be revisited.
-Management access | only in "classic DRA" | Field for device, not in class, checked via v1.ResourceQuota during admission. | Field for device, can be set in class, checked via resource.k8s.io ResourceQuota during allocation. | Checking at admission time is too limited. Eventually we will need a quota system that is based on device attributes.
-Pod-level claims | Flat list with each entry mapping to a claim or claim template. | undecided ? | Flat list with each entry mapping to a claim, claim template or class as short-hand for "create claim for this class". | Adding the short-hand simplifies usage in simple cases.
+Management access | only in "classic DRA" | Field for device, not in class, checked via v1.ResourceQuota during admission. | Field for device, can be set in class, checked via resource.k8s.io ResourcePolicy during allocation. | Checking at admission time is too limited. Eventually we will need a quota system that is based on device attributes.
+Pod-level claims | Flat list with each entry mapping to a claim or claim template. | undecided ? | Flat list with each entry mapping to a claim or claim template. | Adding syntactic sugar like "create a claim for this class" are out of scope for 1.31.
 Container-level claim references | name from list | two-level (claim + device in claim) ? | one level (all devices in a claim), two-level (specific device in claim) | The two-level case is needed when using a single claim to do matching between different devices and then wanting a container to use only one of the devices.
 Matching between devices | only in "classic DRA" | MatchAttributes in claim | MatchAttributes in claim | This solves a sub-set of the matching problem. A more general solution would be a CEL expression, but that needs more thought and would be harder to use, so providing a "simple" solution seems worthwhile. Matching across claims is not supported by either proposal. This can only be done by putting fields whose semantic might still need to evolve into a v1 API. After GA?
-Alternative device sets ("give me X, otherwise Y and Z") | only in "classic DRA" | oneOf, allOf | oneOf | "oneOf" seems to be a common requirement that might warrant special treatment to provide a simple API. "allOf" can be handled by replicating requests at the claim level.
+Alternative device sets ("give me X, otherwise Y and Z") | only in "classic DRA" | oneOf, allOf | not supported | "oneOf" would be useful, but can be added later.
 Scoring | only in "classic DRA" | none | none | Like matching, this needs to be defined for a claim, with all devices of a potential solution as input. This is a tough problem that already occurs for a single device (pick "smallest" GPU or "biggest"?) and can easily lead to combinatorial explosion.
-Claim status | Only allocation | Allocation, per-plugin status | Only allocation | Kubelet writing data provided by plugins leads to the [version skew problem](https://github.com/kubernetes/kubernetes/issues/123699). This becomes even worse when that data is likely to change when new status fields get added. This needs more thought before we put anything into the API that depends on sorting out this implementation challenge.
+Claim status | Only allocation | Allocation, per-plugin status | Only allocation, status TBD | Kubelet writing data provided by plugins leads to the [version skew problem](https://github.com/kubernetes/kubernetes/issues/123699). This becomes even worse when that data is likely to change when new status fields get added. This needs more thought before we put anything into the API that depends on sorting out this implementation challenge.
 Claim template | Separate type | Re-uses claim + object meta in pod spec | Separate type | Defining claims that will never be used as claims "feels" weird. They also show up in `kubectl get resourceclaims -A` as "unallocated", which could be confusing.
 "Resource" vs. "device" | resource | device | resource at top level, device inside | Only some of the semantic defined in the prototype is specific to devices. Other parts (like creating claims from templates, deallocation) are generic. If we ever need to add support for some other kind of resource, we would have to duplicate the entire outer API and copy-and-paste the generic code (Go generics don't support accessing "common" fields unless we define interfaces for everything, also typed client-go, etc.).
 Resource model | one, potentially others | only one | one, potentially others, but with simpler YAML structure | The API should be as simple and natural as possible, but we need to keep the ability to add future extensions.
 Driver handling allocation | in "classic DRA" | none | in "classic DRA" | We are not going to handle all the advanced scheduling use cases that people have solved with custom DRA control plane controllers, not now and perhaps never. It's too early to drop "classic DRA".
-Vendor configuration for multiple devices | vendor parameters in claim and class | none ? | vendor parameters in claim and class | Storing configuration that isn't specific to one device under one device feels like a workaround. In a "oneOf", that same configuration would have to be repeated for each device.
+Vendor configuration for multiple devices | vendor parameters in claim and class | none ? | vendor parameters in claim | Storing configuration that isn't specific to one device under one device feels like a workaround.
 Partioning | only in "classic DRA" | SharedResources | not added yet, still uses "named resources" | For the sake of simplicity, the current proposal doesn't attempt to modify how instances are described.
-CEL syntax | `attributes.<type>[<attribute name>]` = type known at compile time | `device.<attribute name>` = type determined at runtime | `device.<type>[<attribute name>]` | The simple CEL syntax from the prototype depends on operator overloading and implicit compile-time type conversions, something that is intentionally not supported in Kubernetes because estimating the cost of an expressions needs to know the types. Mapping attribute names to CEL field names isn't always obvious ("device-type" -> "deviceType" ?). With the typed maps we can have reasonable default values for unknown keys.
+CEL syntax | `attributes.<type>[<attribute name>]` = type known at compile time | `device.<attribute name>` = type determined at runtime | `device.attribute[<attribute name>], `device.<type>[<attribute name>]` | Access to attributes is supported both with and without runtime type checking because both can be useful. In both cases, arrays are usef because the mapping of attribute names to CEL field names isn't always obvious ("device-type" -> "deviceType" ?). With the typed maps we can have reasonable default values for unknown keys.
 
 To compare YAML files, something like this can be used:
 ```
@@ -101,16 +101,15 @@ individual types and fields are described in detail there in the comments.
 Capacity types are in [capacity_types.go](pkg/api/capacity_types.go). A quota
 mechanism is defined in [quota_types.go](pkg/api/quota_types.go).
 
-Vendors and administrators create `ResourceClass` resources to pre-configure
-various options for claims. Depending on what gets set in a class, users can:
-- Ask for exactly the set of devices pre-defined in a class.
-- Add additional configuration to their claim. This configuration is
-  passed down to the driver as coming from an admin, so it may control
-  options that normal users must not set themselves.
-- Restrict the choice of devices via additional constraints.
+Vendors and administrators create `DeviceClass` resources to pre-configure
+various options for requests in claims. Such a class contains:
+- configuration for a device, potentially including options that
+  only an administrator may set
+- device requirements which select device instances that match the intended
+  semantic of the class ("give me a GPU")
 
 Classes are not necessarily associated with a single vendor. Whether they are
-depends on how the constraints in them are defined.
+depends on how the requirements in them are defined.
 
 Example classes are in [classes.yaml](testdata/classes.yaml).
 

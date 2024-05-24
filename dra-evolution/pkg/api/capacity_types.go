@@ -6,10 +6,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-const (
-	DevMgmtAPIVersion = "devmgmtproto.k8s.io/v1alpha1"
-)
-
 // ResourcePool represents a collection of devices managed by a given driver. How
 // devices are divided into pools is driver-specific, but typically the
 // expectation would a be a pool per identical collection of devices, per node.
@@ -41,6 +37,12 @@ type ResourcePool struct {
 	//
 	// +optional
 	NodeSelector *v1.NodeSelector `json:"nodeSelector,omitempty"`
+
+	// ^^^^^^^^^^^^
+	// If we don't include NodeSelector in 1.31, then we need to prepare
+	// differently for adding it later. We cannot simply add it as a new
+	// field later because it would get ignored by older schedulers, which
+	// then incorrectly assume that the devices are available everywhere.
 
 	// DriverName identifies the DRA driver providing the capacity information.
 	// A field selector can be used to list only ResourceSlice
@@ -102,7 +104,7 @@ type NamedDevice struct {
 	// +optional
 	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
-	// TODO for 1.31: define "consumable resources" aka MIG support
+	// TODO for 1.31: define how to support partitionable devices
 }
 
 // DeviceAttribute is a combination of an attribute name and its value.
