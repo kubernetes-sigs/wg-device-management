@@ -2,7 +2,6 @@ package api
 
 import (
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -188,22 +187,6 @@ type DeviceFilter struct {
 	Selector string `json:"selector" protobuf:"bytes,2,name=selector"`
 }
 
-// FUTURE EXTENSION, not planned for 1.31! Needs further thought.
-type ResourceRequirement struct {
-	Name                     string `json:"name"`
-	ResourceRequirementValue `json:",inline" protobuf:"bytes,2,opt,name=value"`
-}
-
-// ResourceRequirementValue represents the value of a ResourceRequirement.
-// ResourceRequirementValue must have one and only one field set.
-type ResourceRequirementValue struct {
-	// QuantityValue is a quantity.
-	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,1,opt,name=quantity"`
-
-	// IntRangeValue is a range of 64-bit integers.
-	IntRangeValue *IntRange `json:"intRange,omitempty" protobuf:"varint,2,rep,name=intRange"`
-}
-
 // Namespace scoped.
 
 // ResourceClaim describes which resources (typically one or more devices)
@@ -358,7 +341,7 @@ type ResourceRequestDetail struct {
 	// - 0 <= x <= maximum (up to a certain number, with zero instances acceptable)
 	// - minimum <= 0 <= maximum (within a certain range)
 	// +optional
-	Count *CountDetails `json:"count,omitempty"`
+	Count *IntRange `json:"count,omitempty"`
 
 	// Requirements describe additional contraints that all must be met by a device
 	// to satisfy the request.
@@ -368,8 +351,8 @@ type ResourceRequestDetail struct {
 	Requirements []Requirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
-// CountDetails defines how many instances are desired.
-type CountDetails struct {
+// IntRange defines how many instances are desired.
+type IntRange struct {
 	// Minimum defines the lower limit. At least this many instances
 	// must be available (x >= minimum). The default if unset is one.
 	Minimum *int `json:"minimum"`
