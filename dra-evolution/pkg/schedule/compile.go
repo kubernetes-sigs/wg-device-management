@@ -143,29 +143,11 @@ var valueTypes = map[string]struct {
 		}
 		return *attr.BoolValue, nil
 	}},
-	"int": {cel.IntType, func(attr api.DeviceAttribute) (any, error) {
-		if attr.IntValue == nil {
-			return nil, nil
-		}
-		return *attr.IntValue, nil
-	}},
-	"intslice": {types.NewListType(cel.IntType), func(attr api.DeviceAttribute) (any, error) {
-		if attr.IntSliceValue == nil {
-			return nil, nil
-		}
-		return attr.IntSliceValue.Ints, nil
-	}},
 	"string": {cel.StringType, func(attr api.DeviceAttribute) (any, error) {
 		if attr.StringValue == nil {
 			return nil, nil
 		}
 		return *attr.StringValue, nil
-	}},
-	"stringslice": {types.NewListType(cel.StringType), func(attr api.DeviceAttribute) (any, error) {
-		if attr.StringSliceValue == nil {
-			return nil, nil
-		}
-		return attr.StringSliceValue.Strings, nil
 	}},
 	"version": {SemverType, func(attr api.DeviceAttribute) (any, error) {
 		if attr.VersionValue == nil {

@@ -1,7 +1,6 @@
 package api
 
 import (
-	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -16,83 +15,56 @@ type ResourcePool struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	// NodeName identifies the node which provides the devices
-	// if (and only if) they are local to a node. If this is empty,
-	// the devices exist outside of any specific node.
-	//
-	// NodeName and NodeSelector are mutually exclusive. If none is
-	// set, the devices are available in the entire cluster.
-	//
-	// A field selector can be used to list only ResourceSlice
-	// objects with a certain node name.
-	//
-	// +optional
-	NodeName string `json:"nodeName,omitempty" protobuf:"bytes,2,opt,name=nodeName"`
+	Spec ResourcePoolSpec `json:"spec"`
 
-	// NodeSelector identifies all nodes that devices which are shared
-	// between nodes could be accessed from.
-	//
-	// NodeName and NodeSelector are mutually exclusive. If none is
-	// set, the devices are available in the entire cluster.
-	//
-	// +optional
-	NodeSelector *v1.NodeSelector `json:"nodeSelector,omitempty"`
+	// Stretch goal for 1.31: define status
+}
 
-	// ^^^^^^^^^^^^
-	// If we don't include NodeSelector in 1.31, then we need to prepare
-	// differently for adding it later. We cannot simply add it as a new
-	// field later because it would get ignored by older schedulers, which
-	// then incorrectly assume that the devices are available everywhere.
+type ResourcePoolSpec struct {
+	ResourcePoolAccessability `json:",inline"`
 
 	// DriverName identifies the DRA driver providing the capacity information.
 	// A field selector can be used to list only ResourceSlice
 	// objects with a certain driver name.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
-	ResourceModel `json:",inline" protobuf:"bytes,4,name=resourceModel"`
+	// If this field is true, devices must be reserved before they can be
+	// allocated for a claim. The protocol for that has not been defined
+	// yet, so currently setting it to true is not valid. Clients must
+	// check nonetheless because that might change in the future. If
+	// a client does not support distributed allocation, it must ignore
+	// the pool.
+	DistributedAllocation *bool `json:"distributedAllocation"`
 
-	// To be decided: We could split ResourcePool into spec and status or
-	// extend NamedDevice below so that it reflects the current state of
-	// that device. Like the spec that is data that is coming from a driver,
-	// so adding more information is not a conceptual change. Could be
-	// added in any future release as an extension.
-	//
-	// Much harder is tracking "allocated for". That would be useful to
-	// enable running multiple schedulers for different sets of nodes where
-	// all instances share ownership of some ResourcePool with network-attached
-	// devices. It also would enable a DRA driver's controller to co-exist
-	// with structured parameters in the scheduler.
-	//
-	// If we had transactions in the apiserver, we could combine a status
-	// update of the ResourcePool with a status update of the claim.  But
-	// we don't and adding it [is
-	// hard](https://kubernetes.slack.com/archives/C0EG7JC6T/p1714373064352099).
-	// Without transactions, there will be a risk of leaking resources
-	// and/or races around freeing leaked resources. This would be great to
-	// have in 1.31 because requiring schedulers to use the ResourcePool
-	// status for allocation will be a change of behavior, but it'll be
-	// hard to design and implement in time.
+	// Devices lists all available devices in this pool.
+	Devices []Device `json:"devices,omitempty"`
+
+	// FUTURE EXTENSION: some other kind of list, should we ever need it.
+	// Old clients seeing an empty Devices field can safely ignore the (to
+	// them) empty pool.
 }
 
-// ResourceModel must have one and only one field set.
-type ResourceModel struct {
-	// NamedDevices describes available devices by listing them.
+// Exactly one field must be set. Clients which see an empty
+// field must ignore the pool when looking for devices.
+type ResourcePoolAccessability struct {
+	// NodeName identifies the node which provides the devices
+	// if (and only if) they are local to a node. Support for other
+	// kind of devices may get added in the future, in which case
+	// this field will be empty.
 	//
 	// +optional
-	NamedDevices *NamedDevices `json:"namedDevices,omitempty" protobuf:"bytes,1,opt,name=namedResources"`
+	NodeName *string `json:"nodeName,omitempty"`
+
+	// FUTURE EXTENSION:
+	// The devices in the pool are not local to any particular
+	// node. They are accessible from any node matching
+	// this selector. The empty selector matches all nodes.
+	// NodeSelector *v1.NodeSelector
 }
 
-// NamedDevices is used in ResourceModel.
-type NamedDevices struct {
-	// The list of all devices currently available.
-	//
-	// +listType=atomic
-	Devices []NamedDevice `json:"devices" protobuf:"bytes,1,name=instances"`
-}
-
-// NamedDevice represents one individual hardware instance that can be selected based
+// Device represents one individual hardware instance that can be selected based
 // on its attributes.
-type NamedDevice struct {
+type Device struct {
 	// Name is unique identifier among all devices managed by
 	// the driver on the node. It must be a DNS subdomain.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
@@ -133,30 +105,8 @@ type DeviceAttributeValue struct {
 	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,6,opt,name=quantity"`
 	// BoolValue is a true/false value.
 	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,2,opt,name=bool"`
-	// IntValue is a 64-bit integer.
-	IntValue *int64 `json:"int,omitempty" protobuf:"varint,7,opt,name=int"`
-	// IntSliceValue is an array of 64-bit integers.
-	IntSliceValue *IntSlice `json:"intSlice,omitempty" protobuf:"varint,8,rep,name=intSlice"`
 	// StringValue is a string.
 	StringValue *string `json:"string,omitempty" protobuf:"bytes,5,opt,name=string"`
-	// StringSliceValue is an array of strings.
-	StringSliceValue *StringSlice `json:"stringSlice,omitempty" protobuf:"bytes,9,rep,name=stringSlice"`
 	// VersionValue is a semantic version according to semver.org spec 2.0.0.
 	VersionValue *string `json:"version,omitempty" protobuf:"bytes,10,opt,name=version"`
-}
-
-// IntSlice contains a slice of 64-bit integers.
-type IntSlice struct {
-	// Ints is the slice of 64-bit integers.
-	//
-	// +listType=atomic
-	Ints []int64 `json:"ints" protobuf:"bytes,1,opt,name=ints"`
-}
-
-// StringSlice contains a slice of strings.
-type StringSlice struct {
-	// Strings is the slice of strings.
-	//
-	// +listType=atomic
-	Strings []string `json:"strings" protobuf:"bytes,1,opt,name=strings"`
 }

@@ -68,55 +68,19 @@ func TestCompile(t *testing.T) {
 			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}}},
 			expectMatch: true,
 		},
-		"int": {
-			expression:  `device.intAttributes["name"] > 0`,
-			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{IntValue: ptr.To(int64(1))}}},
-			expectMatch: true,
-		},
-		"intUntyped": {
-			expression:  `device.attributes["name"] > 0`,
-			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{IntValue: ptr.To(int64(1))}}},
-			expectMatch: true,
-		},
-		"intslice": {
-			expression:  `device.intsliceAttributes["name"].isSorted() && device.intsliceAttributes["name"].indexOf(3) == 2`,
-			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{IntSliceValue: &api.IntSlice{Ints: []int64{1, 2, 3}}}}},
-			expectMatch: true,
-		},
-		"empty-intslice": {
-			expression:  `size(device.intsliceAttributes["name"]) == 0`,
-			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{IntSliceValue: &api.IntSlice{}}}},
-			expectMatch: true,
-		},
 		"string": {
 			expression:  `device.stringAttributes["name"] == "fish"`,
 			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("fish")}}},
 			expectMatch: true,
 		},
-		"stringslice": {
-			expression:  `device.stringsliceAttributes["name"].isSorted() && device.stringsliceAttributes["name"].indexOf("a") == 0`,
-			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{StringSliceValue: &api.StringSlice{Strings: []string{"a", "b", "c"}}}}},
-			expectMatch: true,
-		},
-		"empty-stringslice": {
-			expression:  `size(device.stringsliceAttributes["name"]) == 0`,
-			attributes:  []api.DeviceAttribute{{Name: "name", DeviceAttributeValue: api.DeviceAttributeValue{StringSliceValue: &api.StringSlice{}}}},
-			expectMatch: true,
-		},
 		"all": {
 			expression: `device.quantityAttributes["quantity"].isGreaterThan(quantity("0")) &&
 device.boolAttributes["bool"] &&
-device.intAttributes["int"] > 0 &&
-device.intsliceAttributes["intslice"].isSorted() &&
-device.stringAttributes["string"] == "fish" &&
-device.stringsliceAttributes["stringslice"].isSorted()`,
+device.stringAttributes["string"] == "fish"`,
 			attributes: []api.DeviceAttribute{
 				{Name: "quantity", DeviceAttributeValue: api.DeviceAttributeValue{QuantityValue: ptr.To(resource.MustParse("1"))}},
 				{Name: "bool", DeviceAttributeValue: api.DeviceAttributeValue{BoolValue: ptr.To(true)}},
-				{Name: "int", DeviceAttributeValue: api.DeviceAttributeValue{IntValue: ptr.To(int64(1))}},
-				{Name: "intslice", DeviceAttributeValue: api.DeviceAttributeValue{IntSliceValue: &api.IntSlice{Ints: []int64{1, 2, 3}}}},
 				{Name: "string", DeviceAttributeValue: api.DeviceAttributeValue{StringValue: ptr.To("fish")}},
-				{Name: "stringslice", DeviceAttributeValue: api.DeviceAttributeValue{StringSliceValue: &api.StringSlice{Strings: []string{"a", "b", "c"}}}},
 			},
 			expectMatch: true,
 		},
