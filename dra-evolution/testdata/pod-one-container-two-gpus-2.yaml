@@ -9,13 +9,11 @@ metadata:
   namespace: default
 spec:
   spec:
+    constraints:
+    - matchAttribute: pcie-root.dra.k8s.io
     requests:
     - deviceClassName: example.com-foozer
-      match:
-      - attribute: model.example.com-foozer
-      - attribute: pcie-root.dra.k8s.io
-      count:
-        minimum: 2
+    - deviceClassName: example.com-foozer
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

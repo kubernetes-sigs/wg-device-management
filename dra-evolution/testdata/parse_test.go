@@ -83,9 +83,7 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 	case *api.DeviceClass:
 		validateRequestRequirements(t, obj.Requirements, "class.requirements")
 	case *api.ResourceClaim:
-		if obj.Spec != nil {
-			validateResourceClaimSpec(t, *obj.Spec, "claim.spec")
-		}
+		validateResourceClaimSpec(t, obj.Spec, "claim.spec")
 	case *api.ResourceClaimTemplate:
 		validateResourceClaimSpec(t, obj.Spec.Spec, "claimTemplate.spec.spec")
 	}
@@ -93,29 +91,13 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 
 func validateRequestRequirements(t *testing.T, requirements []api.Requirement, path string) {
 	for i, requirement := range requirements {
-		if requirement.Device == nil {
-			t.Errorf("%s[%d]: must not be empty", path, i)
-			return
-		}
-		if requirement.Device != nil {
-			validateDeviceFilter(t, requirement.Device, fmt.Sprintf("%s[%d].device", path, i))
-		}
+		validateDeviceSelector(t, requirement.DeviceSelector, fmt.Sprintf("%s[%d].deviceSelector", path, i))
 	}
 }
 
 func validateClaimConstraints(t *testing.T, requirements []api.Constraint, path string) {
 	for i, requirement := range requirements {
-		if requirement.Match == nil {
-			t.Errorf("%s[%d]: must not be empty", path, i)
-			return
-		}
-		validateMatchAttribute(t, requirement.Match.Attribute, fmt.Sprintf("%s[%d].match.attribute", path, i))
-	}
-}
-
-func validateMatch(t *testing.T, match []api.MatchModel, path string) {
-	for i, match := range match {
-		validateMatchAttribute(t, match.Attribute, fmt.Sprintf("%s[%d].attribute", path, i))
+		validateMatchAttribute(t, requirement.MatchAttribute, fmt.Sprintf("%s[%d].matchAttribute", path, i))
 	}
 }
 
@@ -128,18 +110,15 @@ func validateMatchAttribute(t *testing.T, attributeName *string, path string) {
 	}
 }
 
-func validateDeviceFilter(t *testing.T, filter *api.DeviceFilter, path string) {
-	if !assert.NotNil(t, filter, path) {
+func validateDeviceSelector(t *testing.T, deviceSelector *string, path string) {
+	if !assert.NotNil(t, deviceSelector, path) {
 		return
 	}
-	if filter.Selector == "" {
-		return
-	}
-	result := cel.Compiler.CompileCELExpression(filter.Selector, environment.StoredExpressions)
+	result := cel.Compiler.CompileCELExpression(*deviceSelector, environment.StoredExpressions)
 	assert.Nil(t, result.Error, path+".selector parse error")
 }
 
-func validateRequests(t *testing.T, requests []api.ResourceRequest, path string) {
+func validateRequests(t *testing.T, requests []api.Request, path string) {
 	for i, request := range requests {
 		// if request.ResourceRequestDetail != nil &&
 		// 	len(request.OneOf) > 0 {

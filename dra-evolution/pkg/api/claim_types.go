@@ -17,20 +17,6 @@ type DeviceClass struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	// Only nodes matching the selector will be considered by the scheduler
-	// when trying to find a Node that fits a Pod when that Pod uses
-	// a ResourceClaim that has not been allocated yet.
-	//
-	// Setting this field is optional. If unset, all nodes are candidates.
-	// It is ignored when the claim does not use a control plane controller
-	// for allocation.
-	//
-	// This is an alpha field and requires enabling the DRAControlPlaneController
-	// feature gate.
-	//
-	// +optional
-	SuitableNodes *v1.NodeSelector `json:"suitableNodes,omitempty" protobuf:"bytes,4,opt,name=suitableNodes"`
-
 	// Config defines configuration parameters that apply to each request in a claim using this class.
 	// They are ignored while allocating the claim.
 	//
@@ -59,31 +45,29 @@ type VendorConfigurationParameters struct {
 	//
 	// An admission webhook provided by the vendor could use this
 	// to decide whether it needs to validate them.
+	//
+	// Must be a DNS subdomain and should end with a DNS domain owned by the
+	// vendor of the driver.
 	DriverName string `json:"driverName,omitempty" protobuf:"bytes,1,opt,name=driverName"`
 
-	// Parameters can contain arbitrary data. It is the
-	// responsibility of the vendor to handle validation and
-	// versioning.
+	// Parameters can contain arbitrary data. It is the responsibility of
+	// the vendor to handle validation and versioning. Typically this
+	// includes self-identification and a version ("kind" + "apiVersion" for
+	// Kubernetes types), with conversion between different versions.
 	Parameters runtime.RawExtension `json:"parameters,omitempty" protobuf:"bytes,2,opt,name=parameters"`
 }
 
 // Requirement must have one and only one field set.
 type Requirement struct {
-	// Device describes a filter based on device attributes.
-	// This covers "qualitative" aspects of a device.
+	// This CEL expression which must evaluate to true if a
+	// device is suitable. This covers qualitative aspects of
+	// device selection.
 	//
-	// +optional
-	Device *DeviceFilter `json:"device,omitempty"`
-
-	// TODO for 1.31: define how to request a "partioned device"
-}
-
-type DeviceFilter struct {
-	// Selector is a CEL expression which must evaluate to true if a
-	// device is suitable. The language is as defined in
+	// The language is as defined in
 	// https://kubernetes.io/docs/reference/using-api/cel/
+	// with several additions that are specific to device selectors.
 	//
-	// In addition, for each type in NamedDeviceAttributeValue there is a
+	// For each attribute type there is a
 	// `device.<type>Attributes` map that resolves to the corresponding
 	// value of the instance under evaluation. The type of those map
 	// entries are known at compile time, which makes it easier to
@@ -96,41 +80,37 @@ type DeviceFilter struct {
 	// Unknown keys are not an error. Instead, `device.<type>Attributes`
 	// returns a default value for each type:
 	// - empty string
-	// - zero
-	// - empty slice
+	// - false for a boolean
+	// - zero quantity
 	// - 0.0.0 for a version
 	//
 	// `device.attributes` returns nil.
-	//
-	// These defaults are useful because CEL expression are applied to *all*
-	// available devices from any driver when the driver name is unset.
-	// Looking up an attribute defined by one vendor when checking a device
-	// from some other vendor doesn't find the attribute.
-	//
-	// Some examples:
-	//    "a.dra.example.com" in device.attributes &&
-	//    device.quantityAttributes["a.dra.example.com"].isGreaterThan(quantity("0")) &&
-	//    # No separate check, b.dra.example.com yields the empty slice when not set.
-	//    device.stringsliceAttributes["b.dra.example.com"].isSorted()
-	//
-	// Attribute names have to be fully-qualified.
 	//
 	// The `device.driverName` string variable can be used to check for a specific
 	// driver explicitly in a filter that is meant to work for devices from
 	// different vendors. It is provided by Kubernetes and matches the
 	// `driverName` from the ResourcePool which provides the device.
 	//
-	// If empty, any device matches.
+	// The CEL expression is applied to *all* available devices from any driver.
+	// Because of the defaults, it is safe to reference and use attribute values
+	// without checking first whether they are set. For this to work without
+	// ambiguity, attribute names have to be fully-qualified.
+	//
+	// Some examples:
+	//    device.quantityAttributes["memory.dra.example.com"].isGreaterThan(quantity("1Gi")) # >= 1Gi
+	//    "memory.dra.example.com" in device.attributes # attribute is set
 	//
 	// +optional
-	Selector string `json:"selector" protobuf:"bytes,2,name=selector"`
+	DeviceSelector *string `json:"deviceSelector,omitempty" protobuf:"bytes,1,opt,name=deviceSelector"`
+
+	// TODO for 1.31: define how to request a "partioned device"
 }
 
 // Namespace scoped.
 
 // ResourceClaim describes which resources (typically one or more devices)
-// are needed by a resource consumer.
-// Its status tracks whether the resource has been allocated and what the
+// are needed by a claim consumer.
+// Its status tracks whether the claim has been allocated and what the
 // resulting attributes are.
 //
 // This is an alpha type and requires enabling the DynamicResourceAllocation
@@ -141,56 +121,25 @@ type ResourceClaim struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	ResourceClaimSpecAlternatives `json:",inline"` // Inlined with "spec" defined in the ResourceClaimSpec.
+	// Spec defines what to allocated and how to configure it.
+	Spec ResourceClaimSpec `json:"spec"`
 
 	// Status describes whether the claim is ready for use.
 	// +optional
 	Status ResourceClaimStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
-// ResourceClaimSpecAlternatives defines how a claim is to be allocated.
-type ResourceClaimSpecAlternatives struct {
-	// Spec define what to allocated and how to configure it.
-	// Spec and SpecRef are mutually exclusive.
-	// +optional
-	Spec *ResourceClaimSpec `json:"spec"`
-
-	// SpecRef references a separate object with the specification of the claim
-	// that will be used by the driver when allocating a resource for the
-	// claim. Parameters and ParametersRef are mutually exclusive.
-	//
-	// SpecRef is typically used to reference a vendor CR.
-	// A vendor controller then converts that CR into a ResourceClaimSpecification
-	// object and that is then used to allocate the claim.
-	//
-	// The object must be in the same namespace as the ResourceClaim.
-	// +optional
-	SpecRef *ResourceClaimSpecReference `json:"specRef,omitempty"`
-}
-
-// Used inside a ResourceClaimSpecAlternatives or a ResourceClaimSpecification object.
 type ResourceClaimSpec struct {
-	// ControllerName defines the name of the resource driver that is
-	// meant to handle allocation of this claim. If empty,
-	// structured parameters are used for allocation.
-	//
-	// Resource drivers have a unique name in forward domain order
-	// (acme.example.com).
-	//
-	// This is an alpha field and requires enabling the DRAControlPlaneController
-	// feature gate.
-	//
-	// +optional
-	ControllerName string `json:"controllername,omitempty"`
-
-	// Config defines configuration parameters that apply to the entire claim.
-	// They are ignored while allocating the claim.
+	// This field holds configuration for multiple potential drivers which
+	// could satisfy requests in this claim. The configuration applies to
+	// the entire claim. It is ignored while allocating the claim.
 	//
 	// +optional
 	// +listType=atomic
 	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
 
-	// All constraints must be satisfied when allocating the claim.
+	// These constraints must be satisfied by the set of devices that get
+	// allocated for the claim.
 	Constraints []Constraint `json:"constraints"`
 
 	// Requests are individual requests for separate resources for the claim.
@@ -199,7 +148,7 @@ type ResourceClaimSpec struct {
 	// requests from that class.
 	//
 	// +listType=atomic
-	Requests []ResourceRequest `json:"requests,omitempty" protobuf:"bytes,5,name=requests"`
+	Requests []Request `json:"requests,omitempty" protobuf:"bytes,5,name=requests"`
 
 	// Future extension, ignored by older schedulers. This is fine because scoring
 	// allows users to define a preference, without making it a hard requirement.
@@ -215,19 +164,34 @@ type ResourceClaimSpec struct {
 
 // Constraint must have one and only one field set.
 type Constraint struct {
-	// The match criteria must be satisfied before a set of devices will be used
-	// together.
+	// All devices must have this attribute and its value must be the same.
+	//
+	// For example, if you specified "numa.dra.example.com" (a hypothetical example!),
+	// then only devices in the same NUMA node will be chosen.
 	//
 	// +optional
-	Match *MatchModel `json:"match,omitempty"`
+	// +listType=atomic
+	MatchAttribute *string `json:"matchAttribute,omitempty"`
+
+	// Future extension, not part of the current design:
+	// A CEL expression which compares different devices and returns
+	// true if they match.
+	//
+	// Because it would be part of a one-of, old schedulers will not
+	// accidentally ignore this additional, for them unknown match
+	// criteria.
+	//
+	// matcher string
 }
 
-// ResourceRequest is a request for one of many resources required for a claim.
+// Request is a request for one of many resources required for a claim.
 // This is typically a request for a single resource like a device, but can
 // also ask for one of several different alternatives.
-type ResourceRequest struct {
+type Request struct {
 	// Name can be set to enable referencing this request in a pod.spec.containers[].resources.devices
 	// entry, if that is desired.
+	//
+	// Must be a DNS label.
 	//
 	// +optional
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
@@ -245,7 +209,11 @@ type ResourceRequest struct {
 }
 
 type ResourceRequestDetail struct {
-	*RequestClassReference `json:",inline,omitempty" protobuf:"bytes,1,opt,name=classReference"`
+	// When referencing a DeviceClass, a request inherits additional
+	// configuration and requirements.
+	//
+	// +optional
+	DeviceClassName *string `json:"deviceClassName,omitempty"`
 
 	// Config defines configuration parameters that apply to the requested resource(s).
 	// They are ignored while allocating the claim.
@@ -269,20 +237,9 @@ type ResourceRequestDetail struct {
 	// +optional
 	AdminAccess *bool `json:"adminAccess,omitempty"`
 
-	// All these match criteria must be satisfied by all devices allocated for this request.
-	//
-	// +optional
-	// +listType=atomic
-	Match []MatchModel `json:"match,omitempty"`
-
-	// Count defines how many instances are desired. If unset, exactly one
-	// instance must be available. When a range is set, it is possible to
-	// ask for:
-	// - x >= minimum instances up to all that are available
-	// - 0 <= x <= maximum (up to a certain number, with zero instances acceptable)
-	// - minimum <= 0 <= maximum (within a certain range)
-	// +optional
-	Count *IntRange `json:"count,omitempty"`
+	// FUTURE EXTENSION:
+	// - Count with min, max (including "all that are available").
+	// - Constraints for the set of devices belonging to this request.
 
 	// Requirements describe additional contraints that all must be met by a device
 	// to satisfy the request.
@@ -292,65 +249,9 @@ type ResourceRequestDetail struct {
 	Requirements []Requirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
-// RequestClassReference must have one and only one field set.
-//
-// If we ever need to introduce new class settings which cannot be added to DeviceClass
-// (for example, because it wouldn't be okay for an older scheduler to ignore them),
-// then we could add new types and entries here to indicate to old schedulers that
-// they cannot handle the claim.
-type RequestClassReference struct {
-	// When referencing a DeviceClass, a request inherits additional
-	// configuration and requirements.
-	//
-	// +optional
-	DeviceClassName *string `json:"deviceClassName,omitempty"`
-}
-
-// IntRange defines how many instances are desired.
-type IntRange struct {
-	// Minimum defines the lower limit. At least this many instances
-	// must be available (x >= minimum). The default if unset is one.
-	Minimum *int `json:"minimum"`
-
-	// Maximum defines the upper limit. At most this many instances
-	// may be allocated (x <= maximum). The default if unset is unlimited.
-	Maximum *int `json:"maximum"`
-}
-
-// MatchModel must have one and only one field set.
-type MatchModel struct {
-	// All devices must have this attribute and its value must be the same.
-	//
-	// For example, if you specified "numa.dra.example.com" (a hypothetical example!),
-	// then only devices in the same NUMA node will be chosen.
-	//
-	// +optional
-	// +listType=atomic
-	Attribute *string `json:"attribute,omitempty"`
-
-	// Future extension, not part of the current design:
-	// A CEL expression which compares different devices and returns
-	// true if they match.
-	//
-	// Because it would be part of a one-of, old schedulers will not
-	// accidentally ignore this additional, for them unknown match
-	// criteria.
-	//
-	// matcher string
-}
-
 // ResourceClaimStatus tracks whether the resource has been allocated and what
 // the result of that was.
 type ResourceClaimStatus struct {
-	// ControllerName is the name of the resource driver which handled the allocation.
-	// It is empty when the claim was allocated through structured parameters.
-	//
-	// This is an alpha field and requires enabling the DRAControlPlaneController
-	// feature gate.
-	//
-	// +optional
-	ControllerName string `json:"controllerName"`
-
 	// Allocation is set once the claim has been allocated successfully.
 	// +optional
 	Allocation *AllocationResult `json:"allocation,omitempty" protobuf:"bytes,2,opt,name=allocation"`
@@ -368,21 +269,6 @@ type ResourceClaimStatus struct {
 	// +patchMergeKey=uid
 	// +optional
 	ReservedFor []ResourceClaimConsumerReference `json:"reservedFor,omitempty" protobuf:"bytes,3,opt,name=reservedFor" patchStrategy:"merge" patchMergeKey:"uid"`
-
-	// DeallocationRequested indicates that a ResourceClaim is to be
-	// deallocated.
-	//
-	// The driver then must deallocate this claim and reset the field
-	// together with clearing the Allocation field.
-	//
-	// While DeallocationRequested is set, no new consumers may be added to
-	// ReservedFor.
-	//
-	// This is an alpha field and requires enabling the DRAControlPlaneController
-	// feature gate.
-	//
-	// +optional
-	DeallocationRequested bool `json:"deallocationRequested,omitempty" protobuf:"varint,4,opt,name=deallocationRequested"`
 }
 
 // AllocationResult contains attributes of an allocated resource.
@@ -400,9 +286,8 @@ type AllocationResult struct {
 	// +optional
 	DriverData []DriverData `json:"driverData,omitempty" protobuf:"bytes,1,opt,name=driverData"`
 
-	// This field will get set by the resource driver after it has allocated
-	// the resource to inform the scheduler where it can schedule Pods using
-	// the ResourceClaim.
+	// This field defines where Pods can be scheduled which reference
+	// an allocated claim.
 	//
 	// Setting this field is optional. If null, the resource is available
 	// everywhere.
@@ -418,33 +303,22 @@ type AllocationResult struct {
 // DriverData holds information for processing by a specific kubelet plugin.
 type DriverData struct {
 	// DriverName specifies the name of the resource driver whose kubelet
-	// plugin should be invoked to process this ResourceHandle's data once it
-	// lands on a node.
+	// plugin should be invoked to process the allocation once the claim is
+	// needed on a node.
+	//
+	// Must be a DNS subdomain and should end with a DNS domain owned by the
+	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,1,name=driverName"`
 
-	// Data contains the opaque data associated with this DriverData. It is
-	// set by the controller component of the resource driver whose name
-	// matches the DriverName set in the ResourceClaimStatus this
-	// DriverData is embedded in. It is set at allocation time and is
-	// intended for processing by the kubelet plugin whose name matches
-	// the DriverName set in this DriverData.
-	//
-	// The maximum size of this field is 16KiB. This may get increased in the
-	// future, but not reduced.
-	//
-	// This is an alpha field and requires enabling the DRAControlPlaneController feature gate.
+	// Data contains all information about the allocation that the kubelet
+	// plugin will need.
 	//
 	// +optional
-	Data string `json:"data,omitempty" protobuf:"bytes,2,opt,name=data"`
+	Data *StructuredDriverData `json:"data,omitempty" protobuf:"bytes,2,opt,name=data"`
 
-	// If StructuredData is set, then it needs to be used instead of Data.
-	//
-	// +optional
-	Structured *StructuredDriverData `json:"structured,omitempty" protobuf:"bytes,5,opt,name=structured"`
+	// Alternative to "Data", not describe further here for the sake of brevity:
+	// OpaqueData *string // Set by control plane controller when using "classic DRA".
 }
-
-// DriverDataHandleMaxSize represents the maximum size of driverData.handle.
-const DriverDataHandleMaxSize = 16 * 1024
 
 // StructuredDriverData is the in-tree representation of the allocation result.
 type StructuredDriverData struct {
@@ -558,23 +432,6 @@ type ResourceClaimSpecReference struct {
 	Kind string `json:"kind" protobuf:"bytes,2,name=kind"`
 	// Name is the name of resource being referenced.
 	Name string `json:"name" protobuf:"bytes,3,name=name"`
-}
-
-// ResourceClaimSpecification contains the specification for a ResourceClaim in an
-// in-tree format understood by Kubernetes.
-type ResourceClaimSpecification struct {
-	metav1.TypeMeta `json:",inline"`
-	// Standard object metadata
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
-	// If this object was created from some other resource, then this links
-	// back to that resource. This field is used to find the in-tree representation
-	// of the claim parameters when the parameter reference of the claim refers
-	// to some unknown type.
-	// +optional
-	GeneratedFrom *ResourceClaimSpecReference `json:"generatedFrom,omitempty" protobuf:"bytes,2,opt,name=generatedFrom"`
-
-	ResourceClaimSpec // inline
 }
 
 // ResourceClaimTemplate is used to produce ResourceClaim objects.

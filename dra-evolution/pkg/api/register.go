@@ -47,7 +47,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&DeviceClass{},
 		&ResourceClaim{},
 		&ResourceClaimTemplate{},
-		&ResourceClaimSpecification{},
 		&ResourcePool{},
 
 		// Not really in this API Group...
@@ -73,10 +72,6 @@ func (in ResourceClaim) DeepCopyObject() runtime.Object {
 }
 
 func (in ResourceClaimTemplate) DeepCopyObject() runtime.Object {
-	return &in
-}
-
-func (in ResourceClaimSpecification) DeepCopyObject() runtime.Object {
 	return &in
 }
 

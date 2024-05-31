@@ -10,8 +10,7 @@ metadata:
 spec:
   spec:
     constraints:
-    - match:
-        attribute: model.example.com-foozer
+    - matchAttribute: model.example.com-foozer
     requests:
     - name: foozer-gpu
       deviceClassName: example.com-foozer
@@ -33,7 +32,7 @@ spec:
         memory: 10Mi
       claims:
       - name: two-foozer-gpus
-        sourceRequestName: foozer-gpu
+        requestName: foozer-gpu
   - image: registry.k8s.io/pause:3.6
     name: my-other-container
     resources:
@@ -42,7 +41,7 @@ spec:
         memory: 10Mi
       claims:
       - name: two-foozer-gpus
-        sourceRequestName: other-foozer-gpu
+        requestName: other-foozer-gpu
   resourceClaims:
   - name: two-foozer-gpus
     resourceClaimTemplateName: example.com-foozer-two-separate-gpus-same-model

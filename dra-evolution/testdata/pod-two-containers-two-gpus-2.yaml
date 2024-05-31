@@ -10,19 +10,16 @@ metadata:
 spec:
   spec:
     constraints:
-    - match:
-        attribute: pcie-root.dra.k8s.io
+    - matchAttribute: pcie-root.dra.k8s.io
     requests:
     - name: foozer-gpu
       deviceClassName: example.com-foozer
       requirements:
-      - device:
-          selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
+      - deviceSelector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
     - name: other-foozer-gpu
       deviceClassName: example.com-foozer
       requirements:
-      - device:
-          selector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
+      - deviceSelector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
@@ -39,7 +36,7 @@ spec:
         memory: 10Mi
       claims:
       - name: two-foozer-gpus
-        sourceRequestName: foozer-gpu
+        requestName: foozer-gpu
   - image: registry.k8s.io/pause:3.6
     name: my-other-container
     resources:
@@ -48,7 +45,7 @@ spec:
         memory: 10Mi
       claims:
       - name: two-foozer-gpus
-        sourceRequestName: other-foozer-gpu
+        requestName: other-foozer-gpu
   resourceClaims:
   - name: two-foozer-gpus
     resourceClaimTemplateName: example.com-foozer-two-separate-foozer-1k

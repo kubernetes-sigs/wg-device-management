@@ -17,8 +17,7 @@ spec:
   spec:
     requests:
     - deviceClassName: example.com-foozer
-      count:
-        minimum: 2
+    - deviceClassName: example.com-foozer
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

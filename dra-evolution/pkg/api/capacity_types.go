@@ -9,6 +9,11 @@ import (
 // devices are divided into pools is driver-specific, but typically the
 // expectation would a be a pool per identical collection of devices, per node.
 // It is fine to have more than one pool for a given node, for the same driver.
+//
+// Where a device gets published may change over time. The unique identifier
+// for a device is the tuple `<driver name>/<node name>/<device name>`. Each
+// of these names is a DNS label or domain, so it is okay to concatenate them
+// like this in a string with a slash as separator.
 type ResourcePool struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object metadata
@@ -18,23 +23,34 @@ type ResourcePool struct {
 	Spec ResourcePoolSpec `json:"spec"`
 
 	// Stretch goal for 1.31: define status
+	//
+	// To discuss:
+	// - Who writes that status?
+	//   After https://github.com/kubernetes/kubernetes/pull/125163 (implements
+	//   https://github.com/kubernetes/enhancements/pull/4667), kubelet is not
+	//   involved with publishing ResourcePools, they come directly from the driver.
+	// - What information should be in it?
+	// - Does it need to be a sub-resource? This would make it harder
+	//   for a driver to publish a new device (spec) and its corresponding
+	//   health information (status).
 }
 
 type ResourcePoolSpec struct {
-	ResourcePoolAccessability `json:",inline"`
+	// NodeName identifies the node which provides the devices. All devices
+	// are local to that node.
+	//
+	// This is currently required, but this might get relaxed in the future.
+	NodeName string `json:"nodeName"`
+
+	// POTENTIAL FUTURE EXTENSION: NodeSelector *v1.NodeSelector
 
 	// DriverName identifies the DRA driver providing the capacity information.
-	// A field selector can be used to list only ResourceSlice
+	// A field selector can be used to list only ResourcePool
 	// objects with a certain driver name.
+	//
+	// Must be a DNS subdomain and should end with a DNS domain owned by the
+	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
-
-	// If this field is true, devices must be reserved before they can be
-	// allocated for a claim. The protocol for that has not been defined
-	// yet, so currently setting it to true is not valid. Clients must
-	// check nonetheless because that might change in the future. If
-	// a client does not support distributed allocation, it must ignore
-	// the pool.
-	DistributedAllocation *bool `json:"distributedAllocation"`
 
 	// Devices lists all available devices in this pool.
 	Devices []Device `json:"devices,omitempty"`
@@ -44,29 +60,11 @@ type ResourcePoolSpec struct {
 	// them) empty pool.
 }
 
-// Exactly one field must be set. Clients which see an empty
-// field must ignore the pool when looking for devices.
-type ResourcePoolAccessability struct {
-	// NodeName identifies the node which provides the devices
-	// if (and only if) they are local to a node. Support for other
-	// kind of devices may get added in the future, in which case
-	// this field will be empty.
-	//
-	// +optional
-	NodeName *string `json:"nodeName,omitempty"`
-
-	// FUTURE EXTENSION:
-	// The devices in the pool are not local to any particular
-	// node. They are accessible from any node matching
-	// this selector. The empty selector matches all nodes.
-	// NodeSelector *v1.NodeSelector
-}
-
 // Device represents one individual hardware instance that can be selected based
 // on its attributes.
 type Device struct {
 	// Name is unique identifier among all devices managed by
-	// the driver on the node. It must be a DNS subdomain.
+	// the driver on the node. It must be a DNS label.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
 	// Attributes defines the attributes of this device.
@@ -82,12 +80,14 @@ type Device struct {
 // DeviceAttribute is a combination of an attribute name and its value.
 type DeviceAttribute struct {
 	// Name is a unique identifier across all possible attributes of devices.
+	// It must be a DNS subdomain, with one additional restriction: the
+	// first part must not contain a hyphen and not start with a digit.
 	//
-	// If this is a DNS subdomain (no dot), then the driver name gets added
+	// If this is a DNS label (no dot), then the driver name gets added
 	// when looking up attributes. This avoids name collisions with attributes
 	// used by other drivers.
 	//
-	// If this is a full DNS domain, then the meaning of the attribute driver-independent.
+	// If this is a full DNS subdomain, then the meaning of the attribute is driver-independent.
 	// For example, Kubernetes will use `*.k8s.io` names when defining attributes that
 	// drivers from different vendors are supposed to use.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`

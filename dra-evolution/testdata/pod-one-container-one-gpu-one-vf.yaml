@@ -15,14 +15,12 @@ spec:
       foo: bar
   spec:
     constraints:
-    - match:
-        attribute: pcie-root.dra.k8s.io
+    - matchAttribute: pcie-root.dra.k8s.io
     requests:
     - deviceClassName: example.com-foozer
     - deviceClassName: example.org-sriov-nic
       requirements:
-      - device:
-          selector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
+      - deviceSelector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
@@ -57,14 +55,12 @@ metadata:
   - dra.k8s.io/delete-protection
 spec:
   constraints:
-  - match:
-      attribute: pcie-root.dra.k8s.io
+  - matchAttribute: pcie-root.dra.k8s.io
   requests:
   - deviceClassName: example.com-foozer
   - deviceClassName: example.org-sriov-nic
     requirements:
-    - device:
-        selector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
+    - deviceSelector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
 status:
   allocation:
     availableOnNodes:
@@ -77,16 +73,17 @@ status:
     shareable: true
     driverData:
     - driverName: example.com-foozer
-      structured:
+      data:
         nodeName: worker-1
         results:
         - device:
             name: gpu-1
     - driverName: example.org-sriov
-      structured:
+      data:
         nodeName: worker-1
         results:
-        - device:
+        -
+          device:
             name: nic-1
   reservedFor:
   - resource: pods

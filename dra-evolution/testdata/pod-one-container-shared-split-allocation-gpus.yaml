@@ -9,8 +9,7 @@ metadata:
 spec:
   requests:
   - deviceClassName: example.com-foozer
-    count:
-      maximum: 8
+    # FUTURE EXTENSION: count range
     requirements:
     # TODO for 1.31: show how to request a partitioned device
 ---

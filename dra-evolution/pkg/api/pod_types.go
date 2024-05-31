@@ -189,9 +189,9 @@ type ResourceClaimEntry struct {
 	// the Pod where this field is used. It makes that resource available
 	// inside a container.
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
-	// claim.spec.requests
+	// A name set in claim.spec.requests[].name.
 	// +optional
-	SourceRequestName string `json:"sourceRequestName" protobuf:"bytes,2,opt,name=sourceRequestName"`
+	RequestName string `json:"requestName" protobuf:"bytes,2,opt,name=requestName"`
 }
 
 type PodResourceClaim struct {
