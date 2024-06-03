@@ -6,13 +6,13 @@
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClaim
 metadata:
-  name: template-example.org-sriov-vf
+  name: template-sriov-vf.example.org
   namespace: default
 spec:
   devices:
   - name: netdevs # required but not used
     allOf:
-    - class: example.org-sriov-nic
+    - class: sriov-nic.example.org
       requests:
         vf: 1
 ---
@@ -31,4 +31,4 @@ spec:
         memory: 10Mi
   deviceClaims:
     template:
-      claimName: template-example.org-sriov-vf
+      claimName: template-sriov-vf.example.org

@@ -17,13 +17,13 @@ spec:
     - class: sriov-nic
       constraints: "device.sriovType == 'pf'"
     oneOf:
-    - class: example.com-foozer
+    - class: foozer.example.com
       constraints: "device.model == 'foozer-4000'"
-    - class: example.com-foozer
+    - class: foozer.example.com
       constraints: "device.model == 'foozer-2000'"
       requests:
         devices: 2
-    - class: example.com-foozer
+    - class: foozer.example.com
       constraints: "device.model == 'foozer-1000'"
       requests:
         devices: 4

@@ -2,28 +2,28 @@
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-foozer
+  name: foozer.example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-foozer'"
+- deviceSelector: "device.driverName == 'foozer.example.com'"
 ---
 # A Foozer 1000 device
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-foozer-1000
+  name: foozer-1000-example.com
 requirements:
-- deviceSelector: "device.stringAttributes['example.com-foozer/model'] == 'foozer-1000'"
+- deviceSelector: "device.stringAttributes['foozer.example.com/model'] == 'foozer-1000'"
     # Checking the driver name is not needed: devices from other vendors
-    # are not going to have the model.example.com-foozer attribute.
+    # are not going to have the foozer.model.example.com attribute.
 
 ---
 # Any Barzer device
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-barzer
+  name: barzer.example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-barzer'"
+- deviceSelector: "device.driverName == 'barzer.example.com'"
 ---
 # Any example.com GPU, even though Foozer and
 # Barzer GPUs use different drivers. In this case,
@@ -33,28 +33,28 @@ requirements:
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-gpu
+  name: gpu-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-foozer' || device.driverName == 'example.com-barzer'"
+- deviceSelector: "device.driverName == 'foozer.example.com' || device.driverName == 'barzer.example.com'"
 ---
 # An example.com SR-IOV NIC
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-nic
+  name: sriov-nic.example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov'"
+- deviceSelector: "device.driverName == 'sriov.example.com'"
 ---
 # An example.org SR-IOV NIC (different vendor)
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.org-sriov-nic
+  name: sriov-nic-example.org
 requirements:
-- deviceSelector: "device.driverName == 'example.org-sriov'"
+- deviceSelector: "device.driverName == 'sriov.example.org'"
 ---
 # Request any SR-IOV NIC. This will allow the claim to be satisfied by
-# example.com or example.org NICs. In contrast to the example.com-gpu above,
+# example.com or example.org NICs. In contrast to the gpu.example.com above,
 # here it is assumed that "SR-IOV NIC" is a concept defined in a KEP which
 # then also standardizes an attribute that vendors can use to declare
 # that their device satisfies the requirements in that KEP. All of the
@@ -70,25 +70,25 @@ requirements:
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-nic-1g
+  name: sriov-nic-1g-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.quantityAttributes['nic.k8s.io/bandwidth'].compareTo(quantity('1G')) == 0"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.quantityAttributes['nic.k8s.io/bandwidth'].compareTo(quantity('1G')) == 0"
 ---
 # Request an example.com 10Gbps SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-nic-10g
+  name: sriov-nic-10g-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.quantityAttributes['nic.k8s.io/bandwidth'].compareTo(quantity('10G')) == 0"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.quantityAttributes['nic.k8s.io/bandwidth'].compareTo(quantity('10G')) == 0"
 ---
 # Request an example.com 1Gbps or faster SR-IOV NIC.
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-nic-1g-or-faster
+  name: sriov-nic-1g-or-faster-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.quantityAttributes['nic.k8s.io/bandwidth'].compareTo(quantity('1G')) >= 0"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.quantityAttributes['nic.k8s.io/bandwidth'].compareTo(quantity('1G')) >= 0"
 ---
 # Request any 1Gbps or faster SR-IOV NIC, regardless of the vendor.
 apiVersion: resource.k8s.io/v1alpha2
@@ -103,25 +103,25 @@ requirements:
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-pf
+  name: sriov-pf-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.stringAttributes['nic.k8s.io/type'] == 'pf'"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.stringAttributes['nic.k8s.io/type'] == 'pf'"
 ---
 # Request an example.com VF
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-vf
+  name: sriov-vf-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.stringAttributes['nic.k8s.io/type'] == 'vf'"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.stringAttributes['nic.k8s.io/type'] == 'vf'"
 ---
 # Request an example.com PF or VF
 apiVersion: resource.k8s.io/v1alpha2
 kind: DeviceClass
 metadata:
-  name: example.com-sriov-vf
+  name: sriov-vf-example.com
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.stringAttributes['nic.k8s.io/type'] == 'vf' || device.stringAttributes['nic.k8s.io/type'] == 'pf'"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.stringAttributes['nic.k8s.io/type'] == 'vf' || device.stringAttributes['nic.k8s.io/type'] == 'pf'"
 ---
 # Request a VLAN interface on VLAN 2000
 apiVersion: resource.k8s.io/v1alpha2
@@ -129,14 +129,14 @@ kind: DeviceClass
 metadata:
   name: vlan-2000
 requirements:
-- deviceSelector: "device.driverName == 'example.com-sriov' && device.stringAttributes['k8s.io/type'] == 'vlan'"
+- deviceSelector: "device.driverName == 'sriov.example.com' && device.stringAttributes['k8s.io/type'] == 'vlan'"
 config:
 - opaque:
-    driverName: example.com-sriov
+    driverName: sriov.example.com
     parameters:
-      ## Parameters to configure an example.com-sriov driver that manages VLAN interfaces.
+      ## Parameters to configure an sriov.example.com driver that manages VLAN interfaces.
       ## An admission webhook of the vendor could check this configuration in advance
-      ## because it is clearly marked as "configuration for driver example.com-sriov".
+      ## because it is clearly marked as "configuration for driver sriov.example.com".
       ## Without such a webhook, the kubelet plugin needs to check these settings.
       ## They will be marked as coming from the admin.
       apiVersion: sriov.example.com/v1

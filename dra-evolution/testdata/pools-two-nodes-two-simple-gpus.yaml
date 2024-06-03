@@ -3,7 +3,7 @@ kind: DevicePool
 metadata:
   name: node-00-foozer
 spec:
-  driver: example.com-foozer
+  driver: foozer.example.com
   nodeName: node-00
   attributes:
   - name: vendor
@@ -29,7 +29,7 @@ kind: DevicePool
 metadata:
   name: node-01-foozer
 spec:
-  driver: example.com-foozer
+  driver: foozer.example.com
   nodeName: node-01
   attributes:
   - name: vendor

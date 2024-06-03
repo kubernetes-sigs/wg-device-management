@@ -5,7 +5,7 @@
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClaimTemplate
 metadata:
-  name: example.com-foozer-two-separate-foozer-1k
+  name: foozer-two-separate-foozer-1k-example.com
   namespace: default
 spec:
   spec:
@@ -13,13 +13,13 @@ spec:
     - matchAttribute: dra.k8s.io/pcie_root
     requests:
     - name: foozer-gpu
-      deviceClassName: example.com-foozer
+      deviceClassName: foozer.example.com
       requirements:
-      - deviceSelector: "device.stringAttributes['example.com-foozer/model'] == 'foozer-1000'"
+      - deviceSelector: "device.stringAttributes['foozer.example.com/model'] == 'foozer-1000'"
     - name: other-foozer-gpu
-      deviceClassName: example.com-foozer
+      deviceClassName: foozer.example.com
       requirements:
-      - deviceSelector: "device.stringAttributes['example.com-foozer/model'] == 'foozer-1000'"
+      - deviceSelector: "device.stringAttributes['foozer.example.com/model'] == 'foozer-1000'"
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
@@ -48,4 +48,4 @@ spec:
         requestName: other-foozer-gpu
   resourceClaims:
   - name: two-foozer-gpus
-    resourceClaimTemplateName: example.com-foozer-two-separate-foozer-1k
+    resourceClaimTemplateName: foozer-two-separate-foozer-1k-example.com

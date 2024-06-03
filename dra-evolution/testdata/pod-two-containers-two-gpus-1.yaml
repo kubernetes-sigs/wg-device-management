@@ -5,7 +5,7 @@
 apiVersion: resource.k8s.io/v1alpha2
 kind: ResourceClaimTemplate
 metadata:
-  name: example.com-foozer-two-separate-gpus-same-model
+  name: foozer-two-separate-gpus-same-model-example.com
   namespace: default
 spec:
   spec:
@@ -13,9 +13,9 @@ spec:
     - matchAttribute: foozer.example.com/model
     requests:
     - name: foozer-gpu
-      deviceClassName: example.com-foozer
+      deviceClassName: foozer.example.com
     - name: other-foozer-gpu
-      deviceClassName: example.com-foozer
+      deviceClassName: foozer.example.com
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
@@ -44,4 +44,4 @@ spec:
         requestName: other-foozer-gpu
   resourceClaims:
   - name: two-foozer-gpus
-    resourceClaimTemplateName: example.com-foozer-two-separate-gpus-same-model
+    resourceClaimTemplateName: foozer-two-separate-gpus-same-model-example.com

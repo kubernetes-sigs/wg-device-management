@@ -12,15 +12,15 @@ spec:
   devices:
   - name: gpu
     oneOf:
-    - class: example.com-foozer
+    - class: foozer.example.com
       constraints: "device.model == 'foozer-4000'"
-    - class: example.com-foozer
+    - class: foozer.example.com
       constraints: "device.model == 'foozer-2000'"
       matchAttributes:
       - pcie-root
       requests:
         devices: 2
-    - class: example.com-foozer
+    - class: foozer.example.com
       constraints: "device.model == 'foozer-1000'"
       matchAttributes:
       - pcie-root

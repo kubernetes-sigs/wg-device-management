@@ -16,9 +16,6 @@ spec:
         memory: 10Mi
   deviceClaims:
     devices:
-    - name: netdev0 # not used, but required
-      class: example.com-sriov-vf
-    - name: netdev1 # not used, but required
-      class: example.com-sriov-vf
-    - name: netdev2 # not used, but required
-      class: example.com-sriov-pf
+    - class: sriov-vf.example.com
+    - class: sriov-vf.example.com
+    - class: sriov-pf.example.com

@@ -10,7 +10,7 @@ spec:
   devices:
   - name: gpu
     allOf:
-    - class: example.com-foozer
+    - class: foozer.example.com
       maxDevices: 8
       requests:
         memory: 128Gi

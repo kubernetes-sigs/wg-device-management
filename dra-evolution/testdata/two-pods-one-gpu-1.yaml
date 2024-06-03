@@ -8,10 +8,10 @@ metadata:
   namespace: default
 spec:
   requests:
-  - deviceClassName: example.com-foozer
+  - deviceClassName: foozer.example.com
     config:
     - opaque:
-        driverName: example.com-foozer
+        driverName: foozer.example.com
         parameters:
           apiVersion: gpu.example.com/v1alpha1
           kind: GPUSharingConfig

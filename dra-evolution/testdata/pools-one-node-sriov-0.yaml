@@ -18,7 +18,7 @@ kind: ResourcePool
 metadata:
   name: node-00-nic0
 spec:
-  driverName: example.com-sriov
+  driverName: sriov.example.com
   nodeName: node-00
   devices:
   - name: pf-0
@@ -59,7 +59,7 @@ kind: DevicePool
 metadata:
   name: node-00-nic1
 spec:
-  driverName: example.com-sriov
+  driverName: sriov.example.com
   nodeName: node-00
   distributedAllocation: true # On this node, for whatever reason, distributed allocation is enabled.
   devices:

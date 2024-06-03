@@ -16,7 +16,7 @@ spec:
   devices:
   - name: gpu
     allOf:
-    - class: example.com-foozer
+    - class: foozer.example.com
       allowShared: true
       requests:
         memory: 8Gi
