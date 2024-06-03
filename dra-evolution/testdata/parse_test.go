@@ -21,6 +21,7 @@ import (
 	"embed"
 	"fmt"
 	"io"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -29,6 +30,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer/json"
+	"k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/apiserver/pkg/cel/environment"
 
 	"github.com/kubernetes-sigs/wg-device-management/dra-evolution/pkg/api"
@@ -86,6 +88,12 @@ func testDecode(t *testing.T, serializer *json.Serializer, content []byte) {
 		validateResourceClaimSpec(t, obj.Spec, "claim.spec")
 	case *api.ResourceClaimTemplate:
 		validateResourceClaimSpec(t, obj.Spec.Spec, "claimTemplate.spec.spec")
+	case *api.ResourcePool:
+		for i, device := range obj.Spec.Devices {
+			for e, attribute := range device.Attributes {
+				validateAttributeName(t, &attribute.Name, fmt.Sprintf("resourcePool.devices[%d].attributes[%d]", i, e))
+			}
+		}
 	}
 }
 
@@ -97,16 +105,7 @@ func validateRequestRequirements(t *testing.T, requirements []api.Requirement, p
 
 func validateClaimConstraints(t *testing.T, requirements []api.Constraint, path string) {
 	for i, requirement := range requirements {
-		validateMatchAttribute(t, requirement.MatchAttribute, fmt.Sprintf("%s[%d].matchAttribute", path, i))
-	}
-}
-
-func validateMatchAttribute(t *testing.T, attributeName *string, path string) {
-	if !assert.NotNil(t, attributeName, path) {
-		return
-	}
-	if !strings.Contains(*attributeName, ".") {
-		t.Errorf("%q: must be a non-empty DNS domain (including at least one dot)", *attributeName)
+		validateAttributeName(t, requirement.MatchAttribute, fmt.Sprintf("%s[%d].matchAttribute", path, i))
 	}
 }
 
@@ -144,4 +143,58 @@ func validateRequest(t *testing.T, request *api.ResourceRequestDetail, path stri
 func validateResourceClaimSpec(t *testing.T, claimSpec api.ResourceClaimSpec, path string) {
 	validateClaimConstraints(t, claimSpec.Constraints, path+".constraints")
 	validateRequests(t, claimSpec.Requests, path+".requests")
+}
+
+const qnameCharFmt string = "[A-Za-z0-9]"
+const qnameExtCharFmt string = "[A-Za-z0-9_]"
+const qualifiedNameFmt string = "(" + qnameCharFmt + qnameExtCharFmt + "*)?" + qnameCharFmt
+const qualifiedNameErrMsg string = "must consist of alphanumeric characters or '_', and must start and end with an alphanumeric character"
+const attributeNameIdentifierMaxLength int = 63
+
+var attributeNameIdentifierRegexp = regexp.MustCompile("^" + qualifiedNameFmt + "$")
+
+func validateAttributeName(t *testing.T, namePtr *string, path string) {
+	if !assert.NotNil(t, namePtr, path) {
+		return
+	}
+	name := *namePtr
+
+	parts := strings.Split(name, "/")
+	var domain, identifier string
+	switch len(parts) {
+	case 1:
+		identifier = parts[0]
+	case 2:
+		domain, identifier = parts[0], parts[1]
+		if len(domain) == 0 {
+			t.Errorf("%s: domain part %s", path, validation.EmptyError())
+		} else {
+			validateDriverName(t, domain, path)
+		}
+	default:
+		t.Errorf("%s: an attribute name must consist of a C-style identifier with an optional DNS subdomain prefix and '/' (e.g. 'example.com/MyName')", path)
+	}
+
+	if len(identifier) == 0 {
+		t.Errorf("%s: identifier part %s", path, validation.EmptyError())
+	} else if len(identifier) > attributeNameIdentifierMaxLength {
+		t.Errorf("%s: identifier part %s", path, validation.MaxLenError(attributeNameIdentifierMaxLength))
+	}
+	if !attributeNameIdentifierRegexp.MatchString(identifier) {
+		t.Errorf("%s: identifier part %s", path, validation.RegexError(qualifiedNameErrMsg, qualifiedNameFmt, "MyName", "my.name", "123-abc"))
+	}
+}
+
+func validateDriverName(t *testing.T, driverName string, path string) {
+	if len(driverName) == 0 {
+		t.Errorf("%s: required", path)
+	}
+
+	if len(driverName) > 63 {
+		t.Errorf("%s: too long", path)
+	}
+
+	for _, msg := range validation.IsDNS1123Subdomain(strings.ToLower(driverName)) {
+		t.Errorf("%s: %s", path, msg)
+	}
 }

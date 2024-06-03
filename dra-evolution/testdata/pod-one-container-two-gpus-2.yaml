@@ -10,7 +10,7 @@ metadata:
 spec:
   spec:
     constraints:
-    - matchAttribute: pcie-root.dra.k8s.io
+    - matchAttribute: dra.k8s.io/pcie_root
     requests:
     - deviceClassName: example.com-foozer
     - deviceClassName: example.com-foozer

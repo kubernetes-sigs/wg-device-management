@@ -10,16 +10,16 @@ metadata:
 spec:
   spec:
     constraints:
-    - matchAttribute: pcie-root.dra.k8s.io
+    - matchAttribute: dra.k8s.io/pcie_root
     requests:
     - name: foozer-gpu
       deviceClassName: example.com-foozer
       requirements:
-      - deviceSelector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
+      - deviceSelector: "device.stringAttributes['example.com-foozer/model'] == 'foozer-1000'"
     - name: other-foozer-gpu
       deviceClassName: example.com-foozer
       requirements:
-      - deviceSelector: "device.stringAttributes['model.example.com-foozer'] == 'foozer-1000'"
+      - deviceSelector: "device.stringAttributes['example.com-foozer/model'] == 'foozer-1000'"
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod

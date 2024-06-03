@@ -17,8 +17,11 @@ type DeviceClass struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	// Config defines configuration parameters that apply to each request in a claim using this class.
-	// They are ignored while allocating the claim.
+	// Config defines configuration parameters that apply to each device which is claimed via this class.
+	// Some classses may potentially be satisfied by multiple drivers, so each instance of a vendor
+	// configuration applies to exactly one driver.
+	//
+	// They are passed to the driver, but are not consider while allocating the claim.
 	//
 	// +optional
 	// +listType=atomic
@@ -35,23 +38,23 @@ type DeviceClass struct {
 
 // ConfigurationParameters must have one and only one field set.
 type ConfigurationParameters struct {
-	Vendor *VendorConfigurationParameters `json:"vendor,omitempty" protobuf:"bytes,1,opt,name=vendor"`
+	Opaque *OpaqueConfigurationParameters `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
 }
 
-// VendorConfigurationParameters contains configuration parameters for a driver.
-type VendorConfigurationParameters struct {
+// OpaqueConfigurationParameters contains configuration parameters for a driver.
+type OpaqueConfigurationParameters struct {
 	// DriverName is used to determine which kubelet plugin needs
 	// to be passed these configuration parameters.
 	//
-	// An admission webhook provided by the vendor could use this
+	// An admission webhook provided by the driver developer could use this
 	// to decide whether it needs to validate them.
 	//
 	// Must be a DNS subdomain and should end with a DNS domain owned by the
 	// vendor of the driver.
-	DriverName string `json:"driverName,omitempty" protobuf:"bytes,1,opt,name=driverName"`
+	DriverName string `json:"driverName" protobuf:"bytes,1,name=driverName"`
 
 	// Parameters can contain arbitrary data. It is the responsibility of
-	// the vendor to handle validation and versioning. Typically this
+	// the driver developer to handle validation and versioning. Typically this
 	// includes self-identification and a version ("kind" + "apiVersion" for
 	// Kubernetes types), with conversion between different versions.
 	Parameters runtime.RawExtension `json:"parameters,omitempty" protobuf:"bytes,2,opt,name=parameters"`
@@ -360,7 +363,7 @@ type DriverConfiguration struct {
 // In contrast to VendorConfigurationParameters, the driver name is
 // not included and has to be infered from the context.
 type DriverConfigurationAlternatives struct {
-	Vendor *runtime.RawExtension `json:"vendor,omitempty" protobuf:"bytes,1,opt,name=vendor"`
+	Opaque *runtime.RawExtension `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
 }
 
 // RequestAllocationResult contains configuration and the allocation result for

@@ -10,7 +10,7 @@ metadata:
 spec:
   spec:
     constraints:
-    - matchAttribute: model.example.com-foozer
+    - matchAttribute: foozer.example.com/model
     requests:
     - name: foozer-gpu
       deviceClassName: example.com-foozer

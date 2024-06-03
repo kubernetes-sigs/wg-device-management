@@ -10,7 +10,7 @@ spec:
   requests:
   - deviceClassName: example.com-foozer
     config:
-    - vendor:
+    - opaque:
         driverName: example.com-foozer
         parameters:
           apiVersion: gpu.example.com/v1alpha1

@@ -79,17 +79,22 @@ type Device struct {
 
 // DeviceAttribute is a combination of an attribute name and its value.
 type DeviceAttribute struct {
-	// Name is a unique identifier across all possible attributes of devices.
-	// It must be a DNS subdomain, with one additional restriction: the
-	// first part must not contain a hyphen and not start with a digit.
+	// Name is a unique identifier for this attribute, which will be
+	// referenced when selecting devices.
 	//
-	// If this is a DNS label (no dot), then the driver name gets added
-	// when looking up attributes. This avoids name collisions with attributes
-	// used by other drivers.
+	// Attributes are defined either by the owner of the specific driver
+	// (usually the vendor) or by some 3rd party (e.g. the Kubernetes
+	// project). Because attributes are sometimes compared across devices,
+	// a given name is expected to mean the same thing and have the same
+	// type on all devices.
 	//
-	// If this is a full DNS subdomain, then the meaning of the attribute is driver-independent.
-	// For example, Kubernetes will use `*.k8s.io` names when defining attributes that
-	// drivers from different vendors are supposed to use.
+	// Attribute names must be either a C-style identifier
+	// (e.g. "the_name") or a DNS subdomain followed by a slash ("/")
+	// followed by a C-style identifier
+	// (e.g. "example.com/the_name"). Attributes whose name does not
+	// include the domain prefix are assumed to be part of the driver's
+	// domain. Attributes defined by 3rd parties must include the domain
+	// prefix.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
 	DeviceAttributeValue `json:",inline" protobuf:"bytes,2,opt,name=attributeValue"`

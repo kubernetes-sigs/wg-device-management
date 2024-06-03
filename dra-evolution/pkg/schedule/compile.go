@@ -82,6 +82,8 @@ func newCompiler() *compiler {
 }
 
 // CompileCELExpression returns a compiled CEL expression. It evaluates to bool.
+//
+// TODO: validate AST to detect invalid attribute names.
 func (c compiler) CompileCELExpression(expression string, envType environment.Type) CompilationResult {
 	resultError := func(errorString string, errType apiservercel.ErrorType) CompilationResult {
 		return CompilationResult{

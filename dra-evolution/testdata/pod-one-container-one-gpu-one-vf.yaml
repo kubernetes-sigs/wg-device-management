@@ -15,12 +15,12 @@ spec:
       foo: bar
   spec:
     constraints:
-    - matchAttribute: pcie-root.dra.k8s.io
+    - matchAttribute: dra.k8s.io/pcie_root
     requests:
     - deviceClassName: example.com-foozer
     - deviceClassName: example.org-sriov-nic
       requirements:
-      - deviceSelector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
+      - deviceSelector: "device.stringAttributes['example.org-sriov-nic/sriovType'] == 'vf'"
 ---
 apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
@@ -55,12 +55,12 @@ metadata:
   - dra.k8s.io/delete-protection
 spec:
   constraints:
-  - matchAttribute: pcie-root.dra.k8s.io
+  - matchAttribute: dra.k8s.io/pcie_root
   requests:
   - deviceClassName: example.com-foozer
   - deviceClassName: example.org-sriov-nic
     requirements:
-    - deviceSelector: "device.stringAttributes['sriovType.example.org-sriov-nic'] == 'vf'"
+    - deviceSelector: "device.stringAttributes['example.org-sriov-nic/sriovType'] == 'vf'"
 status:
   allocation:
     availableOnNodes:
