@@ -1,7 +1,6 @@
 package api
 
 import (
-	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -289,13 +288,10 @@ type AllocationResult struct {
 	// +optional
 	DriverData []DriverData `json:"driverData,omitempty" protobuf:"bytes,1,opt,name=driverData"`
 
-	// This field defines where Pods can be scheduled which reference
-	// an allocated claim.
+	// This is the node which provides the allocated devices.
 	//
-	// Setting this field is optional. If null, the resource is available
-	// everywhere.
-	// +optional
-	AvailableOnNodes *v1.NodeSelector `json:"availableOnNodes,omitempty" protobuf:"bytes,2,opt,name=availableOnNodes"`
+	// If empty, then the devices are not local to one particular node.
+	NodeName string `json:"nodeName,omitempty" protobuf:"bytes,2,opt,name=nodeName"`
 
 	// Shareable determines whether the resource supports more
 	// than one consumer at a time.
@@ -336,12 +332,6 @@ type StructuredDriverData struct {
 	//
 	// +optional
 	Config []DriverConfiguration `json:"config,omitempty"`
-
-	// NodeName is the name of the node providing the necessary resources
-	// if the resources are local to a node.
-	//
-	// +optional
-	NodeName string `json:"nodeName,omitempty" protobuf:"bytes,3,name=nodeName"`
 
 	// Results lists all allocated driver resources.
 	//
