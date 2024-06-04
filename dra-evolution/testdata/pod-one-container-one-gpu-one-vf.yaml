@@ -63,28 +63,17 @@ spec:
     - deviceSelector: "device.stringAttributes['sriov-nic.example.org/sriovType'] == 'vf'"
 status:
   allocation:
-    availableOnNodes:
-      nodeSelectorTerms:
-      - matchFields:
-        - key: name
-          operator: in
-          values:
-          - worker-1
+    nodeName: worker-1
     shareable: true
     driverData:
     - driverName: foozer.example.com
       data:
-        nodeName: worker-1
         results:
-        - device:
-            name: gpu-1
+        - deviceName: gpu-1
     - driverName: sriov.example.org
       data:
-        nodeName: worker-1
         results:
-        -
-          device:
-            name: nic-1
+        - deviceName: nic-1
   reservedFor:
   - resource: pods
     name: foozer

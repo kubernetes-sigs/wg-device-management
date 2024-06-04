@@ -326,12 +326,10 @@ type StructuredDriverData struct {
 	// They get collected during the allocation and stored here
 	// to ensure that they remain available while the claim is allocated.
 	//
-	// Entries are sorted from "most specific" first to "least specific" last:
-	// - claim
-	// - claim class reference
+	// Entries are listed in the same order as in claim.config.
 	//
 	// +optional
-	Config []DriverConfiguration `json:"config,omitempty"`
+	Config []DriverConfigurationParameters `json:"config,omitempty"`
 
 	// Results lists all allocated driver resources.
 	//
@@ -339,20 +337,11 @@ type StructuredDriverData struct {
 	Results []RequestAllocationResult `json:"results" protobuf:"bytes,4,name=results"`
 }
 
-// DriverConfiguration is one entry in a list of configuration pieces.
-type DriverConfiguration struct {
-	// Admins is true if the source of the piece was a class and thus
-	// not something that a normal user would have been able to set.
-	Admin bool `json:"admin,omnitempty"`
-
-	DriverConfigurationAlternatives `json:",inline"`
-}
-
-// DriverConfigurationAlternatives must have one and only one one field set.
+// DriverConfigurationParameters must have one and only one one field set.
 //
-// In contrast to VendorConfigurationParameters, the driver name is
+// In contrast to ConfigurationParameters, the driver name is
 // not included and has to be infered from the context.
-type DriverConfigurationAlternatives struct {
+type DriverConfigurationParameters struct {
 	Opaque *runtime.RawExtension `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
 }
 
@@ -364,34 +353,31 @@ type RequestAllocationResult struct {
 	// They get collected during the allocation and stored here
 	// to ensure that they remain available while the claim is allocated.
 	//
-	// Entries are sorted from "most specific" first to "least specific" last:
-	// - claim request
-	// - claim request class reference
+	// Entries are list in the same order as in class.config and claim.config,
+	// with class.config entries first.
 	//
 	// +optional
-	Config []DriverConfiguration `json:"config,omitempty"`
+	Config []DeviceConfiguration `json:"config,omitempty"`
 
 	// RequestName identifies the request in the claim which caused this
-	// resource to be allocated.
+	// device to be allocated.
 	//
 	// +optional
 	RequestName string `json:"requestName,omitempty"`
 
-	AllocationResultModel `json:",inline" protobuf:"bytes,2,name=allocationResultModel"`
+	// DeviceName references one device instance via its name in the resource
+	// pool. Driver name and node name have to be determined from the
+	// context.
+	DeviceName string `json:"deviceName"`
 }
 
-// AllocationResultModel must have one and only one field set.
-type AllocationResultModel struct {
-	// Device references one device instance.
-	//
-	// +optional
-	Device *NamedDeviceAllocationResult `json:"device,omitempty" protobuf:"bytes,1,opt,name=device"`
-}
+// DeviceConfiguration is one entry in a list of configuration pieces for a device.
+type DeviceConfiguration struct {
+	// Admins is true if the source of the piece was a class and thus
+	// not something that a normal user would have been able to set.
+	Admin bool `json:"admin,omnitempty"`
 
-// NamedDeviceAllocationResult is used in AllocationResultModel.
-type NamedDeviceAllocationResult struct {
-	// Name is the name of the selected device instance.
-	Name string `json:"name" protobuf:"bytes,1,name=name"`
+	DriverConfigurationParameters `json:",inline"`
 }
 
 // ResourceClaimConsumerReference contains enough information to let you

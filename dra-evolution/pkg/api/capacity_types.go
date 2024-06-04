@@ -14,6 +14,11 @@ import (
 // for a device is the tuple `<driver name>/<node name>/<device name>`. Each
 // of these names is a DNS label or domain, so it is okay to concatenate them
 // like this in a string with a slash as separator.
+//
+// Consumers should be prepared to handle situations where the same device is
+// listed in different pools, for example because the producer already added it
+// to a new pool before removing it from an old one. Should this occurr, then
+// there is still only one such device instance.
 type ResourcePool struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object metadata
@@ -53,12 +58,16 @@ type ResourcePoolSpec struct {
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
 	// Devices lists all available devices in this pool.
+	//
+	// Must not have more than 128 entries.
 	Devices []Device `json:"devices,omitempty"`
 
 	// FUTURE EXTENSION: some other kind of list, should we ever need it.
 	// Old clients seeing an empty Devices field can safely ignore the (to
 	// them) empty pool.
 }
+
+const ResourcePoolMaxDevices = 128
 
 // Device represents one individual hardware instance that can be selected based
 // on its attributes.
@@ -70,6 +79,8 @@ type Device struct {
 	// Attributes defines the attributes of this device.
 	// The name of each attribute must be unique.
 	//
+	// Must not have more than 32 entries.
+	//
 	// +listType=atomic
 	// +optional
 	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
@@ -77,7 +88,14 @@ type Device struct {
 	// TODO for 1.31: define how to support partitionable devices
 }
 
+const ResourcePoolMaxAttributesPerDevice = 32
+
+// ResourcePoolMaxDevices and ResourcePoolMaxAttributesPerDevice where chosen
+// so that with the maximum attribute length of 96 characters the total size of
+// the ResourcePool object is around 420KB.
+
 // DeviceAttribute is a combination of an attribute name and its value.
+// Exactly one value must be set.
 type DeviceAttribute struct {
 	// Name is a unique identifier for this attribute, which will be
 	// referenced when selecting devices.
@@ -95,23 +113,24 @@ type DeviceAttribute struct {
 	// include the domain prefix are assumed to be part of the driver's
 	// domain. Attributes defined by 3rd parties must include the domain
 	// prefix.
+	//
+	// The maximum length for the DNS subdomain is 63 characters (same as
+	// for driver names) and the maximum length of the C-style identifier
+	// is 32.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
-	DeviceAttributeValue `json:",inline" protobuf:"bytes,2,opt,name=attributeValue"`
-}
+	// The Go field names below have a Value suffix to avoid a conflict between the
+	// field "String" and the corresponding method. That method is required.
+	// The Kubernetes API is defined without that suffix to keep it more natural.
 
-// The Go field names below have a Value suffix to avoid a conflict between the
-// field "String" and the corresponding method. That method is required.
-// The Kubernetes API is defined without that suffix to keep it more natural.
-
-// DeviceAttributeValue must have one and only one field set.
-type DeviceAttributeValue struct {
 	// QuantityValue is a quantity.
-	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,6,opt,name=quantity"`
+	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,2,opt,name=quantity"`
 	// BoolValue is a true/false value.
-	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,2,opt,name=bool"`
+	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,3,opt,name=bool"`
 	// StringValue is a string.
-	StringValue *string `json:"string,omitempty" protobuf:"bytes,5,opt,name=string"`
+	StringValue *string `json:"string,omitempty" protobuf:"bytes,4,opt,name=string"`
 	// VersionValue is a semantic version according to semver.org spec 2.0.0.
-	VersionValue *string `json:"version,omitempty" protobuf:"bytes,10,opt,name=version"`
+	VersionValue *string `json:"version,omitempty" protobuf:"bytes,5,opt,name=version"`
 }
+
+const DeviceAttributeMaxIDLength = 32

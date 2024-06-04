@@ -16,9 +16,20 @@ type Quota struct {
 
 type QuotaSpec struct {
 	// AllowManagementAccess controls whether claims with ManagementAccess
-	// may be allocated. The default if unset is to deny such access.
+	// may be allocated. If multiple quota objects exist and at least one
+	// has a true value, access will be allowed. The default to deny such access.
+	//
 	// +optional
-	AllowManagementAccess *bool
+	AllowManagementAccess bool `json:"allowManagementAccess,omitempty"`
+
+	// Stretch goals for 1.31:
+	//
+	// - maximum number of devices matching a selector
+	// - maximum sum of a certain quantity attribute
+	//
+	// These are additional requirements when checking whether a device
+	// instance can satisfy a request. Creating a claim is always allowed,
+	// but allocating it fails when the quota is currently exceeded.
 
 	// Other useful future extensions (>= 1.32):
 
@@ -29,12 +40,12 @@ type QuotaSpec struct {
 	//
 	// DeviceLimits string
 
-	// A class listed in ResourceClassDenyList must not be used in this
+	// A class listed in DeviceClassDenyList must not be used in this
 	// namespace. This can be useful for classes which contain
 	// configuration pieces that a user in this namespace should not have
 	// access to.
 	//
-	// ResourceClassDenyList []string
+	// DeviceClassDenyList []string
 
 	// A class listed in ResourceClassAllowList may be used in this namespace
 	// even when that class is marked as "privileged". Normally classes
@@ -42,5 +53,5 @@ type QuotaSpec struct {
 	// here, but some classes may contain more sensitive configurations
 	// that not every user should have access to.
 	//
-	// ResourceClassAllowList []string
+	// DeviceClassAllowList []string
 }
