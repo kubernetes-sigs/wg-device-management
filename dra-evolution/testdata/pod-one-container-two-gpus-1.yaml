@@ -1,23 +1,19 @@
-# A Pod asking for a two Foozer GPUs of the same model, and associating them
+# A Pod asking for a two Foozer GPUs, and associating them
 # with one container.
 #
 
-apiVersion: devmgmtproto.k8s.io/v1alpha1
-kind: DeviceClaim
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaimTemplate
 metadata:
-  name: template-example.com-foozer-two-gpus-same-model
+  name: foozer-two-gpus-same-model-example.com
   namespace: default
 spec:
-  devices:
-  - name: foozer-gpus
-    allOf:
-    - class: example.com-foozer
-      matchAttributes:
-      - model
-      requests:
-        devices: 2
+  spec:
+    requests:
+    - deviceClassName: foozer.example.com
+    - deviceClassName: foozer.example.com
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
@@ -30,8 +26,8 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpus
-  deviceClaims:
-    template:
-      claimName: template-example.com-foozer-two-gpus-same-model
+      claims:
+      - name: foozer-gpus
+  resourceClaims:
+  - name: foozer-gpus
+    resourceClaimTemplateName: foozer-two-gpus-same-model-example.com

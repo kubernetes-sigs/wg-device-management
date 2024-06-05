@@ -5,28 +5,29 @@
 # one, since netdev doesn't get added to any container, it would
 # just be ignored for that purpose.
 
-apiVersion: devmgmtproto.k8s.io/v1alpha1
-kind: DeviceClaim
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaimTemplate
 metadata:
   name: template-foozer-plus-vf
-  namespace: default
 spec:
-  matchAttributes:
-  - pcie-root
-  devices:
-  - name: gpu
-    allOf:
-    - class: example.com-foozer
-  - name: netdev # required but not used
-    allOf:
-    - class: sriov-nic
-      constraints: "device.sriovType == 'vf'"
+  metadata:
+    labels:
+      foo: bar
+  spec:
+    constraints:
+    - matchAttribute: dra.k8s.io/pcie_root
+    requests:
+    - deviceClassName: foozer.example.com
+    - deviceClassName: sriov-nic-example.org
+      requirements:
+      - deviceSelector: "device.stringAttributes['sriov-nic.example.org/sriovType'] == 'vf'"
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
   namespace: default
+  uid: abcd-1234
 spec:
   containers:
   - image: registry.k8s.io/pause:3.6
@@ -35,8 +36,45 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: gpu
-  deviceClaims:
-    template:
-      claimName: template-foozer-plus-vf
+      claims:
+      - name: gpu-and-nic
+  resourceClaims:
+  - name: gpu-and-nic
+    resourceClaimTemplateName: template-foozer-plus-vf
+---
+# This is the generated claim including an allocation result.
+
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaim
+metadata:
+  name: foozer-gpu-and-nic-avfjgg
+  namespace: default
+  labels:
+    foo: bar
+  finalizers:
+  - dra.k8s.io/delete-protection
+spec:
+  constraints:
+  - matchAttribute: dra.k8s.io/pcie_root
+  requests:
+  - deviceClassName: foozer.example.com
+  - deviceClassName: sriov-nic-example.org
+    requirements:
+    - deviceSelector: "device.stringAttributes['sriov-nic.example.org/sriovType'] == 'vf'"
+status:
+  allocation:
+    nodeName: worker-1
+    shareable: true
+    driverData:
+    - driverName: foozer.example.com
+      data:
+        results:
+        - deviceName: gpu-1
+    - driverName: sriov.example.org
+      data:
+        results:
+        - deviceName: nic-1
+  reservedFor:
+  - resource: pods
+    name: foozer
+    uid: abcd-1234

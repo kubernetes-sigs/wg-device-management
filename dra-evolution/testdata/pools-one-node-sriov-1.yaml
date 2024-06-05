@@ -12,7 +12,7 @@ kind: DevicePool
 metadata:
   name: node-001-nic-001
 spec:
-  driver: example.org-sriov
+  driver: sriov.example.org
   nodeName: node-00
   attributes:
   - name: vendor

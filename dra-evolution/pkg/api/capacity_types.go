@@ -3,168 +3,134 @@ package api
 import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
 )
 
-const (
-	DevMgmtAPIVersion = "devmgmtproto.k8s.io/v1alpha1"
-)
-
-// DevicePool represents a collection of devices managed by a given driver. How
+// ResourcePool represents a collection of devices managed by a given driver. How
 // devices are divided into pools is driver-specific, but typically the
 // expectation would a be a pool per identical collection of devices, per node.
 // It is fine to have more than one pool for a given node, for the same driver.
-type DevicePool struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+//
+// Where a device gets published may change over time. The unique identifier
+// for a device is the tuple `<driver name>/<node name>/<device name>`. Each
+// of these names is a DNS label or domain, so it is okay to concatenate them
+// like this in a string with a slash as separator.
+//
+// Consumers should be prepared to handle situations where the same device is
+// listed in different pools, for example because the producer already added it
+// to a new pool before removing it from an old one. Should this occur, then
+// there is still only one such device instance.
+type ResourcePool struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard object metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	Spec   DevicePoolSpec   `json:"spec,omitempty"`
-	Status DevicePoolStatus `json:"status,omitempty"`
+	Spec ResourcePoolSpec `json:"spec"`
+
+	// Stretch goal for 1.31: define status
+	//
+	// To discuss:
+	// - Who writes that status?
+	//   After https://github.com/kubernetes/kubernetes/pull/125163 (implements
+	//   https://github.com/kubernetes/enhancements/pull/4667), kubelet is not
+	//   involved with publishing ResourcePools, they come directly from the driver.
+	// - What information should be in it?
+	// - Does it need to be a sub-resource? This would make it harder
+	//   for a driver to publish a new device (spec) and its corresponding
+	//   health information (status).
 }
 
-// DevicePoolSpec identifies the driver and contains the data for the pool
-// prior to any allocations.
-// NOTE: It's not clear that spec/status is the right model for this data.
-type DevicePoolSpec struct {
-	// NodeName is the name of the node containing the devices in the pool.
-	// For network attached devices, this may be empty.
-	// +optional
-	NodeName *string `json:"nodeName,omitempty"`
-
-	// Driver is the name of the DeviceDriver that created this object and
-	// owns the data in it.
-	// +required
-	Driver string `json:"driver,omitempty"`
-
-	// Attributes contains device attributes that are common to all devices
-	// in the pool.
-	// +optional
-	// +listType=atomic
-	Attributes []Attribute `json:"attributes,omitempty"`
-
-	// SharedResources are pooled resources that are shared by all devices
-	// in the pool. This is typically used when representing a
-	// partitionable device, and need not be populated otherwise.
+type ResourcePoolSpec struct {
+	// NodeName identifies the node which provides the devices. All devices
+	// are local to that node.
 	//
-	// +optional
-	// +listType=atomic
-	SharedResources []ResourceCapacity `json:"sharedResources,omitempty"`
+	// This is currently required, but this might get relaxed in the future.
+	NodeName string `json:"nodeName"`
 
-	// Devices contains the individual devices in the pool.
+	// POTENTIAL FUTURE EXTENSION: NodeSelector *v1.NodeSelector
+
+	// DriverName identifies the DRA driver providing the capacity information.
+	// A field selector can be used to list only ResourcePool
+	// objects with a certain driver name.
 	//
-	// +required
-	// +listType=atomic
+	// Must be a DNS subdomain and should end with a DNS domain owned by the
+	// vendor of the driver.
+	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
+
+	// Devices lists all available devices in this pool.
+	//
+	// Must not have more than 128 entries.
 	Devices []Device `json:"devices,omitempty"`
+
+	// FUTURE EXTENSION: some other kind of list, should we ever need it.
+	// Old clients seeing an empty Devices field can safely ignore the (to
+	// them) empty pool.
 }
 
-// DevicePoolStatus contains the state of the pool as last reported by the
-// driver. Note that this will not include the allocations that have been made
-// by the scheduler but not yet seen by the driver. Thus, it is NOT sufficient
-// to make future scheduling decisions.
-type DevicePoolStatus struct {
-	DeviceStatuses []AllocatedDevice `json:"deviceStatuses,omitempty"`
-}
+const ResourcePoolMaxDevices = 128
 
-// AllocatedDevice represents a device that has been allocated from the pool.
-type AllocatedDevice struct {
-	Name string
-	// Conditions contains the latest observation of the device's state.
-	Conditions []metav1.Condition `json:"conditions"`
-
-	// ClaimUIDs contains the UIDs of the claims to which this device
-	// is allocated.
-	ClaimUIDs []types.UID
-}
-
-// Device is used to track individual devices in a pool.
+// Device represents one individual hardware instance that can be selected based
+// on its attributes.
 type Device struct {
-	// Name is a driver-specific identifier for the device.
-	// +required
-	Name string `json:"name"`
+	// Name is unique identifier among all devices managed by
+	// the driver on the node. It must be a DNS label.
+	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
-	// Attributes contain additional metadata that can be used in
-	// constraints. If an attribute name overlaps with the pool attribute,
-	// the device attribute takes precedence.
+	// Attributes defines the attributes of this device.
+	// The name of each attribute must be unique.
 	//
+	// Must not have more than 32 entries.
+	//
+	// +listType=atomic
 	// +optional
-	Attributes []Attribute `json:"attributes,omitempty"`
+	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
-	// SharedResourcesConsumed contains the pooled resources that are
-	// consumed when this device is allocated.
+	// TODO for 1.31: define how to support partitionable devices
+}
+
+const ResourcePoolMaxAttributesPerDevice = 32
+
+// ResourcePoolMaxDevices and ResourcePoolMaxAttributesPerDevice where chosen
+// so that with the maximum attribute length of 96 characters the total size of
+// the ResourcePool object is around 420KB.
+
+// DeviceAttribute is a combination of an attribute name and its value.
+// Exactly one value must be set.
+type DeviceAttribute struct {
+	// Name is a unique identifier for this attribute, which will be
+	// referenced when selecting devices.
 	//
-	// +optional
-	SharedResourcesConsumed map[string]resource.Quantity `json:"sharedResourcesConsumed,omitempty"`
-
-	// ClaimResourcesProvided allows the definition of per-device resources
-	// that can be allocated in a manner similar to standard Kubernetes
-	// resources.
+	// Attributes are defined either by the owner of the specific driver
+	// (usually the vendor) or by some 3rd party (e.g. the Kubernetes
+	// project). Because attributes are sometimes compared across devices,
+	// a given name is expected to mean the same thing and have the same
+	// type on all devices.
 	//
-	// +optional
-	ClaimResourcesProvided []ResourceCapacity `json:"claimResourcesProvided,omitempty"`
-}
-
-type ResourceCapacity struct {
-	// Name is the resource name/type.
-	// +required
-	Name string `json:"name"`
-
-	// Capacity is the total capacity of the named resource.
-	// +required
-	Capacity resource.Quantity `json:"capacity"`
-
-	// BlockSize is the increments in which capacity is consumed. For
-	// example, if you can only allocate memory in 4k pages, then the
-	// block size should be "4Ki". Default is 1.
+	// Attribute names must be either a C-style identifier
+	// (e.g. "the_name") or a DNS subdomain followed by a slash ("/")
+	// followed by a C-style identifier
+	// (e.g. "example.com/the_name"). Attributes whose name does not
+	// include the domain prefix are assumed to be part of the driver's
+	// domain. Attributes defined by 3rd parties must include the domain
+	// prefix.
 	//
-	// If the resource is consumable in a fractional way, then the
-	// default of 1 should not be used; instead this should be a fractional
-	// amount corresponding the increment size. We may also need a minimum
-	// value, if the minimum is larger than the block size (as is the case
-	// for standard Kubernetes CPU resources).
-	//
-	// +optional
-	BlockSize *resource.Quantity `json:"blockSize,omitempty"`
+	// The maximum length for the DNS subdomain is 63 characters (same as
+	// for driver names) and the maximum length of the C-style identifier
+	// is 32.
+	Name string `json:"name" protobuf:"bytes,1,name=name"`
+
+	// The Go field names below have a Value suffix to avoid a conflict between the
+	// field "String" and the corresponding method. That method is required.
+	// The Kubernetes API is defined without that suffix to keep it more natural.
+
+	// QuantityValue is a quantity.
+	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,2,opt,name=quantity"`
+	// BoolValue is a true/false value.
+	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,3,opt,name=bool"`
+	// StringValue is a string.
+	StringValue *string `json:"string,omitempty" protobuf:"bytes,4,opt,name=string"`
+	// VersionValue is a semantic version according to semver.org spec 2.0.0.
+	VersionValue *string `json:"version,omitempty" protobuf:"bytes,5,opt,name=version"`
 }
 
-// Attribute capture the name, value, and type of an device attribute.
-type Attribute struct {
-	Name string `json:"name"`
-
-	// One of the following:
-	StringValue   *string            `json:"stringValue,omitempty"`
-	IntValue      *int               `json:"intValue,omitempty"`
-	QuantityValue *resource.Quantity `json:"quantityValue,omitempty"`
-	SemVerValue   *SemVer            `json:"semVerValue,omitempty"`
-}
-
-func (a Attribute) Equal(b Attribute) bool {
-	if a.Name != b.Name {
-		return false
-	}
-
-	return a.EqualValue(b)
-}
-
-func (a Attribute) EqualValue(b Attribute) bool {
-	if a.StringValue != nil && b.StringValue != nil && *a.StringValue == *b.StringValue {
-		return true
-	}
-
-	if a.IntValue != nil && b.IntValue != nil && *a.IntValue == *b.IntValue {
-		return true
-	}
-
-	if a.QuantityValue != nil && b.QuantityValue != nil && (*a.QuantityValue).Equal(*b.QuantityValue) {
-		return true
-	}
-
-	if a.SemVerValue != nil && b.SemVerValue != nil && *a.SemVerValue == *b.SemVerValue {
-		return true
-	}
-
-	return false
-}
-
-// SemVer represents a semantic version value. In this prototype it is just a
-// string.
-type SemVer string
+const DeviceAttributeMaxIDLength = 32

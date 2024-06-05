@@ -16,4 +16,4 @@ spec:
   deviceClaims:
     devices:
     - name: netdev0 # not used, but required
-      class: example.com-sriov-vf
+      class: sriov-vf.example.com

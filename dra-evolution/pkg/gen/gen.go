@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/dra-evolution/pkg/api"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

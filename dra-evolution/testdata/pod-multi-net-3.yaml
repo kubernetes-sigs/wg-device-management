@@ -5,13 +5,13 @@
 apiVersion: devmgmtproto.k8s.io/v1alpha1
 kind: DeviceClaim
 metadata:
-  name: template-example.com-sriov-two-vfs-same-pf
+  name: template-sriov-two-vfs-same-pf.example.com
   namespace: default
 spec:
   devices:
   - name: netdevs # required but not used
     allOf:
-    - class: example.com-sriov-vf
+    - class: sriov-vf.example.com
       matchAttributes:
       - hwdevname
       - pf
@@ -33,4 +33,4 @@ spec:
         memory: 10Mi
   deviceClaims:
     template:
-      claimName: template-example.com-sriov-two-vfs-same-pf
+      claimName: template-sriov-two-vfs-same-pf.example.com

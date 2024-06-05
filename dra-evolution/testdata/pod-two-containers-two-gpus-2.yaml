@@ -2,25 +2,26 @@
 # associating each with a with a different container.
 #
 
-apiVersion: devmgmtproto.k8s.io/v1alpha1
-kind: DeviceClaim
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaimTemplate
 metadata:
-  name: template-example.com-foozer-two-separate-foozer-1k
+  name: foozer-two-separate-foozer-1k-example.com
   namespace: default
 spec:
-  matchAttributes:
-  - pcie-root
-  devices:
-  - name: foozer-gpu
-    allOf:
-    - class: example.com-foozer
-      constraints: "device.model == 'foozer-1000'"
-  - name: other-foozer-gpu
-    allOf:
-    - class: example.com-foozer
-      constraints: "device.model == 'foozer-1000'"
+  spec:
+    constraints:
+    - matchAttribute: dra.k8s.io/pcie_root
+    requests:
+    - name: foozer-gpu
+      deviceClassName: foozer.example.com
+      requirements:
+      - deviceSelector: "device.stringAttributes['foozer.example.com/model'] == 'foozer-1000'"
+    - name: other-foozer-gpu
+      deviceClassName: foozer.example.com
+      requirements:
+      - deviceSelector: "device.stringAttributes['foozer.example.com/model'] == 'foozer-1000'"
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer
@@ -33,16 +34,18 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpu
+      claims:
+      - name: two-foozer-gpus
+        requestName: foozer-gpu
   - image: registry.k8s.io/pause:3.6
     name: my-other-container
     resources:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: other-foozer-gpu
-  deviceClaims:
-    template:
-      claimName: template-example.com-foozer-two-separate-foozer-1k
+      claims:
+      - name: two-foozer-gpus
+        requestName: other-foozer-gpu
+  resourceClaims:
+  - name: two-foozer-gpus
+    resourceClaimTemplateName: foozer-two-separate-foozer-1k-example.com

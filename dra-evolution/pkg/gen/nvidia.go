@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NVIDIA/go-nvml/pkg/nvml/mock/dgxa100"
-	"github.com/kubernetes-sigs/wg-device-management/k8srm-prototype/pkg/api"
+	"github.com/kubernetes-sigs/wg-device-management/dra-evolution/pkg/api"
 	"github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/intrange"
 	nvdevicelib "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/nvdevice"
 	newresourceapi "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/resource/new"

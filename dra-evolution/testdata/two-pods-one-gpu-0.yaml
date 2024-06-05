@@ -1,17 +1,16 @@
 # Two Pods sharing a GPU, mediated by the user.
 #
 
-apiVersion: devmgmtproto.k8s.io/v1alpha1
-kind: DeviceClaim
+apiVersion: resource.k8s.io/v1alpha2
+kind: ResourceClaim
 metadata:
   name: my-shared-gpu
   namespace: default
 spec:
-  devices:
-  - name: foozer-gpu
-    class: example.com-foozer
+  requests:
+  - deviceClassName: foozer.example.com
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer-0
@@ -24,12 +23,13 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpu
-  deviceClaims:
-    claimName: my-shared-gpu
+      claims:
+      - name: foozer-gpu
+  resourceClaims:
+  - name: foozer-gpu
+    resourceClaimName: my-shared-gpu
 ---
-apiVersion: v1
+apiVersion: resource.k8s.io/v1alpha2
 kind: Pod
 metadata:
   name: foozer-1
@@ -42,7 +42,8 @@ spec:
       requests:
         cpu: 10m
         memory: 10Mi
-    devices:
-    - name: foozer-gpu
-  deviceClaims:
-    claimName: my-shared-gpu
+      claims:
+      - name: foozer-gpu
+  resourceClaims:
+  - name: foozer-gpu
+    resourceClaimName: my-shared-gpu
