@@ -17,7 +17,7 @@ import (
 //
 // Consumers should be prepared to handle situations where the same device is
 // listed in different pools, for example because the producer already added it
-// to a new pool before removing it from an old one. Should this occurr, then
+// to a new pool before removing it from an old one. Should this occur, then
 // there is still only one such device instance.
 type ResourcePool struct {
 	metav1.TypeMeta `json:",inline"`
