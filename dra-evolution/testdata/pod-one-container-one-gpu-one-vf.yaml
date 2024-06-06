@@ -71,15 +71,13 @@ status:
           values:
           - worker-1
     shareable: true
-    driverData:
+    results:
     - driverName: foozer.example.com
-      results:
-      - nodeName: worker-1
-        deviceName: gpu-1
+      nodeName: worker-1
+      deviceName: gpu-1
     - driverName: sriov.example.org
-      results:
-      - nodeName: worker-1
-        deviceName: nic-1
+      nodeName: worker-1
+      deviceName: nic-1
   reservedFor:
   - resource: pods
     name: foozer

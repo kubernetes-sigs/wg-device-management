@@ -330,18 +330,18 @@ type AllocationResult struct {
 	// +optional
 	ControllerName string `json:"controllerName,omitempty"`
 
-	// DriverData contains the state associated with an allocation that
-	// should be maintained throughout the lifetime of a claim. Each
-	// entry contains data that should be passed to a specific kubelet
-	// plugin once the claim lands on a node.
+	// This field holds configuration for all drivers which
+	// satisfied requests in this claim. The configuration applies to
+	// the entire claim.
 	//
-	// Setting this field is optional. It has a maximum size of 32 entries.
-	// If empty, nothing was allocated for the claim and kubelet does not
-	// need to prepare anything for it.
+	// +optional
+	// +listType=atomic
+	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
+
+	// Results lists all allocated devices.
 	//
 	// +listType=atomic
-	// +optional
-	DriverData []DriverData `json:"driverData,omitempty" protobuf:"bytes,1,opt,name=driverData"`
+	Results []RequestAllocationResult `json:"results" protobuf:"bytes,4,name=results"`
 
 	// Setting this field is optional. If unset, the allocated devices are available everywhere.
 	//
@@ -373,24 +373,19 @@ type DriverData struct {
 	//
 	// +optional
 	Config []DriverConfigurationParameters `json:"config,omitempty"`
-
-	// Results lists all allocated devices.
-	//
-	// +listType=atomic
-	Results []RequestAllocationResult `json:"results" protobuf:"bytes,4,name=results"`
-}
-
-// DriverConfigurationParameters must have one and only one one field set.
-//
-// In contrast to ConfigurationParameters, the driver name is
-// not included and has to be infered from the context.
-type DriverConfigurationParameters struct {
-	Opaque *runtime.RawExtension `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
 }
 
 // RequestAllocationResult contains configuration and the allocation result for
 // one request.
 type RequestAllocationResult struct {
+	// DriverName specifies the name of the DRA driver whose kubelet
+	// plugin should be invoked to process the allocation once the claim is
+	// needed on a node.
+	//
+	// Must be a DNS subdomain and should end with a DNS domain owned by the
+	// vendor of the driver.
+	DriverName string `json:"driverName" protobuf:"bytes,1,name=driverName"`
+
 	// Config contains all the configuration pieces that apply to the request
 	// and that were meant for the driver which handles these devices.
 	// They get collected during the allocation and stored here
@@ -406,7 +401,7 @@ type RequestAllocationResult struct {
 	// device to be allocated.
 	RequestName string `json:"requestName"`
 
-	// This node name together with the driver name (from the context) and
+	// This node name together with the driver name and
 	// the device name field identify which device was allocated.
 	NodeName string `json:"nodeName"`
 
@@ -422,6 +417,14 @@ type DeviceConfiguration struct {
 	Admin bool `json:"admin,omnitempty"`
 
 	DriverConfigurationParameters `json:",inline"`
+}
+
+// DriverConfigurationParameters must have one and only one one field set.
+//
+// In contrast to ConfigurationParameters, the driver name is
+// not included and has to be infered from the context.
+type DriverConfigurationParameters struct {
+	Opaque *runtime.RawExtension `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
 }
 
 // ResourceClaimConsumerReference contains enough information to let you
