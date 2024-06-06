@@ -18,7 +18,9 @@ import (
 // Consumers should be prepared to handle situations where the same device is
 // listed in different pools, for example because the producer already added it
 // to a new pool before removing it from an old one. Should this occur, then
-// there is still only one such device instance.
+// there is still only one such device instance. If the two device definitions
+// disagree in any way, the one found in the newest ResourcePool, as determined
+// by creationTimestamp, is preferred.
 type ResourcePool struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object metadata
@@ -127,10 +129,12 @@ type DeviceAttribute struct {
 	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,2,opt,name=quantity"`
 	// BoolValue is a true/false value.
 	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,3,opt,name=bool"`
-	// StringValue is a string.
+	// StringValue is a string. Must not be longer than 64 characters.
 	StringValue *string `json:"string,omitempty" protobuf:"bytes,4,opt,name=string"`
 	// VersionValue is a semantic version according to semver.org spec 2.0.0.
+	// Must not be longer than 64 characters.
 	VersionValue *string `json:"version,omitempty" protobuf:"bytes,5,opt,name=version"`
 }
 
 const DeviceAttributeMaxIDLength = 32
+const DeviceAttributeMaxValueLength = 64
