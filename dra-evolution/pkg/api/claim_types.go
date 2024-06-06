@@ -190,12 +190,10 @@ type Constraint struct {
 // This is typically a request for a single resource like a device, but can
 // also ask for one of several different alternatives.
 type Request struct {
-	// Name can be set to enable referencing this request in a pod.spec.containers[].resources.devices
-	// entry, if that is desired.
+	// The name can be used to reference this request in a pod.spec.containers[].resources.claims
+	// entry.
 	//
 	// Must be a DNS label.
-	//
-	// +optional
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
 	*ResourceRequestDetail `json:",inline,omitempty"`
@@ -361,9 +359,7 @@ type RequestAllocationResult struct {
 
 	// RequestName identifies the request in the claim which caused this
 	// device to be allocated.
-	//
-	// +optional
-	RequestName string `json:"requestName,omitempty"`
+	RequestName string `json:"requestName"`
 
 	// DeviceName references one device instance via its name in the resource
 	// pool. Driver name and node name have to be determined from the
