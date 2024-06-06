@@ -64,12 +64,33 @@ type ResourcePoolSpec struct {
 	// Must not have more than 128 entries.
 	Devices []Device `json:"devices,omitempty"`
 
+	// SharedAllocatable are pooled resources that are shared by all
+	// devices in the pool. This is typically used when representing a
+	// partitionable device, and need not be populated otherwise.
+	//
+	// Must not have more than 32 entries.
+	//
+	// +optional
+	// +listType=atomic
+	SharedAllocatable []ResourceCapacity `json:"sharedAllocatable,omitempty"`
+
 	// FUTURE EXTENSION: some other kind of list, should we ever need it.
 	// Old clients seeing an empty Devices field can safely ignore the (to
 	// them) empty pool.
 }
 
+type ResourceCapacity struct {
+	// Name is the resource name/type.
+	// +required
+	Name string `json:"name"`
+
+	// Capacity is the total capacity of the named resource.
+	// +required
+	Capacity resource.Quantity `json:"capacity"`
+}
+
 const ResourcePoolMaxDevices = 128
+const ResourcePoolMaxSharedAllocatable = 32
 
 // Device represents one individual hardware instance that can be selected based
 // on its attributes.
@@ -87,7 +108,13 @@ type Device struct {
 	// +optional
 	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
-	// TODO for 1.31: define how to support partitionable devices
+	// SharedAllocatableConsumed contains the pooled allocatable resources
+	// that are consumed when this device is allocated.
+	//
+	// Must not have more than 32 entries.
+	//
+	// +optional
+	SharedAllocatableConsumed map[string]resource.Quantity `json:"sharedAllocatableConsumed,omitempty"`
 }
 
 const ResourcePoolMaxAttributesPerDevice = 32
