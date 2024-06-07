@@ -1,6 +1,7 @@
 package api
 
 import (
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -11,9 +12,13 @@ import (
 // It is fine to have more than one pool for a given node, for the same driver.
 //
 // Where a device gets published may change over time. The unique identifier
-// for a device is the tuple `<driver name>/<node name>/<device name>`. Each
+// for a node-local device is the tuple `<driver name>/<node name>/<device name>`. Each
 // of these names is a DNS label or domain, so it is okay to concatenate them
 // like this in a string with a slash as separator.
+//
+// For non-local devices, the driver can either make all device names globally
+// unique (`<driver name>/<device name>`) or provide a device pool name
+// (`<driver name>/<device pool name>/<device name>`).
 //
 // Consumers should be prepared to handle situations where the same device is
 // listed in different pools, for example because the producer already added it
@@ -46,8 +51,14 @@ type ResourcePoolSpec struct {
 	// NodeName identifies the node which provides the devices. All devices
 	// are local to that node.
 	//
-	// This is currently required, but this might get relaxed in the future.
-	NodeName string `json:"nodeName"`
+	// Node name and device pool are mutually exclusive. At least one must be set.
+	NodeName string `json:"nodeName, omitempty"`
+
+	// DevicePool can be used for non-instead of a NodeName to define where the devices
+	// are available.
+	//
+	// Node name and device pool are mutually exclusive. At least one must be set.
+	DevicePool *DevicePool `json:"devicePool,omitempty"`
 
 	// POTENTIAL FUTURE EXTENSION: NodeSelector *v1.NodeSelector
 
@@ -70,6 +81,25 @@ type ResourcePoolSpec struct {
 }
 
 const ResourcePoolMaxDevices = 128
+
+// DevicePool is a more general description for a set of devices.
+// A single node is a special case of this.
+type DevicePool struct {
+	// This name together with the driver name and the device name
+	// identify a device.
+	//
+	// Must not be longer than 253 characters and may contain one or more
+	// DNS sub-domains separated by slashes.
+	//
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	// This identifies nodes where the devices may be used. If unset,
+	// all nodes have access.
+	//
+	// +optional
+	NodeSelector *v1.NodeSelector `json:"nodeSelector,omitempty"`
+}
 
 // Device represents one individual hardware instance that can be selected based
 // on its attributes.
