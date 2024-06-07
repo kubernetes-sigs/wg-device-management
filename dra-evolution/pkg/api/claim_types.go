@@ -5,6 +5,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/validation"
 )
 
 // DeviceClass is a vendor or admin-provided resource that contains
@@ -401,14 +402,27 @@ type RequestAllocationResult struct {
 	// device to be allocated.
 	RequestName string `json:"requestName"`
 
-	// This node name together with the driver name and
-	// the device name field identify which device was allocated.
-	NodeName string `json:"nodeName"`
+	// This name together with the driver name and the device name field
+	// identify which device was allocated.
+	//
+	// For a driver with node-local devices, it is the name of the node and
+	// the overall ID is `<driver name>/<node name>/<device name>`.
+	//
+	// For other drivers, the overall ID is `<driver name>/<device pool
+	// name>/<device name>`.
+	//
+	// Must not be longer than 253 characters and may contain one or more
+	// DNS sub-domains separated by slashes.
+	//
+	// +optional
+	DevicePoolName string `json:"devicePoolName,omitempty"`
 
 	// DeviceName references one device instance via its name in the driver's
-	// resource pool.
+	// resource pool. It must be a DNS label.
 	DeviceName string `json:"deviceName"`
 }
+
+const DevicePoolNameMaxLength = validation.DNS1123SubdomainMaxLength // Same as for a single node name.
 
 // DeviceConfiguration is one entry in a list of configuration pieces for a device.
 type DeviceConfiguration struct {
