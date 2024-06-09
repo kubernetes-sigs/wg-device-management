@@ -322,8 +322,8 @@ type AllocationResult struct {
 	// involving a driver.
 	//
 	// A driver may allocate devices provided by other drivers, so this
-	// driver name here can be different from the driver names listed in
-	// DriverData.
+	// driver name here can be different from the driver names listed for
+	// the results.
 	//
 	// This is an alpha field and requires enabling the DRAControlPlaneController
 	// feature gate.
@@ -353,27 +353,6 @@ type AllocationResult struct {
 	//
 	// +optional
 	Shareable bool `json:"shareable,omitempty" protobuf:"varint,3,opt,name=shareable"`
-}
-
-// DriverData holds information for processing by a specific kubelet plugin.
-type DriverData struct {
-	// DriverName specifies the name of the DRA driver whose kubelet
-	// plugin should be invoked to process the allocation once the claim is
-	// needed on a node.
-	//
-	// Must be a DNS subdomain and should end with a DNS domain owned by the
-	// vendor of the driver.
-	DriverName string `json:"driverName" protobuf:"bytes,1,name=driverName"`
-
-	// Config contains all the configuration pieces that apply to the entire claim
-	// and that were meant for the driver which handles these devices.
-	// They get collected during the allocation and stored here
-	// to ensure that they remain available while the claim is allocated.
-	//
-	// Entries are listed in the same order as in claim.config.
-	//
-	// +optional
-	Config []DriverConfigurationParameters `json:"config,omitempty"`
 }
 
 // RequestAllocationResult contains configuration and the allocation result for
