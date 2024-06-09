@@ -187,11 +187,11 @@ type ResourceList map[ResourceName]resource.Quantity
 type ResourceClaimEntry struct {
 	// Name must match the name of one entry in pod.spec.resourceClaims of
 	// the Pod where this field is used. It makes that resource available
-	// inside a container.
+	// inside a container. Must be a DNS label.
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// A name set in claim.spec.requests[].name.
 	// +optional
-	RequestName string `json:"requestName" protobuf:"bytes,2,opt,name=requestName"`
+	RequestName string `json:"requestName,omitempty" protobuf:"bytes,2,opt,name=requestName"`
 }
 
 type PodResourceClaim struct {
