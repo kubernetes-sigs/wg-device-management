@@ -190,8 +190,7 @@ type ResourceClaimEntry struct {
 	// inside a container. Must be a DNS label.
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// A name set in claim.spec.requests[].name.
-	// +optional
-	RequestName string `json:"requestName,omitempty" protobuf:"bytes,2,opt,name=requestName"`
+	RequestName string `json:"requestName" protobuf:"bytes,2,name=requestName"`
 }
 
 type PodResourceClaim struct {
