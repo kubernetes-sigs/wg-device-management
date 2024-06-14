@@ -21,7 +21,7 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 	l := nvdevicelib.New(dgxa100.New())
 
 	var devices []api.Device
-	var shared []api.SharedCapacity
+	var shared []api.SharedCapacityGroup
 	for gpu := 0; gpu < gpus; gpu++ {
 		// Get the full list of allocatable devices from this GPU on the server
 		allocatable, err := l.GetPerGpuAllocatableDevices(gpu)
@@ -39,7 +39,7 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 			return nil, fmt.Errorf("found %d shared limit groups in the resources", len(model.NamedResources.SharedLimits))
 		}
 
-		shared = append(shared, sharedGroupToResources(model.NamedResources.SharedLimits[0], gpu)...)
+		shared = append(shared, sharedGroupToResources(model.NamedResources.SharedLimits[0], gpu))
 		for _, instance := range model.NamedResources.Instances {
 			devices = append(devices, instanceToDevice(instance, gpu))
 		}
@@ -69,7 +69,7 @@ func instanceToDevice(instance newresourceapi.NamedResourcesInstance, gpu int) a
 	}
 
 	if len(instance.Resources) > 0 {
-		device.SharedCapacityConsumed = sharedGroupToResources(instance.Resources[0], gpu)
+		device.SharedCapacityConsumed = []api.SharedCapacityGroup{sharedGroupToResources(instance.Resources[0], gpu)}
 	}
 
 	return device
@@ -106,14 +106,14 @@ func attributesToDeviceAttributes(attrs []resourceapi.NamedResourcesAttribute) [
 	return attributes
 }
 
-func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGroup, gpu int) []api.SharedCapacity {
-	var resources []api.SharedCapacity
+func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGroup, gpu int) api.SharedCapacityGroup {
+	var newGroup api.SharedCapacityGroup
 
+	newGroup.Name = group.Name
 	for _, item := range group.Items {
-		name := fmt.Sprintf("gpu-%d-%s", gpu, item.Name)
-		if item.QuantityValue != nil {
-			resources = append(resources, api.SharedCapacity{
-				Name:     name,
+		if item.QuantityValue != nil && !item.QuantityValue.IsZero() {
+			newGroup.SharedCapacity = append(newGroup.SharedCapacity, api.SharedCapacity{
+				Name:     item.Name,
 				Capacity: *item.QuantityValue,
 			})
 		} else if item.IntRangeValue != nil {
@@ -122,8 +122,8 @@ func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGro
 			for i := 0; i < 8; i++ {
 				single := intrange.NewIntRange(int64(i), 1)
 				if item.IntRangeValue.Contains(single) {
-					resources = append(resources, api.SharedCapacity{
-						Name:     fmt.Sprintf("%s-%d", name, i),
+					newGroup.SharedCapacity = append(newGroup.SharedCapacity, api.SharedCapacity{
+						Name:     fmt.Sprintf("%s-%d", item.Name, i),
 						Capacity: resource.MustParse("1"),
 					})
 				}
@@ -131,7 +131,7 @@ func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGro
 		}
 	}
 
-	return resources
+	return newGroup
 }
 
 func sharedGroupToRequests(group newresourceapi.NamedResourcesSharedResourceGroup) map[string]resource.Quantity {
