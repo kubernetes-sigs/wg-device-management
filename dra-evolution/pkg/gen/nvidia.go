@@ -20,25 +20,25 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 	// devices from this mock server using standard NVML calls.
 	l := nvdevicelib.New(dgxa100.New())
 
-	// Get the full list of allocatable devices from GPU 0 on the server.
-	allocatable, err := l.GetPerGpuAllocatableDevices(0)
-	if err != nil {
-		return nil, err
-	}
-
-	model := newresourceapi.PerGpuAllocatableDevices(allocatable).ToNamedResourcesResourceModel()
-
-	if model.NamedResources == nil {
-		return nil, fmt.Errorf("found no named resource object in the model")
-	}
-
-	if len(model.NamedResources.SharedLimits) != 1 {
-		return nil, fmt.Errorf("found %d shared limit groups in the resources", len(model.NamedResources.SharedLimits))
-	}
-
 	var devices []api.Device
 	var shared []api.SharedCapacity
 	for gpu := 0; gpu < gpus; gpu++ {
+		// Get the full list of allocatable devices from this GPU on the server
+		allocatable, err := l.GetPerGpuAllocatableDevices(gpu)
+		if err != nil {
+			return nil, err
+		}
+
+		model := newresourceapi.PerGpuAllocatableDevices(allocatable).ToNamedResourcesResourceModel()
+
+		if model.NamedResources == nil {
+			return nil, fmt.Errorf("found no named resource object in the model")
+		}
+
+		if len(model.NamedResources.SharedLimits) != 1 {
+			return nil, fmt.Errorf("found %d shared limit groups in the resources", len(model.NamedResources.SharedLimits))
+		}
+
 		shared = append(shared, sharedGroupToResources(model.NamedResources.SharedLimits[0], gpu)...)
 		for _, instance := range model.NamedResources.Instances {
 			devices = append(devices, instanceToDevice(instance, gpu))
@@ -64,7 +64,7 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 
 func instanceToDevice(instance newresourceapi.NamedResourcesInstance, gpu int) api.Device {
 	device := api.Device{
-		Name:       fmt.Sprintf("gpu-%d-%s", gpu, instance.Name),
+		Name:       instance.Name,
 		Attributes: attributesToDeviceAttributes(instance.Attributes),
 	}
 
