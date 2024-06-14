@@ -9,47 +9,43 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+const DevMgmtAPIVersion = "resource.k8s.io/v1alpha3"
+
 func ptr[T any](val T) *T {
 	var v T = val
 	return &v
 }
 
-func genPool(node, pool string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) api.DevicePool {
+func genPool(node, pool string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) api.ResourcePool {
 	var devices []api.Device
 	for nn := 0; nn < numaNodes; nn++ {
 		for d := 0; d < devicesPerNuma; d++ {
 			devices = append(devices, api.Device{
 				Name: fmt.Sprintf("dev-%02d", nn*devicesPerNuma+d),
-				Attributes: []api.Attribute{
+				Attributes: []api.DeviceAttribute{
 					{Name: "numa", StringValue: ptr(fmt.Sprintf("%d", nn))},
 				},
 			})
 		}
 	}
 
-	return api.DevicePool{
+	return api.ResourcePool{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: api.DevMgmtAPIVersion,
-			Kind:       "DevicePool",
+			APIVersion: DevMgmtAPIVersion,
+			Kind:       "ResourcePool",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name: pool,
 		},
-		Spec: api.DevicePoolSpec{
-			NodeName: &node,
-			Driver:   driver,
-			Attributes: []api.Attribute{
-				{Name: "vendor", StringValue: ptr(vendor)},
-				{Name: "model", StringValue: ptr(model)},
-				{Name: "firmwareVersion", SemVerValue: ptr(api.SemVer(firmwareVer))},
-				{Name: "driverVersion", SemVerValue: ptr(api.SemVer(driverVer))},
-			},
-			Devices: devices,
+		Spec: api.ResourcePoolSpec{
+			NodeName:   node,
+			DriverName: driver,
+			Devices:    devices,
 		},
 	}
 }
 
-type generator func(num int) []api.DevicePool
+type generator func(num int) []api.ResourcePool
 
 func getGenerators() map[string]generator {
 	generators := make(map[string]generator)
@@ -84,17 +80,17 @@ func getGenerators() map[string]generator {
 	for _, model := range models {
 		for size, sizeInfo := range sizes {
 			nodeBase := model + "-" + size
-			generators[nodeBase] = func(num int) []api.DevicePool {
+			generators[nodeBase] = func(num int) []api.ResourcePool {
 				return gen(num, nodeBase, "foozer", sizeInfo.devicesPerNuma, sizeInfo.numaNodes, vendor, driver, model, firmwareVersion, driverVersion)
 			}
 		}
 	}
 
-	generators["dgxa100"] = func(num int) []api.DevicePool {
-		var pools []api.DevicePool
+	generators["dgxa100"] = func(num int) []api.ResourcePool {
+		var pools []api.ResourcePool
 		for i := 0; i < num; i++ {
 			nodeName := fmt.Sprintf("nvidia-%02d", i)
-			p, err := dgxa100Pool(nodeName, "dgxa100")
+			p, err := dgxa100Pool(nodeName, "dgxa100", 2)
 			if err != nil {
 				fmt.Printf("Error generating dgxa100 pool for %q: %s\n", nodeName, err.Error())
 				continue
@@ -107,7 +103,7 @@ func getGenerators() map[string]generator {
 	return generators
 }
 
-func Gen(nodeType string, num int) ([]api.DevicePool, error) {
+func Gen(nodeType string, num int) ([]api.ResourcePool, error) {
 	generators := getGenerators()
 
 	generate, ok := generators[nodeType]
@@ -122,8 +118,8 @@ func Gen(nodeType string, num int) ([]api.DevicePool, error) {
 	return generate(num), nil
 }
 
-func gen(num int, nodeBase, poolBase string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) []api.DevicePool {
-	var pools []api.DevicePool
+func gen(num int, nodeBase, poolBase string, devicesPerNuma, numaNodes int, vendor, driver, model, firmwareVer, driverVer string) []api.ResourcePool {
+	var pools []api.ResourcePool
 	for i := 0; i < num; i++ {
 		nodeName := fmt.Sprintf("%s-%02d", nodeBase, i)
 		poolName := fmt.Sprintf("%s-pool-%s", nodeBase, poolBase)
@@ -137,8 +133,8 @@ func gen(num int, nodeBase, poolBase string, devicesPerNuma, numaNodes int, vend
 // 4 cpus/numa nodes
 // Each CPU has two Foozers and two Barzers associated
 /*
-func GenFoozerBarzerNodes(num int) []api.DevicePool {
-	var pools []api.DevicePool
+func GenFoozerBarzerNodes(num int) []api.ResourcePool {
+	var pools []api.ResourcePool
 	for i := 0; i < num; i++ {
 		node := fmt.Sprintf("%s-%02d", "shape-foozer-barzer", i)
 		for nn := 0; nn < 4; nn++ {

@@ -66,7 +66,7 @@ type ResourcePoolSpec struct {
 	//
 	// +listType=atomic
 	// +optional
-	SharedCapacity []SharedCapacity
+	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
 
 	// Devices lists all available devices in this pool.
 	//
@@ -76,16 +76,6 @@ type ResourcePoolSpec struct {
 	// FUTURE EXTENSION: some other kind of list, should we ever need it.
 	// Old clients seeing an empty Devices field can safely ignore the (to
 	// them) empty pool.
-}
-
-type SharedCapacity struct {
-	// Name is the resource name/type.
-	// +required
-	Name string `json:"name"`
-
-	// Capacity is the total capacity of the named resource.
-	// +required
-	Capacity resource.Quantity `json:"capacity"`
 }
 
 const ResourcePoolMaxSharedCapacity = 128
@@ -114,7 +104,7 @@ type Device struct {
 	//
 	// +listType=atomic
 	// +optional
-	SharedCapacityConsumed []SharedCapacity
+	SharedCapacityConsumed []SharedCapacity `json:"sharedCapacityConsumed,omitempty"`
 }
 
 const ResourcePoolMaxAttributesPerDevice = 32
