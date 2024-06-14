@@ -15,13 +15,30 @@ import (
 )
 
 func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error) {
+	shapeAttrs := map[string]bool{
+		"product-name":            true,
+		"brand":                   true,
+		"architecture":            true,
+		"cuda-compute-capability": true,
+		"driver-version":          true,
+		"cuda-driver-version":     true,
+	}
+	partitionAttrs := map[string]bool{
+		"mig-profile": true,
+	}
+	deviceAttrs := map[string]bool{
+		"uuid":        true,
+		"mig-capable": true,
+		"mig-enabled": true,
+	}
+
 	// Instantiate an instance of a mock dgxa100 server and build a nvDeviceLib
 	// from it. The nvDeviceLib is then used to populate the list of allocatable
 	// devices from this mock server using standard NVML calls.
 	l := nvdevicelib.New(dgxa100.New())
 
+	var shape api.DeviceShape
 	var devices []api.Device
-	var shared []api.SharedCapacity
 	for gpu := 0; gpu < gpus; gpu++ {
 		// Get the full list of allocatable devices from this GPU on the server
 		allocatable, err := l.GetPerGpuAllocatableDevices(gpu)
@@ -39,12 +56,30 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 			return nil, fmt.Errorf("found %d shared limit groups in the resources", len(model.NamedResources.SharedLimits))
 		}
 
-		shared = append(shared, sharedGroupToResources(model.NamedResources.SharedLimits[0], gpu)...)
-		for _, instance := range model.NamedResources.Instances {
-			devices = append(devices, instanceToDevice(instance, gpu))
+		if gpu == 0 {
+			// first time through, create the shape
+			shape.SharedCapacity = sharedGroupToResources(model.NamedResources.SharedLimits[0])
 		}
-	}
 
+		var devAttrVals []api.DeviceAttribute
+		var partitions []api.DevicePartition
+		for _, instance := range model.NamedResources.Instances {
+			if gpu == 0 {
+				shape.Attributes = attributesToDeviceAttributes(instance.Attributes, shapeAttrs)
+				partitions = append(partitions, instanceToPartition(instance, partitionAttrs))
+			}
+			devAttrVals = append(devAttrVals, attributesToDeviceAttributes(instance.Attributes, deviceAttrs)...)
+		}
+		if shape.Partitions == nil {
+			shape.Partitions = partitions
+		}
+
+		devices = append(devices, api.Device{
+			Name:       fmt.Sprintf("gpu-%d", gpu),
+			Attributes: devAttrVals,
+		})
+
+	}
 	return &api.ResourcePool{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: DevMgmtAPIVersion,
@@ -54,31 +89,34 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 			Name: nodeName + "-" + poolName,
 		},
 		Spec: api.ResourcePoolSpec{
-			NodeName:       nodeName,
-			DriverName:     "gpu.nvidia.com/dra",
-			SharedCapacity: shared,
-			Devices:        devices,
+			NodeName:    nodeName,
+			DriverName:  "gpu.nvidia.com/dra",
+			DeviceShape: shape,
+			Devices:     devices,
 		},
 	}, nil
 }
 
-func instanceToDevice(instance newresourceapi.NamedResourcesInstance, gpu int) api.Device {
-	device := api.Device{
+func instanceToPartition(instance newresourceapi.NamedResourcesInstance, partitionAttrs map[string]bool) api.DevicePartition {
+	partition := api.DevicePartition{
 		Name:       instance.Name,
-		Attributes: attributesToDeviceAttributes(instance.Attributes),
+		Attributes: attributesToDeviceAttributes(instance.Attributes, partitionAttrs),
 	}
 
 	if len(instance.Resources) > 0 {
-		device.SharedCapacityConsumed = sharedGroupToResources(instance.Resources[0], gpu)
+		partition.SharedCapacityConsumed = sharedGroupToResources(instance.Resources[0])
 	}
 
-	return device
+	return partition
 }
 
-func attributesToDeviceAttributes(attrs []resourceapi.NamedResourcesAttribute) []api.DeviceAttribute {
+func attributesToDeviceAttributes(attrs []resourceapi.NamedResourcesAttribute, keep map[string]bool) []api.DeviceAttribute {
 	var attributes []api.DeviceAttribute
 
 	for _, a := range attrs {
+		if _, ok := keep[a.Name]; !ok {
+			continue
+		}
 		if a.QuantityValue != nil {
 			attributes = append(attributes, api.DeviceAttribute{
 				Name:          a.Name,
@@ -106,14 +144,13 @@ func attributesToDeviceAttributes(attrs []resourceapi.NamedResourcesAttribute) [
 	return attributes
 }
 
-func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGroup, gpu int) []api.SharedCapacity {
+func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGroup) []api.SharedCapacity {
 	var resources []api.SharedCapacity
 
 	for _, item := range group.Items {
-		name := fmt.Sprintf("gpu-%d-%s", gpu, item.Name)
 		if item.QuantityValue != nil && !item.QuantityValue.IsZero() {
 			resources = append(resources, api.SharedCapacity{
-				Name:     name,
+				Name:     item.Name,
 				Capacity: *item.QuantityValue,
 			})
 		} else if item.IntRangeValue != nil {
@@ -123,7 +160,7 @@ func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGro
 				single := intrange.NewIntRange(int64(i), 1)
 				if item.IntRangeValue.Contains(single) {
 					resources = append(resources, api.SharedCapacity{
-						Name:     fmt.Sprintf("%s-%d", name, i),
+						Name:     fmt.Sprintf("%s-%d", item.Name, i),
 						Capacity: resource.MustParse("1"),
 					})
 				}

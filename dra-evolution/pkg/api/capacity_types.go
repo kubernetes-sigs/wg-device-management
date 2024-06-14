@@ -59,14 +59,10 @@ type ResourcePoolSpec struct {
 	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
-	// SharedCapacity defines the set of shared capacity consumable by
-	// devices in this ResourceSlice.
+	// DeviceShape defines the common shape of all devices in this pool.
 	//
-	// Must not have more than 128 entries.
-	//
-	// +listType=atomic
-	// +optional
-	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
+	// +required
+	DeviceShape DeviceShape `json:"deviceShape"`
 
 	// Devices lists all available devices in this pool.
 	//
@@ -81,14 +77,8 @@ type ResourcePoolSpec struct {
 const ResourcePoolMaxSharedCapacity = 128
 const ResourcePoolMaxDevices = 128
 
-// Device represents one individual hardware instance that can be selected based
-// on its attributes.
-type Device struct {
-	// Name is unique identifier among all devices managed by
-	// the driver on the node. It must be a DNS label.
-	Name string `json:"name" protobuf:"bytes,1,name=name"`
-
-	// Attributes defines the attributes of this device.
+type DeviceShape struct {
+	// Attributes defines the attributes of this device shape.
 	// The name of each attribute must be unique.
 	//
 	// Must not have more than 32 entries.
@@ -97,14 +87,77 @@ type Device struct {
 	// +optional
 	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
+	// Partitions defines the set of partitions into which this device shape
+	// may be allocated. If not populated, then the device shape is always
+	// consumed in its entirety.
+	//
+	// +listType=atomic
+	// +optional
+	Partitions []DevicePartition `json:"partitions,omitempty"`
+
+	// SharedCapacity defines the set of shared capacity consumable by
+	// partitions in this DeviceShape. Not meaninful for non-partitioned
+	// devices.
+	//
+	// Must not have more than 128 entries.
+	//
+	// +listType=atomic
+	// +optional
+	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
+}
+
+// Device represents one individual hardware instance that can be selected based
+// on its attributes.
+type DevicePartition struct {
+	// Name is unique identifier among all partitions for this device. The
+	// device name as recorded in the allocation will be the concatenation
+	// of the device name and the partition name with a '-' separator.
+	//
+	// NOTE: may need a better naming scheme
+	//
+	// It must be a DNS label.
+	Name string `json:"name" protobuf:"bytes,1,name=name"`
+
+	// Attributes defines the attributes of this partition.
+	// The name of each attribute must be unique. The values
+	// in here are overlayed on top of the values in the device
+	// shape (overwriting them if the names are the same).
+	//
+	// NOTE: probably can get away with fewer
+	//
+	// Must not have more than 32 entries.
+	//
+	// +listType=atomic
+	// +optional
+	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
+
 	// SharedCapacityConsumed defines the set of shared capacity consumed by
-	// this device.
+	// this partition.
 	//
 	// Must not have more than 32 entries.
 	//
 	// +listType=atomic
 	// +optional
 	SharedCapacityConsumed []SharedCapacity `json:"sharedCapacityConsumed,omitempty"`
+}
+
+type Device struct {
+	// Name is unique identifier among all devices managed by
+	// the driver on the node. It must be a DNS label.
+	Name string `json:"name" protobuf:"bytes,1,name=name"`
+
+	// Attributes defines the attributes of this device.
+	// The name of each attribute must be unique. The values
+	// in here are overlayed on top of the values in the device
+	// shape (overwriting them if the names are the same).
+	//
+	// Must not have more than 32 entries.
+	//
+	// NOTE: probably can get away with fewer
+	//
+	// +listType=atomic
+	// +optional
+	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 }
 
 const ResourcePoolMaxAttributesPerDevice = 32
