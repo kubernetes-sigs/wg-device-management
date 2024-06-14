@@ -19,105 +19,45 @@
       - name: cuda-driver-version
         version: 12.4.0
       partitions:
-      - name: whole
+      - count:  1
+        name:
+          value: whole
         sharedCapacityConsumed:
-        - capacity: 40Gi
-          name: memory
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-0
+        - name:
+            value: memory
+          capacity:
+            value: 40Gi
+      - count: 7
+        name:
+          expression: "'mig-1g.5gb-' + string(index)"
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 1g.5gb
         sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-1
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-2
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-3
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-4
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-5
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-6
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-6
-      - attributes:
+        - capacity:
+            value: "14"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "1"
+          name:
+            value: copy-engines
+        - capacity:
+            value: 4864Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index)"
+      - count: 3
+        name:
+          expression: "'mig-2g.10gb-' + string(index*2)"
+        attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: mig-2g.10gb-0
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -127,341 +67,231 @@
           name: decoders
         - capacity: 9856Mi
           name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 2g.10gb
-        name: mig-2g.10gb-2
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2 + 1)"
+      - count: 2
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 3g.20gb
+        name:
+          expression: "'mig-3g.20gb-' + string(index*4)"
         sharedCapacityConsumed:
-        - capacity: "28"
-          name: multiprocessors
-        - capacity: "2"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 2g.10gb
-        name: mig-2g.10gb-4
+        - capacity:
+            value: "42"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "3"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "2"
+          name:
+            value: decoders
+        - capacity:
+            value: 19968Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4 + 1)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4 + 2)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4 + 3)"
+      - count: 1
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 4g.20gb
+        name:
+          value: mig-4g.20gb-0
         sharedCapacityConsumed:
-        - capacity: "28"
-          name: multiprocessors
-        - capacity: "2"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 3g.20gb
-        name: mig-3g.20gb-0
+        - capacity:
+            value: "56"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "4"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "2"
+          name:
+            value: decoders
+        - capacity:
+            value: 19968Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-0
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-1
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-2
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-3
+      - count: 1
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 7g.40gb
+        name:
+          value: mig-7g.40gb-0
         sharedCapacityConsumed:
-        - capacity: "42"
-          name: multiprocessors
-        - capacity: "3"
-          name: copy-engines
-        - capacity: "2"
-          name: decoders
-        - capacity: 19968Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 3g.20gb
-        name: mig-3g.20gb-4
+        - capacity:
+            value: "98"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "7"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "5"
+          name:
+            value: decoders
+        - capacity:
+            value: "1"
+          name:
+            value: jpeg-engines
+        - capacity:
+            value: "1"
+          name:
+            value: ofa-engines
+        - capacity:
+            value: 40192Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-0
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-1
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-2
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-3
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-4
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-5
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-6
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-7
+      - count: 7
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 1g.5gb+me
+        name:
+          expression: "'mig-1g.5gb-me-' + string(index)"
         sharedCapacityConsumed:
-        - capacity: "42"
-          name: multiprocessors
-        - capacity: "3"
-          name: copy-engines
-        - capacity: "2"
-          name: decoders
-        - capacity: 19968Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-        - capacity: "1"
-          name: memory-slices-6
-        - capacity: "1"
-          name: memory-slices-7
-      - attributes:
-        - name: mig-profile
-          string: 4g.20gb
-        name: mig-4g.20gb-0
+        - capacity:
+            value: "14"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "1"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "1"
+          name:
+            value: decoders
+        - capacity:
+            value: "1"
+          name:
+            value: jpeg-engines
+        - capacity:
+            value: "1"
+          name:
+            value: ofa-engines
+        - capacity:
+            value: 4864Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index)"
+      - count: 4
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 1g.10gb
+        name:
+          expression: "'mig-1g.10gb-' + string(index*2)"
         sharedCapacityConsumed:
-        - capacity: "56"
-          name: multiprocessors
-        - capacity: "4"
-          name: copy-engines
-        - capacity: "2"
-          name: decoders
-        - capacity: 19968Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 7g.40gb
-        name: mig-7g.40gb-0
-        sharedCapacityConsumed:
-        - capacity: "98"
-          name: multiprocessors
-        - capacity: "7"
-          name: copy-engines
-        - capacity: "5"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 40192Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-        - capacity: "1"
-          name: memory-slices-6
-        - capacity: "1"
-          name: memory-slices-7
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-0
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-1
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-2
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-3
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-4
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-5
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-6
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-6
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-0
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-2
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-4
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-6
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-6
-        - capacity: "1"
-          name: memory-slices-7
+        - capacity:
+            value: "14"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "1"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "1"
+          name:
+            value: decoders
+        - capacity:
+            value: 9856Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2 + 1)"
       sharedCapacity:
       - capacity: 40Gi
         name: memory
@@ -579,105 +409,45 @@
       - name: cuda-driver-version
         version: 12.4.0
       partitions:
-      - name: whole
+      - count:  1
+        name:
+          value: whole
         sharedCapacityConsumed:
-        - capacity: 40Gi
-          name: memory
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-0
+        - name:
+            value: memory
+          capacity:
+            value: 40Gi
+      - count: 7
+        name:
+          expression: "'mig-1g.5gb-' + string(index)"
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 1g.5gb
         sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-1
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-2
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-3
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-4
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-5
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb
-        name: mig-1g.5gb-6
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-6
-      - attributes:
+        - capacity:
+            value: "14"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "1"
+          name:
+            value: copy-engines
+        - capacity:
+            value: 4864Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index)"
+      - count: 3
+        name:
+          expression: "'mig-2g.10gb-' + string(index*2)"
+        attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: mig-2g.10gb-0
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -687,341 +457,231 @@
           name: decoders
         - capacity: 9856Mi
           name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 2g.10gb
-        name: mig-2g.10gb-2
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2 + 1)"
+      - count: 2
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 3g.20gb
+        name:
+          expression: "'mig-3g.20gb-' + string(index*4)"
         sharedCapacityConsumed:
-        - capacity: "28"
-          name: multiprocessors
-        - capacity: "2"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 2g.10gb
-        name: mig-2g.10gb-4
+        - capacity:
+            value: "42"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "3"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "2"
+          name:
+            value: decoders
+        - capacity:
+            value: 19968Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4 + 1)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4 + 2)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*4 + 3)"
+      - count: 1
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 4g.20gb
+        name:
+          value: mig-4g.20gb-0
         sharedCapacityConsumed:
-        - capacity: "28"
-          name: multiprocessors
-        - capacity: "2"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 3g.20gb
-        name: mig-3g.20gb-0
+        - capacity:
+            value: "56"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "4"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "2"
+          name:
+            value: decoders
+        - capacity:
+            value: 19968Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-0
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-1
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-2
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-3
+      - count: 1
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 7g.40gb
+        name:
+          value: mig-7g.40gb-0
         sharedCapacityConsumed:
-        - capacity: "42"
-          name: multiprocessors
-        - capacity: "3"
-          name: copy-engines
-        - capacity: "2"
-          name: decoders
-        - capacity: 19968Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 3g.20gb
-        name: mig-3g.20gb-4
+        - capacity:
+            value: "98"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "7"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "5"
+          name:
+            value: decoders
+        - capacity:
+            value: "1"
+          name:
+            value: jpeg-engines
+        - capacity:
+            value: "1"
+          name:
+            value: ofa-engines
+        - capacity:
+            value: 40192Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-0
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-1
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-2
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-3
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-4
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-5
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-6
+        - capacity:
+            value: "1"
+          name:
+            value: memory-slices-7
+      - count: 7
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 1g.5gb+me
+        name:
+          expression: "'mig-1g.5gb-me-' + string(index)"
         sharedCapacityConsumed:
-        - capacity: "42"
-          name: multiprocessors
-        - capacity: "3"
-          name: copy-engines
-        - capacity: "2"
-          name: decoders
-        - capacity: 19968Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-        - capacity: "1"
-          name: memory-slices-6
-        - capacity: "1"
-          name: memory-slices-7
-      - attributes:
-        - name: mig-profile
-          string: 4g.20gb
-        name: mig-4g.20gb-0
+        - capacity:
+            value: "14"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "1"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "1"
+          name:
+            value: decoders
+        - capacity:
+            value: "1"
+          name:
+            value: jpeg-engines
+        - capacity:
+            value: "1"
+          name:
+            value: ofa-engines
+        - capacity:
+            value: 4864Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index)"
+      - count: 4
+        attributes:
+        - name:
+            value: mig-profile
+          string:
+            value: 1g.10gb
+        name:
+          expression: "'mig-1g.10gb-' + string(index*2)"
         sharedCapacityConsumed:
-        - capacity: "56"
-          name: multiprocessors
-        - capacity: "4"
-          name: copy-engines
-        - capacity: "2"
-          name: decoders
-        - capacity: 19968Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 7g.40gb
-        name: mig-7g.40gb-0
-        sharedCapacityConsumed:
-        - capacity: "98"
-          name: multiprocessors
-        - capacity: "7"
-          name: copy-engines
-        - capacity: "5"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 40192Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-        - capacity: "1"
-          name: memory-slices-6
-        - capacity: "1"
-          name: memory-slices-7
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-0
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-1
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-2
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-3
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-4
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-5
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 1g.5gb+me
-        name: mig-1g.5gb-me-6
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: "1"
-          name: jpeg-engines
-        - capacity: "1"
-          name: ofa-engines
-        - capacity: 4864Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-6
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-0
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-0
-        - capacity: "1"
-          name: memory-slices-1
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-2
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-2
-        - capacity: "1"
-          name: memory-slices-3
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-4
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-4
-        - capacity: "1"
-          name: memory-slices-5
-      - attributes:
-        - name: mig-profile
-          string: 1g.10gb
-        name: mig-1g.10gb-6
-        sharedCapacityConsumed:
-        - capacity: "14"
-          name: multiprocessors
-        - capacity: "1"
-          name: copy-engines
-        - capacity: "1"
-          name: decoders
-        - capacity: 9856Mi
-          name: memory
-        - capacity: "1"
-          name: memory-slices-6
-        - capacity: "1"
-          name: memory-slices-7
+        - capacity:
+            value: "14"
+          name:
+            value: multiprocessors
+        - capacity:
+            value: "1"
+          name:
+            value: copy-engines
+        - capacity:
+            value: "1"
+          name:
+            value: decoders
+        - capacity:
+            value: 9856Mi
+          name:
+            value: memory
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2)"
+        - capacity:
+            value: "1"
+          name:
+            expression: "'memory-slices-' + string(index*2 + 1)"
       sharedCapacity:
       - capacity: 40Gi
         name: memory
@@ -1054,7 +714,7 @@
     devices:
     - attributes:
       - name: uuid
-        string: GPU-001aa21e-066b-4ba3-9d0b-c2b6620eb1b2
+        string: GPU-e859d6ce-7f9c-4f46-b122-f3df7ebf9f06
       - bool: true
         name: mig-capable
       - bool: false
@@ -1062,7 +722,7 @@
       name: gpu-0
     - attributes:
       - name: uuid
-        string: GPU-5b8f7bd4-fe84-4e95-9c35-12ac668c3ba7
+        string: GPU-f87f3708-c8cf-4418-933b-2cb12f1f7d7c
       - bool: true
         name: mig-capable
       - bool: false
@@ -1070,7 +730,7 @@
       name: gpu-1
     - attributes:
       - name: uuid
-        string: GPU-94ddc313-b141-4f05-a6e5-6a1cca2958c3
+        string: GPU-d197c034-8516-4dda-a2cd-67a46457a454
       - bool: true
         name: mig-capable
       - bool: false
@@ -1078,7 +738,7 @@
       name: gpu-2
     - attributes:
       - name: uuid
-        string: GPU-4f598f15-821e-4f77-9079-11510ed696d2
+        string: GPU-e333b0c8-1062-4564-ae5b-d88f410a8cf2
       - bool: true
         name: mig-capable
       - bool: false
@@ -1086,7 +746,7 @@
       name: gpu-3
     - attributes:
       - name: uuid
-        string: GPU-baccd3c2-0dcd-4982-bc5b-fe7f0b97c70b
+        string: GPU-deae6be9-37eb-4b39-8b49-6b01b061dd0a
       - bool: true
         name: mig-capable
       - bool: false
@@ -1094,7 +754,7 @@
       name: gpu-4
     - attributes:
       - name: uuid
-        string: GPU-6f05f2c2-6a8f-40a7-83b5-0d74549619ad
+        string: GPU-ff4873a9-b8c9-42bb-927f-54e59ed23e9f
       - bool: true
         name: mig-capable
       - bool: false
@@ -1102,7 +762,7 @@
       name: gpu-5
     - attributes:
       - name: uuid
-        string: GPU-6d256fb4-1a8c-4332-bcea-99183c44d3bb
+        string: GPU-65f7292a-b1ee-4ad9-8052-756e0911003f
       - bool: true
         name: mig-capable
       - bool: false
@@ -1110,7 +770,7 @@
       name: gpu-6
     - attributes:
       - name: uuid
-        string: GPU-d9f82c87-5380-4ddf-98ae-8ef1d18d2dfa
+        string: GPU-b52500b0-44d3-4a16-95fd-2ee342529b44
       - bool: true
         name: mig-capable
       - bool: false
@@ -1118,4 +778,3 @@
       name: gpu-7
     driverName: gpu.nvidia.com/dra
     nodeName: nvidia-01
-

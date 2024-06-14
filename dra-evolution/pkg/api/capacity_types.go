@@ -106,9 +106,38 @@ type DeviceShape struct {
 	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
 }
 
-// Device represents one individual hardware instance that can be selected based
-// on its attributes.
+// StringOrExpression contains either an explicit string Value or
+// a CEL expression that will return a string.
+type StringOrExpression struct {
+	Value      *string `json:"value,omitempty"`
+	Expression *string `json:"expression,omitempty"`
+}
+
+// QuantityOrExpression contains either an explicit resource.Quantity Value
+// or a CEL expression that results in a resource.Quantity (or a string that parses
+// to one).
+type QuantityOrExpression struct {
+	Value      *resource.Quantity `json:"value,omitempty"`
+	Expression *string            `json:"expression,omitempty"`
+}
+
+// QuantityOrExpression contains either an explicit bool Value
+// or a CEL expression that results in a bool
+type BoolOrExpression struct {
+	Value      *bool   `json:"value,omitempty"`
+	Expression *string `json:"expression,omitempty"`
+}
+
+// Device represents a format for a partition, and a count. The actual partitions of
+// the device are generated in-memory by evaluating the format for the index values
+// 0..Count.
 type DevicePartition struct {
+
+	// Count identifies the number of partitions using this format.
+	//
+	// +required
+	Count int `json:"count"`
+
 	// Name is unique identifier among all partitions for this device. The
 	// device name as recorded in the allocation will be the concatenation
 	// of the device name and the partition name with a '-' separator.
@@ -116,7 +145,9 @@ type DevicePartition struct {
 	// NOTE: may need a better naming scheme
 	//
 	// It must be a DNS label.
-	Name string `json:"name" protobuf:"bytes,1,name=name"`
+	//
+	// +required
+	Name StringOrExpression `json:"name" protobuf:"bytes,1,name=name"`
 
 	// Attributes defines the attributes of this partition.
 	// The name of each attribute must be unique. The values
@@ -129,7 +160,7 @@ type DevicePartition struct {
 	//
 	// +listType=atomic
 	// +optional
-	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
+	Attributes []DeviceAttributeFormat `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
 	// SharedCapacityConsumed defines the set of shared capacity consumed by
 	// this partition.
@@ -138,7 +169,7 @@ type DevicePartition struct {
 	//
 	// +listType=atomic
 	// +optional
-	SharedCapacityConsumed []SharedCapacity `json:"sharedCapacityConsumed,omitempty"`
+	SharedCapacityConsumed []SharedCapacityFormat `json:"sharedCapacityConsumed,omitempty"`
 }
 
 type Device struct {
@@ -231,6 +262,21 @@ type SharedCapacity struct {
 	//
 	// +required
 	Capacity resource.Quantity `json:"capacity"`
+}
+
+type DeviceAttributeFormat struct {
+	Name StringOrExpression `json:"name"`
+
+	QuantityValue *QuantityOrExpression `json:"quantity,omitempty"`
+	BoolValue     *BoolOrExpression     `json:"bool,omitempty"`
+	StringValue   *StringOrExpression   `json:"string,omitempty"`
+	VersionValue  *StringOrExpression   `json:"version,omitempty"`
+}
+
+type SharedCapacityFormat struct {
+	Name StringOrExpression `json:"name"`
+
+	Capacity *QuantityOrExpression `json:"capacity,omitempty"`
 }
 
 // CStyleIdentifierMaxLength is the maximum length of a c-style identifier used for naming.
