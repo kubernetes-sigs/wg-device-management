@@ -2,6 +2,7 @@ package gen
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/NVIDIA/go-nvml/pkg/nvml/mock/dgxa100"
 	"github.com/kubernetes-sigs/wg-device-management/dra-evolution/pkg/api"
@@ -98,8 +99,13 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 }
 
 func instanceToPartition(instance newresourceapi.NamedResourcesInstance, partitionAttrs map[string]bool) api.DevicePartition {
+	name := strings.TrimPrefix(instance.Name, "gpu-0-")
+	if name == "gpu-0" {
+		name = "whole"
+	}
+
 	partition := api.DevicePartition{
-		Name:       instance.Name,
+		Name:       name,
 		Attributes: attributesToDeviceAttributes(instance.Attributes, partitionAttrs),
 	}
 

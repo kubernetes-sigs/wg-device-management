@@ -19,14 +19,14 @@
       - name: cuda-driver-version
         version: 12.4.0
       partitions:
-      - name: gpu-0
+      - name: whole
         sharedCapacityConsumed:
         - capacity: 40Gi
           name: memory
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-0
+        name: mig-1g.5gb-0
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -39,7 +39,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-1
+        name: mig-1g.5gb-1
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -52,7 +52,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-2
+        name: mig-1g.5gb-2
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -65,7 +65,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-3
+        name: mig-1g.5gb-3
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -78,7 +78,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-4
+        name: mig-1g.5gb-4
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -91,7 +91,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-5
+        name: mig-1g.5gb-5
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -104,7 +104,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-6
+        name: mig-1g.5gb-6
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -117,7 +117,7 @@
       - attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: gpu-0-mig-2g.10gb-0
+        name: mig-2g.10gb-0
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -134,7 +134,7 @@
       - attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: gpu-0-mig-2g.10gb-2
+        name: mig-2g.10gb-2
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -151,7 +151,7 @@
       - attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: gpu-0-mig-2g.10gb-4
+        name: mig-2g.10gb-4
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -168,7 +168,7 @@
       - attributes:
         - name: mig-profile
           string: 3g.20gb
-        name: gpu-0-mig-3g.20gb-0
+        name: mig-3g.20gb-0
         sharedCapacityConsumed:
         - capacity: "42"
           name: multiprocessors
@@ -189,7 +189,7 @@
       - attributes:
         - name: mig-profile
           string: 3g.20gb
-        name: gpu-0-mig-3g.20gb-4
+        name: mig-3g.20gb-4
         sharedCapacityConsumed:
         - capacity: "42"
           name: multiprocessors
@@ -210,7 +210,7 @@
       - attributes:
         - name: mig-profile
           string: 4g.20gb
-        name: gpu-0-mig-4g.20gb-0
+        name: mig-4g.20gb-0
         sharedCapacityConsumed:
         - capacity: "56"
           name: multiprocessors
@@ -231,7 +231,7 @@
       - attributes:
         - name: mig-profile
           string: 7g.40gb
-        name: gpu-0-mig-7g.40gb-0
+        name: mig-7g.40gb-0
         sharedCapacityConsumed:
         - capacity: "98"
           name: multiprocessors
@@ -264,7 +264,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-0
+        name: mig-1g.5gb-me-0
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -283,7 +283,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-1
+        name: mig-1g.5gb-me-1
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -302,7 +302,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-2
+        name: mig-1g.5gb-me-2
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -321,7 +321,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-3
+        name: mig-1g.5gb-me-3
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -340,7 +340,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-4
+        name: mig-1g.5gb-me-4
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -359,7 +359,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-5
+        name: mig-1g.5gb-me-5
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -378,7 +378,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-6
+        name: mig-1g.5gb-me-6
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -397,7 +397,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-0
+        name: mig-1g.10gb-0
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -414,7 +414,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-2
+        name: mig-1g.10gb-2
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -431,7 +431,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-4
+        name: mig-1g.10gb-4
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -448,7 +448,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-6
+        name: mig-1g.10gb-6
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -494,7 +494,7 @@
     devices:
     - attributes:
       - name: uuid
-        string: GPU-07900cff-a972-418d-b869-a616c37a1ecb
+        string: GPU-e859d6ce-7f9c-4f46-b122-f3df7ebf9f06
       - bool: true
         name: mig-capable
       - bool: false
@@ -502,7 +502,7 @@
       name: gpu-0
     - attributes:
       - name: uuid
-        string: GPU-3c54fbb4-b2ae-4ca7-9d1c-5c9da111a2bd
+        string: GPU-f87f3708-c8cf-4418-933b-2cb12f1f7d7c
       - bool: true
         name: mig-capable
       - bool: false
@@ -510,7 +510,7 @@
       name: gpu-1
     - attributes:
       - name: uuid
-        string: GPU-5244635e-8d7c-466b-b374-824440261612
+        string: GPU-d197c034-8516-4dda-a2cd-67a46457a454
       - bool: true
         name: mig-capable
       - bool: false
@@ -518,7 +518,7 @@
       name: gpu-2
     - attributes:
       - name: uuid
-        string: GPU-75f6ac0c-312b-4295-bc92-159d77e9352d
+        string: GPU-e333b0c8-1062-4564-ae5b-d88f410a8cf2
       - bool: true
         name: mig-capable
       - bool: false
@@ -526,7 +526,7 @@
       name: gpu-3
     - attributes:
       - name: uuid
-        string: GPU-941bb8da-3bb8-443c-89c9-6194bcbd0df6
+        string: GPU-deae6be9-37eb-4b39-8b49-6b01b061dd0a
       - bool: true
         name: mig-capable
       - bool: false
@@ -534,7 +534,7 @@
       name: gpu-4
     - attributes:
       - name: uuid
-        string: GPU-ddde6dde-ef1f-49ca-92ac-bbecb96d0fc2
+        string: GPU-ff4873a9-b8c9-42bb-927f-54e59ed23e9f
       - bool: true
         name: mig-capable
       - bool: false
@@ -542,7 +542,7 @@
       name: gpu-5
     - attributes:
       - name: uuid
-        string: GPU-f58fd114-f49f-42c8-82bc-811555ac5eef
+        string: GPU-65f7292a-b1ee-4ad9-8052-756e0911003f
       - bool: true
         name: mig-capable
       - bool: false
@@ -550,7 +550,7 @@
       name: gpu-6
     - attributes:
       - name: uuid
-        string: GPU-5343cac9-1eeb-46db-8df7-b5aebd55734f
+        string: GPU-b52500b0-44d3-4a16-95fd-2ee342529b44
       - bool: true
         name: mig-capable
       - bool: false
@@ -579,14 +579,14 @@
       - name: cuda-driver-version
         version: 12.4.0
       partitions:
-      - name: gpu-0
+      - name: whole
         sharedCapacityConsumed:
         - capacity: 40Gi
           name: memory
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-0
+        name: mig-1g.5gb-0
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -599,7 +599,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-1
+        name: mig-1g.5gb-1
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -612,7 +612,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-2
+        name: mig-1g.5gb-2
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -625,7 +625,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-3
+        name: mig-1g.5gb-3
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -638,7 +638,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-4
+        name: mig-1g.5gb-4
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -651,7 +651,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-5
+        name: mig-1g.5gb-5
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -664,7 +664,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb
-        name: gpu-0-mig-1g.5gb-6
+        name: mig-1g.5gb-6
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -677,7 +677,7 @@
       - attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: gpu-0-mig-2g.10gb-0
+        name: mig-2g.10gb-0
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -694,7 +694,7 @@
       - attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: gpu-0-mig-2g.10gb-2
+        name: mig-2g.10gb-2
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -711,7 +711,7 @@
       - attributes:
         - name: mig-profile
           string: 2g.10gb
-        name: gpu-0-mig-2g.10gb-4
+        name: mig-2g.10gb-4
         sharedCapacityConsumed:
         - capacity: "28"
           name: multiprocessors
@@ -728,7 +728,7 @@
       - attributes:
         - name: mig-profile
           string: 3g.20gb
-        name: gpu-0-mig-3g.20gb-0
+        name: mig-3g.20gb-0
         sharedCapacityConsumed:
         - capacity: "42"
           name: multiprocessors
@@ -749,7 +749,7 @@
       - attributes:
         - name: mig-profile
           string: 3g.20gb
-        name: gpu-0-mig-3g.20gb-4
+        name: mig-3g.20gb-4
         sharedCapacityConsumed:
         - capacity: "42"
           name: multiprocessors
@@ -770,7 +770,7 @@
       - attributes:
         - name: mig-profile
           string: 4g.20gb
-        name: gpu-0-mig-4g.20gb-0
+        name: mig-4g.20gb-0
         sharedCapacityConsumed:
         - capacity: "56"
           name: multiprocessors
@@ -791,7 +791,7 @@
       - attributes:
         - name: mig-profile
           string: 7g.40gb
-        name: gpu-0-mig-7g.40gb-0
+        name: mig-7g.40gb-0
         sharedCapacityConsumed:
         - capacity: "98"
           name: multiprocessors
@@ -824,7 +824,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-0
+        name: mig-1g.5gb-me-0
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -843,7 +843,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-1
+        name: mig-1g.5gb-me-1
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -862,7 +862,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-2
+        name: mig-1g.5gb-me-2
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -881,7 +881,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-3
+        name: mig-1g.5gb-me-3
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -900,7 +900,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-4
+        name: mig-1g.5gb-me-4
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -919,7 +919,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-5
+        name: mig-1g.5gb-me-5
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -938,7 +938,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.5gb+me
-        name: gpu-0-mig-1g.5gb-me-6
+        name: mig-1g.5gb-me-6
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -957,7 +957,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-0
+        name: mig-1g.10gb-0
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -974,7 +974,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-2
+        name: mig-1g.10gb-2
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -991,7 +991,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-4
+        name: mig-1g.10gb-4
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -1008,7 +1008,7 @@
       - attributes:
         - name: mig-profile
           string: 1g.10gb
-        name: gpu-0-mig-1g.10gb-6
+        name: mig-1g.10gb-6
         sharedCapacityConsumed:
         - capacity: "14"
           name: multiprocessors
@@ -1054,7 +1054,7 @@
     devices:
     - attributes:
       - name: uuid
-        string: GPU-21541609-19b1-461c-9ca0-381106c02c73
+        string: GPU-001aa21e-066b-4ba3-9d0b-c2b6620eb1b2
       - bool: true
         name: mig-capable
       - bool: false
@@ -1062,7 +1062,7 @@
       name: gpu-0
     - attributes:
       - name: uuid
-        string: GPU-ede6c918-9d9c-47ff-b3da-5f691023180b
+        string: GPU-5b8f7bd4-fe84-4e95-9c35-12ac668c3ba7
       - bool: true
         name: mig-capable
       - bool: false
@@ -1070,7 +1070,7 @@
       name: gpu-1
     - attributes:
       - name: uuid
-        string: GPU-5a5a6e16-88a9-45d2-ace1-b093815fbff4
+        string: GPU-94ddc313-b141-4f05-a6e5-6a1cca2958c3
       - bool: true
         name: mig-capable
       - bool: false
@@ -1078,7 +1078,7 @@
       name: gpu-2
     - attributes:
       - name: uuid
-        string: GPU-9ecca40b-2a82-466a-84b4-c248f1bada3d
+        string: GPU-4f598f15-821e-4f77-9079-11510ed696d2
       - bool: true
         name: mig-capable
       - bool: false
@@ -1086,7 +1086,7 @@
       name: gpu-3
     - attributes:
       - name: uuid
-        string: GPU-b112860a-7c68-4215-a2a5-1db84bc457f8
+        string: GPU-baccd3c2-0dcd-4982-bc5b-fe7f0b97c70b
       - bool: true
         name: mig-capable
       - bool: false
@@ -1094,7 +1094,7 @@
       name: gpu-4
     - attributes:
       - name: uuid
-        string: GPU-8639c63a-8629-4079-b8d3-3840e4219665
+        string: GPU-6f05f2c2-6a8f-40a7-83b5-0d74549619ad
       - bool: true
         name: mig-capable
       - bool: false
@@ -1102,7 +1102,7 @@
       name: gpu-5
     - attributes:
       - name: uuid
-        string: GPU-782e8dbd-0756-4447-9002-b0933f61ed73
+        string: GPU-6d256fb4-1a8c-4332-bcea-99183c44d3bb
       - bool: true
         name: mig-capable
       - bool: false
@@ -1110,7 +1110,7 @@
       name: gpu-6
     - attributes:
       - name: uuid
-        string: GPU-7ec23105-8fb2-4d68-97a9-802726d77a6e
+        string: GPU-d9f82c87-5380-4ddf-98ae-8ef1d18d2dfa
       - bool: true
         name: mig-capable
       - bool: false
