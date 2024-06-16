@@ -68,6 +68,11 @@ type ResourcePoolSpec struct {
 	// +optional
 	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
 
+	// Attributes contains common device attributes that are the same
+	// for all devices in the pool, unless a device specifically over
+	// writes it by defining an attribute of the same name.
+	Attributes []DeviceAttribute `json:"attributes,omitempty"`
+
 	// Devices lists all available devices in this pool.
 	//
 	// Must not have more than 128 entries.

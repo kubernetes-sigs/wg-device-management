@@ -15,6 +15,15 @@ import (
 )
 
 func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error) {
+	commonAttrs := map[string]bool{
+		"product-name":            true,
+		"brand":                   true,
+		"architecture":            true,
+		"cuda-compute-capability": true,
+		"driver-version":          true,
+		"cuda-driver-version":     true,
+	}
+
 	// Instantiate an instance of a mock dgxa100 server and build a nvDeviceLib
 	// from it. The nvDeviceLib is then used to populate the list of allocatable
 	// devices from this mock server using standard NVML calls.
@@ -22,6 +31,7 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 
 	var devices []api.Device
 	var shared []api.SharedCapacity
+	var common []api.DeviceAttribute
 	for gpu := 0; gpu < gpus; gpu++ {
 		// Get the full list of allocatable devices from this GPU on the server
 		allocatable, err := l.GetPerGpuAllocatableDevices(gpu)
@@ -41,7 +51,18 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 
 		shared = append(shared, sharedGroupToResources(model.NamedResources.SharedLimits[0], gpu)...)
 		for _, instance := range model.NamedResources.Instances {
-			devices = append(devices, instanceToDevice(instance, gpu))
+			if common == nil {
+				attrs := attributesToDeviceAttributes(instance.Attributes)
+				for k := range commonAttrs {
+					for _, attr := range attrs {
+						if attr.Name == k {
+							common = append(common, attr)
+						}
+					}
+				}
+
+			}
+			devices = append(devices, instanceToDevice(instance, gpu, commonAttrs))
 		}
 	}
 
@@ -57,15 +78,23 @@ func dgxa100Pool(nodeName, poolName string, gpus int) (*api.ResourcePool, error)
 			NodeName:       nodeName,
 			DriverName:     "gpu.nvidia.com/dra",
 			SharedCapacity: shared,
+			Attributes:     common,
 			Devices:        devices,
 		},
 	}, nil
 }
 
-func instanceToDevice(instance newresourceapi.NamedResourcesInstance, gpu int) api.Device {
+func instanceToDevice(instance newresourceapi.NamedResourcesInstance, gpu int, commonAttrs map[string]bool) api.Device {
+	var attrs []api.DeviceAttribute
+	for _, attr := range attributesToDeviceAttributes(instance.Attributes) {
+		if _, ok := commonAttrs[attr.Name]; ok {
+			continue
+		}
+		attrs = append(attrs, attr)
+	}
 	device := api.Device{
 		Name:       instance.Name,
-		Attributes: attributesToDeviceAttributes(instance.Attributes),
+		Attributes: attrs,
 	}
 
 	if len(instance.Resources) > 0 {
