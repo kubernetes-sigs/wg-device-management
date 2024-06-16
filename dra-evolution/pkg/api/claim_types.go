@@ -1,9 +1,11 @@
 package api
 
 import (
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/validation"
 )
 
 // DeviceClass is a vendor or admin-provided resource that contains
@@ -33,6 +35,21 @@ type DeviceClass struct {
 	// +optional
 	// +listType=atomic
 	Requirements []Requirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
+
+	// Only nodes matching the selector will be considered by the scheduler
+	// when trying to find a Node that fits a Pod when that Pod uses
+	// a claim that has not been allocated yet *and* that claim
+	// gets allocated through a control plane controller. It is ignored
+	// when the claim does not use a control plane controller
+	// for allocation.
+	//
+	// Setting this field is optional. If unset, all nodes are candidates.
+	//
+	// This is an alpha field and requires enabling the DRAControlPlaneController
+	// feature gate.
+	//
+	// +optional
+	SuitableNodes *v1.NodeSelector `json:"suitableNodes,omitempty" protobuf:"bytes,5,opt,name=suitableNodes"`
 }
 
 // ConfigurationParameters must have one and only one field set.
@@ -162,6 +179,19 @@ type ResourceClaimSpec struct {
 	// by multiple consumers at the same time.
 	// +optional
 	Shareable bool `json:"shareable,omitempty" protobuf:"bytes,3,opt,name=shareable"`
+
+	// ControllerName defines the name of the DRA driver that is meant
+	// to handle allocation of this claim. If empty, allocation is handled
+	// by the scheduler while scheduling a pod.
+	//
+	// Must be a DNS subdomain and should end with a DNS domain owned by the
+	// vendor of the driver.
+	//
+	// This is an alpha field and requires enabling the DRAControlPlaneController
+	// feature gate.
+	//
+	// +optional
+	ControllerName string `json:"controllerName,omitempty"`
 }
 
 // Constraint must have one and only one field set.
@@ -187,8 +217,8 @@ type Constraint struct {
 }
 
 // Request is a request for one of many resources required for a claim.
-// This is typically a request for a single resource like a device, but can
-// also ask for one of several different alternatives.
+// This is typically a request for a single resource like a device, but may get
+// extended to also ask for one of several different alternatives.
 type Request struct {
 	// The name can be used to reference this request in a pod.spec.containers[].resources.claims
 	// entry.
@@ -249,7 +279,7 @@ type ResourceRequestDetail struct {
 	Requirements []Requirement `json:"requirements,omitempty" protobuf:"bytes,4,opt,name=requirements"`
 }
 
-// ResourceClaimStatus tracks whether the resource has been allocated and what
+// ResourceClaimStatus tracks whether the claim has been allocated and what
 // the result of that was.
 type ResourceClaimStatus struct {
 	// Allocation is set once the claim has been allocated successfully.
@@ -269,37 +299,66 @@ type ResourceClaimStatus struct {
 	// +patchMergeKey=uid
 	// +optional
 	ReservedFor []ResourceClaimConsumerReference `json:"reservedFor,omitempty" protobuf:"bytes,3,opt,name=reservedFor" patchStrategy:"merge" patchMergeKey:"uid"`
+
+	// Indicates that a claim is to be deallocated. While this is set,
+	// no new consumers may be added to ReservedFor.
+	//
+	// This is only used if the claim needs to be deallocated by a DRA driver.
+	// That driver then must deallocate this claim and reset the field
+	// together with clearing the Allocation field.
+	//
+	// This is an alpha field and requires enabling the DRAControlPlaneController
+	// feature gate.
+	//
+	// +optional
+	DeallocationRequested bool `json:"deallocationRequested,omitempty" protobuf:"varint,4,opt,name=deallocationRequested"`
 }
 
 // AllocationResult contains attributes of an allocated resource.
 type AllocationResult struct {
-	// DriverData contains the state associated with an allocation that
-	// should be maintained throughout the lifetime of a claim. Each
-	// entry contains data that should be passed to a specific kubelet
-	// plugin once the claim lands on a node.
+	// ControllerName is the name of the DRA driver which handled the
+	// allocation. That driver is also responsible for deallocating the
+	// claim. It is empty when the claim can be deallocated without
+	// involving a driver.
 	//
-	// Setting this field is optional. It has a maximum size of 32 entries.
-	// If empty, nothing was allocated for the claim and kubelet does not
-	// need to prepare anything for it.
+	// A driver may allocate devices provided by other drivers, so this
+	// driver name here can be different from the driver names listed for
+	// the results.
+	//
+	// This is an alpha field and requires enabling the DRAControlPlaneController
+	// feature gate.
+	//
+	// +optional
+	ControllerName string `json:"controllerName,omitempty"`
+
+	// This field holds configuration for all drivers which
+	// satisfied requests in this claim. The configuration applies to
+	// the entire claim.
+	//
+	// +optional
+	// +listType=atomic
+	Config []ConfigurationParameters `json:"config,omitempty" protobuf:"bytes,4,opt,name=config"`
+
+	// Results lists all allocated devices.
 	//
 	// +listType=atomic
-	// +optional
-	DriverData []DriverData `json:"driverData,omitempty" protobuf:"bytes,1,opt,name=driverData"`
+	Results []RequestAllocationResult `json:"results" protobuf:"bytes,4,name=results"`
 
-	// This is the node which provides the allocated devices.
+	// Setting this field is optional. If unset, the allocated devices are available everywhere.
 	//
-	// If empty, then the devices are not local to one particular node.
-	NodeName string `json:"nodeName,omitempty" protobuf:"bytes,2,opt,name=nodeName"`
+	// +optional
+	AvailableOnNodes *v1.NodeSelector `json:"availableOnNodes,omitempty" protobuf:"bytes,2,opt,name=availableOnNodes"`
 
-	// Shareable determines whether the resource supports more
-	// than one consumer at a time.
+	// Shareable determines whether the claim supports more than one consumer at a time.
+	//
 	// +optional
 	Shareable bool `json:"shareable,omitempty" protobuf:"varint,3,opt,name=shareable"`
 }
 
-// DriverData holds information for processing by a specific kubelet plugin.
-type DriverData struct {
-	// DriverName specifies the name of the resource driver whose kubelet
+// RequestAllocationResult contains configuration and the allocation result for
+// one request.
+type RequestAllocationResult struct {
+	// DriverName specifies the name of the DRA driver whose kubelet
 	// plugin should be invoked to process the allocation once the claim is
 	// needed on a node.
 	//
@@ -307,47 +366,8 @@ type DriverData struct {
 	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,1,name=driverName"`
 
-	// Data contains all information about the allocation that the kubelet
-	// plugin will need.
-	//
-	// +optional
-	Data *StructuredDriverData `json:"data,omitempty" protobuf:"bytes,2,opt,name=data"`
-
-	// Alternative to "Data", not describe further here for the sake of brevity:
-	// OpaqueData *string // Set by control plane controller when using "classic DRA".
-}
-
-// StructuredDriverData is the in-tree representation of the allocation result.
-type StructuredDriverData struct {
-	// Config contains all the configuration pieces that apply to the entire claim
-	// and that were meant for the driver which handles these resources.
-	// They get collected during the allocation and stored here
-	// to ensure that they remain available while the claim is allocated.
-	//
-	// Entries are listed in the same order as in claim.config.
-	//
-	// +optional
-	Config []DriverConfigurationParameters `json:"config,omitempty"`
-
-	// Results lists all allocated driver resources.
-	//
-	// +listType=atomic
-	Results []RequestAllocationResult `json:"results" protobuf:"bytes,4,name=results"`
-}
-
-// DriverConfigurationParameters must have one and only one one field set.
-//
-// In contrast to ConfigurationParameters, the driver name is
-// not included and has to be infered from the context.
-type DriverConfigurationParameters struct {
-	Opaque *runtime.RawExtension `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
-}
-
-// RequestAllocationResult contains configuration and the allocation result for
-// one request.
-type RequestAllocationResult struct {
 	// Config contains all the configuration pieces that apply to the request
-	// and that were meant for the driver which handles these resources.
+	// and that were meant for the driver which handles these devices.
 	// They get collected during the allocation and stored here
 	// to ensure that they remain available while the claim is allocated.
 	//
@@ -361,11 +381,27 @@ type RequestAllocationResult struct {
 	// device to be allocated.
 	RequestName string `json:"requestName"`
 
-	// DeviceName references one device instance via its name in the resource
-	// pool. Driver name and node name have to be determined from the
-	// context.
+	// This name together with the driver name and the device name field
+	// identify which device was allocated.
+	//
+	// For a driver with node-local devices, it is the name of the node and
+	// the overall ID is `<driver name>/<node name>/<device name>`.
+	//
+	// For other drivers, the overall ID is `<driver name>/<device pool
+	// name>/<device name>`.
+	//
+	// Must not be longer than 253 characters and may contain one or more
+	// DNS sub-domains separated by slashes.
+	//
+	// +optional
+	DevicePoolName string `json:"devicePoolName,omitempty"`
+
+	// DeviceName references one device instance via its name in the driver's
+	// resource pool. It must be a DNS label.
 	DeviceName string `json:"deviceName"`
 }
+
+const DevicePoolNameMaxLength = validation.DNS1123SubdomainMaxLength // Same as for a single node name.
 
 // DeviceConfiguration is one entry in a list of configuration pieces for a device.
 type DeviceConfiguration struct {
@@ -374,6 +410,14 @@ type DeviceConfiguration struct {
 	Admin bool `json:"admin,omnitempty"`
 
 	DriverConfigurationParameters `json:",inline"`
+}
+
+// DriverConfigurationParameters must have one and only one one field set.
+//
+// In contrast to ConfigurationParameters, the driver name is
+// not included and has to be infered from the context.
+type DriverConfigurationParameters struct {
+	Opaque *runtime.RawExtension `json:"opaque,omitempty" protobuf:"bytes,1,opt,name=opaque"`
 }
 
 // ResourceClaimConsumerReference contains enough information to let you
