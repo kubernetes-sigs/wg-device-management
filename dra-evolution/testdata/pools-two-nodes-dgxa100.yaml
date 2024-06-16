@@ -7,7 +7,7 @@
     devices:
     - attributes:
       - name: uuid
-        string: GPU-c2fe2ade-955a-421f-976e-3f1dd7254234
+        string: GPU-684cbd68-c82a-4100-9fde-e63109a9fac3
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -49,14 +49,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -82,14 +74,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -115,14 +99,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -148,14 +124,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -181,14 +149,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -214,14 +174,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -247,14 +199,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -282,12 +226,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -317,12 +255,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -352,12 +284,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -387,12 +313,6 @@
         name: gpu-0-copy-engines
       - capacity: "2"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 19968Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -426,12 +346,6 @@
         name: gpu-0-copy-engines
       - capacity: "2"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 19968Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -465,12 +379,6 @@
         name: gpu-0-copy-engines
       - capacity: "2"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 19968Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -504,8 +412,6 @@
         name: gpu-0-copy-engines
       - capacity: "5"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -551,8 +457,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -584,8 +488,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -617,8 +519,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -650,8 +550,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -683,8 +581,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -716,8 +612,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -749,8 +643,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -782,12 +674,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -817,12 +703,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -852,12 +732,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -887,12 +761,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -901,7 +769,7 @@
         name: gpu-0-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-061af20a-458d-4b69-acb4-0a65d83fc1b1
+        string: GPU-33aed9b2-9749-49b9-b68a-ed99ed70a8c7
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -943,14 +811,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -976,14 +836,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1009,14 +861,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1042,14 +886,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1075,14 +911,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1108,14 +936,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1141,14 +961,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1176,12 +988,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1211,12 +1017,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1246,12 +1046,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1281,12 +1075,6 @@
         name: gpu-1-copy-engines
       - capacity: "2"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 19968Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1320,12 +1108,6 @@
         name: gpu-1-copy-engines
       - capacity: "2"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 19968Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1359,12 +1141,6 @@
         name: gpu-1-copy-engines
       - capacity: "2"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 19968Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1398,8 +1174,6 @@
         name: gpu-1-copy-engines
       - capacity: "5"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1445,8 +1219,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1478,8 +1250,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1511,8 +1281,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1544,8 +1312,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1577,8 +1343,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1610,8 +1374,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1643,8 +1405,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -1676,12 +1436,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1711,12 +1465,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1746,12 +1494,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1781,12 +1523,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -1795,7 +1531,7 @@
         name: gpu-1-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-d7d91811-a809-43e7-93f9-7ae4e3491374
+        string: GPU-9fade18d-1e88-4b6b-a17c-e8509d8e53f7
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -1837,14 +1573,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -1870,14 +1598,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -1903,14 +1623,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -1936,14 +1648,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -1969,14 +1673,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2002,14 +1698,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2035,14 +1723,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2070,12 +1750,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2105,12 +1779,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2140,12 +1808,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2175,12 +1837,6 @@
         name: gpu-2-copy-engines
       - capacity: "2"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 19968Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2214,12 +1870,6 @@
         name: gpu-2-copy-engines
       - capacity: "2"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 19968Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2253,12 +1903,6 @@
         name: gpu-2-copy-engines
       - capacity: "2"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 19968Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2292,8 +1936,6 @@
         name: gpu-2-copy-engines
       - capacity: "5"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2339,8 +1981,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2372,8 +2012,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2405,8 +2043,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2438,8 +2074,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2471,8 +2105,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2504,8 +2136,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2537,8 +2167,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -2570,12 +2198,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2605,12 +2227,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2640,12 +2256,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2675,12 +2285,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -2689,7 +2293,7 @@
         name: gpu-2-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-cb07bd83-0bc1-4796-ae51-8717cd92b6ec
+        string: GPU-c57c4f04-8d8f-4a5c-8a1e-f6b1ae128177
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -2731,14 +2335,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2764,14 +2360,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2797,14 +2385,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2830,14 +2410,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2863,14 +2435,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2896,14 +2460,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2929,14 +2485,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2964,12 +2512,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -2999,12 +2541,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3034,12 +2570,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3069,12 +2599,6 @@
         name: gpu-3-copy-engines
       - capacity: "2"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 19968Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3108,12 +2632,6 @@
         name: gpu-3-copy-engines
       - capacity: "2"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 19968Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3147,12 +2665,6 @@
         name: gpu-3-copy-engines
       - capacity: "2"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 19968Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3186,8 +2698,6 @@
         name: gpu-3-copy-engines
       - capacity: "5"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3233,8 +2743,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3266,8 +2774,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3299,8 +2805,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3332,8 +2836,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3365,8 +2867,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3398,8 +2898,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3431,8 +2929,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -3464,12 +2960,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3499,12 +2989,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3534,12 +3018,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3569,12 +3047,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -3583,7 +3055,7 @@
         name: gpu-3-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-cf0a8f6d-42af-4657-884a-3d648a15f2ba
+        string: GPU-3d11f4a7-a510-46bb-ad6c-7b707fa58991
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -3625,14 +3097,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3658,14 +3122,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3691,14 +3147,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3724,14 +3172,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3757,14 +3197,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3790,14 +3222,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3823,14 +3247,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3858,12 +3274,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3893,12 +3303,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3928,12 +3332,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -3963,12 +3361,6 @@
         name: gpu-4-copy-engines
       - capacity: "2"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 19968Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4002,12 +3394,6 @@
         name: gpu-4-copy-engines
       - capacity: "2"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 19968Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4041,12 +3427,6 @@
         name: gpu-4-copy-engines
       - capacity: "2"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 19968Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4080,8 +3460,6 @@
         name: gpu-4-copy-engines
       - capacity: "5"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4127,8 +3505,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4160,8 +3536,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4193,8 +3567,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4226,8 +3598,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4259,8 +3629,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4292,8 +3660,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4325,8 +3691,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -4358,12 +3722,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4393,12 +3751,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4428,12 +3780,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4463,12 +3809,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -4477,7 +3817,7 @@
         name: gpu-4-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-c97a539e-e1c4-4de4-a56b-c1f618d57012
+        string: GPU-003e159b-8e64-4b6c-99b2-e3a006ac728b
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -4519,14 +3859,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4552,14 +3884,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4585,14 +3909,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4618,14 +3934,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4651,14 +3959,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4684,14 +3984,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4717,14 +4009,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4752,12 +4036,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4787,12 +4065,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4822,12 +4094,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4857,12 +4123,6 @@
         name: gpu-5-copy-engines
       - capacity: "2"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 19968Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4896,12 +4156,6 @@
         name: gpu-5-copy-engines
       - capacity: "2"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 19968Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4935,12 +4189,6 @@
         name: gpu-5-copy-engines
       - capacity: "2"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 19968Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -4974,8 +4222,6 @@
         name: gpu-5-copy-engines
       - capacity: "5"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5021,8 +4267,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5054,8 +4298,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5087,8 +4329,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5120,8 +4360,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5153,8 +4391,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5186,8 +4422,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5219,8 +4453,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -5252,12 +4484,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -5287,12 +4513,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -5322,12 +4542,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -5357,12 +4571,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -5371,7 +4579,7 @@
         name: gpu-5-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-ed2abe7c-7dcd-4448-8f9f-e67de2a4f965
+        string: GPU-348c7337-912c-452a-9934-8b237a63aeda
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -5413,14 +4621,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5446,14 +4646,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5479,14 +4671,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5512,14 +4696,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5545,14 +4721,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5578,14 +4746,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5611,14 +4771,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5646,12 +4798,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5681,12 +4827,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5716,12 +4856,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5751,12 +4885,6 @@
         name: gpu-6-copy-engines
       - capacity: "2"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 19968Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5790,12 +4918,6 @@
         name: gpu-6-copy-engines
       - capacity: "2"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 19968Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5829,12 +4951,6 @@
         name: gpu-6-copy-engines
       - capacity: "2"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 19968Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -5868,8 +4984,6 @@
         name: gpu-6-copy-engines
       - capacity: "5"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -5915,8 +5029,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -5948,8 +5060,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -5981,8 +5091,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -6014,8 +5122,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -6047,8 +5153,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -6080,8 +5184,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -6113,8 +5215,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -6146,12 +5246,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -6181,12 +5275,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -6216,12 +5304,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -6251,12 +5333,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -6265,7 +5341,7 @@
         name: gpu-6-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-fb3f102e-812a-4cd6-b2c0-9081fd23a08f
+        string: GPU-de975f7f-c6ad-4f20-b0f5-ef130c76c81b
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -6307,14 +5383,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6340,14 +5408,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6373,14 +5433,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6406,14 +5458,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6439,14 +5483,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6472,14 +5508,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6505,14 +5533,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6540,12 +5560,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6575,12 +5589,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6610,12 +5618,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6645,12 +5647,6 @@
         name: gpu-7-copy-engines
       - capacity: "2"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 19968Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6684,12 +5680,6 @@
         name: gpu-7-copy-engines
       - capacity: "2"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 19968Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6723,12 +5713,6 @@
         name: gpu-7-copy-engines
       - capacity: "2"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 19968Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -6762,8 +5746,6 @@
         name: gpu-7-copy-engines
       - capacity: "5"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -6809,8 +5791,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -6842,8 +5822,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -6875,8 +5853,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -6908,8 +5884,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -6941,8 +5915,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -6974,8 +5946,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -7007,8 +5977,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -7040,12 +6008,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -7075,12 +6037,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -7110,12 +6066,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -7145,12 +6095,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -7168,8 +6112,6 @@
       name: gpu-0-copy-engines
     - capacity: "5"
       name: gpu-0-decoders
-    - capacity: "0"
-      name: gpu-0-encoders
     - capacity: "1"
       name: gpu-0-jpeg-engines
     - capacity: "1"
@@ -7198,8 +6140,6 @@
       name: gpu-1-copy-engines
     - capacity: "5"
       name: gpu-1-decoders
-    - capacity: "0"
-      name: gpu-1-encoders
     - capacity: "1"
       name: gpu-1-jpeg-engines
     - capacity: "1"
@@ -7228,8 +6168,6 @@
       name: gpu-2-copy-engines
     - capacity: "5"
       name: gpu-2-decoders
-    - capacity: "0"
-      name: gpu-2-encoders
     - capacity: "1"
       name: gpu-2-jpeg-engines
     - capacity: "1"
@@ -7258,8 +6196,6 @@
       name: gpu-3-copy-engines
     - capacity: "5"
       name: gpu-3-decoders
-    - capacity: "0"
-      name: gpu-3-encoders
     - capacity: "1"
       name: gpu-3-jpeg-engines
     - capacity: "1"
@@ -7288,8 +6224,6 @@
       name: gpu-4-copy-engines
     - capacity: "5"
       name: gpu-4-decoders
-    - capacity: "0"
-      name: gpu-4-encoders
     - capacity: "1"
       name: gpu-4-jpeg-engines
     - capacity: "1"
@@ -7318,8 +6252,6 @@
       name: gpu-5-copy-engines
     - capacity: "5"
       name: gpu-5-decoders
-    - capacity: "0"
-      name: gpu-5-encoders
     - capacity: "1"
       name: gpu-5-jpeg-engines
     - capacity: "1"
@@ -7348,8 +6280,6 @@
       name: gpu-6-copy-engines
     - capacity: "5"
       name: gpu-6-decoders
-    - capacity: "0"
-      name: gpu-6-encoders
     - capacity: "1"
       name: gpu-6-jpeg-engines
     - capacity: "1"
@@ -7378,8 +6308,6 @@
       name: gpu-7-copy-engines
     - capacity: "5"
       name: gpu-7-decoders
-    - capacity: "0"
-      name: gpu-7-encoders
     - capacity: "1"
       name: gpu-7-jpeg-engines
     - capacity: "1"
@@ -7409,7 +6337,7 @@
     devices:
     - attributes:
       - name: uuid
-        string: GPU-bf1b9e5e-a36e-4359-919f-dd144eb68e11
+        string: GPU-5acc1cd8-52aa-4754-9abf-43742e304281
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -7451,14 +6379,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7484,14 +6404,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7517,14 +6429,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7550,14 +6454,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7583,14 +6479,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7616,14 +6504,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7649,14 +6529,6 @@
         name: gpu-0-multiprocessors
       - capacity: "1"
         name: gpu-0-copy-engines
-      - capacity: "0"
-        name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 4864Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7684,12 +6556,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7719,12 +6585,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7754,12 +6614,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7789,12 +6643,6 @@
         name: gpu-0-copy-engines
       - capacity: "2"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 19968Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7828,12 +6676,6 @@
         name: gpu-0-copy-engines
       - capacity: "2"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 19968Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7867,12 +6709,6 @@
         name: gpu-0-copy-engines
       - capacity: "2"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 19968Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -7906,8 +6742,6 @@
         name: gpu-0-copy-engines
       - capacity: "5"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -7953,8 +6787,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -7986,8 +6818,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -8019,8 +6849,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -8052,8 +6880,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -8085,8 +6911,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -8118,8 +6942,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -8151,8 +6973,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
       - capacity: "1"
         name: gpu-0-jpeg-engines
       - capacity: "1"
@@ -8184,12 +7004,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -8219,12 +7033,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -8254,12 +7062,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -8289,12 +7091,6 @@
         name: gpu-0-copy-engines
       - capacity: "1"
         name: gpu-0-decoders
-      - capacity: "0"
-        name: gpu-0-encoders
-      - capacity: "0"
-        name: gpu-0-jpeg-engines
-      - capacity: "0"
-        name: gpu-0-ofa-engines
       - capacity: 9856Mi
         name: gpu-0-memory
       - capacity: "1"
@@ -8303,7 +7099,7 @@
         name: gpu-0-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-f0d7e2c1-b4a5-4e41-800a-62e49cdbb618
+        string: GPU-0b5b1d45-4f6d-41f6-8a34-d66917bf0995
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -8345,14 +7141,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8378,14 +7166,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8411,14 +7191,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8444,14 +7216,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8477,14 +7241,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8510,14 +7266,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8543,14 +7291,6 @@
         name: gpu-1-multiprocessors
       - capacity: "1"
         name: gpu-1-copy-engines
-      - capacity: "0"
-        name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 4864Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8578,12 +7318,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8613,12 +7347,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8648,12 +7376,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8683,12 +7405,6 @@
         name: gpu-1-copy-engines
       - capacity: "2"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 19968Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8722,12 +7438,6 @@
         name: gpu-1-copy-engines
       - capacity: "2"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 19968Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8761,12 +7471,6 @@
         name: gpu-1-copy-engines
       - capacity: "2"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 19968Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -8800,8 +7504,6 @@
         name: gpu-1-copy-engines
       - capacity: "5"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -8847,8 +7549,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -8880,8 +7580,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -8913,8 +7611,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -8946,8 +7642,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -8979,8 +7673,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -9012,8 +7704,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -9045,8 +7735,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
       - capacity: "1"
         name: gpu-1-jpeg-engines
       - capacity: "1"
@@ -9078,12 +7766,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -9113,12 +7795,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -9148,12 +7824,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -9183,12 +7853,6 @@
         name: gpu-1-copy-engines
       - capacity: "1"
         name: gpu-1-decoders
-      - capacity: "0"
-        name: gpu-1-encoders
-      - capacity: "0"
-        name: gpu-1-jpeg-engines
-      - capacity: "0"
-        name: gpu-1-ofa-engines
       - capacity: 9856Mi
         name: gpu-1-memory
       - capacity: "1"
@@ -9197,7 +7861,7 @@
         name: gpu-1-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-0bcdaac0-52df-46c4-afbb-5f4451d4b831
+        string: GPU-dfe742c0-f8b3-42e5-a100-55b396e8891b
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -9239,14 +7903,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9272,14 +7928,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9305,14 +7953,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9338,14 +7978,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9371,14 +8003,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9404,14 +8028,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9437,14 +8053,6 @@
         name: gpu-2-multiprocessors
       - capacity: "1"
         name: gpu-2-copy-engines
-      - capacity: "0"
-        name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 4864Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9472,12 +8080,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9507,12 +8109,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9542,12 +8138,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9577,12 +8167,6 @@
         name: gpu-2-copy-engines
       - capacity: "2"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 19968Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9616,12 +8200,6 @@
         name: gpu-2-copy-engines
       - capacity: "2"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 19968Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9655,12 +8233,6 @@
         name: gpu-2-copy-engines
       - capacity: "2"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 19968Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -9694,8 +8266,6 @@
         name: gpu-2-copy-engines
       - capacity: "5"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9741,8 +8311,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9774,8 +8342,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9807,8 +8373,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9840,8 +8404,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9873,8 +8435,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9906,8 +8466,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9939,8 +8497,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
       - capacity: "1"
         name: gpu-2-jpeg-engines
       - capacity: "1"
@@ -9972,12 +8528,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -10007,12 +8557,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -10042,12 +8586,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -10077,12 +8615,6 @@
         name: gpu-2-copy-engines
       - capacity: "1"
         name: gpu-2-decoders
-      - capacity: "0"
-        name: gpu-2-encoders
-      - capacity: "0"
-        name: gpu-2-jpeg-engines
-      - capacity: "0"
-        name: gpu-2-ofa-engines
       - capacity: 9856Mi
         name: gpu-2-memory
       - capacity: "1"
@@ -10091,7 +8623,7 @@
         name: gpu-2-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-94c21e76-42f0-4877-baea-fbe9132af033
+        string: GPU-b3a1714a-a7e1-4a0f-9087-b61697c38503
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -10133,14 +8665,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10166,14 +8690,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10199,14 +8715,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10232,14 +8740,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10265,14 +8765,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10298,14 +8790,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10331,14 +8815,6 @@
         name: gpu-3-multiprocessors
       - capacity: "1"
         name: gpu-3-copy-engines
-      - capacity: "0"
-        name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 4864Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10366,12 +8842,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10401,12 +8871,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10436,12 +8900,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10471,12 +8929,6 @@
         name: gpu-3-copy-engines
       - capacity: "2"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 19968Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10510,12 +8962,6 @@
         name: gpu-3-copy-engines
       - capacity: "2"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 19968Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10549,12 +8995,6 @@
         name: gpu-3-copy-engines
       - capacity: "2"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 19968Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10588,8 +9028,6 @@
         name: gpu-3-copy-engines
       - capacity: "5"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10635,8 +9073,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10668,8 +9104,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10701,8 +9135,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10734,8 +9166,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10767,8 +9197,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10800,8 +9228,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10833,8 +9259,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
       - capacity: "1"
         name: gpu-3-jpeg-engines
       - capacity: "1"
@@ -10866,12 +9290,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10901,12 +9319,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10936,12 +9348,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10971,12 +9377,6 @@
         name: gpu-3-copy-engines
       - capacity: "1"
         name: gpu-3-decoders
-      - capacity: "0"
-        name: gpu-3-encoders
-      - capacity: "0"
-        name: gpu-3-jpeg-engines
-      - capacity: "0"
-        name: gpu-3-ofa-engines
       - capacity: 9856Mi
         name: gpu-3-memory
       - capacity: "1"
@@ -10985,7 +9385,7 @@
         name: gpu-3-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-c50b1cef-52da-4662-93e6-3c9b4c159bba
+        string: GPU-74db47a6-6338-448c-bcea-2c2c1cc543bb
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -11027,14 +9427,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11060,14 +9452,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11093,14 +9477,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11126,14 +9502,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11159,14 +9527,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11192,14 +9552,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11225,14 +9577,6 @@
         name: gpu-4-multiprocessors
       - capacity: "1"
         name: gpu-4-copy-engines
-      - capacity: "0"
-        name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 4864Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11260,12 +9604,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11295,12 +9633,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11330,12 +9662,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11365,12 +9691,6 @@
         name: gpu-4-copy-engines
       - capacity: "2"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 19968Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11404,12 +9724,6 @@
         name: gpu-4-copy-engines
       - capacity: "2"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 19968Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11443,12 +9757,6 @@
         name: gpu-4-copy-engines
       - capacity: "2"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 19968Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11482,8 +9790,6 @@
         name: gpu-4-copy-engines
       - capacity: "5"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11529,8 +9835,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11562,8 +9866,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11595,8 +9897,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11628,8 +9928,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11661,8 +9959,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11694,8 +9990,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11727,8 +10021,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
       - capacity: "1"
         name: gpu-4-jpeg-engines
       - capacity: "1"
@@ -11760,12 +10052,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11795,12 +10081,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11830,12 +10110,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11865,12 +10139,6 @@
         name: gpu-4-copy-engines
       - capacity: "1"
         name: gpu-4-decoders
-      - capacity: "0"
-        name: gpu-4-encoders
-      - capacity: "0"
-        name: gpu-4-jpeg-engines
-      - capacity: "0"
-        name: gpu-4-ofa-engines
       - capacity: 9856Mi
         name: gpu-4-memory
       - capacity: "1"
@@ -11879,7 +10147,7 @@
         name: gpu-4-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-508d1010-9e66-4fa2-9a4e-07f471f55942
+        string: GPU-e3dc3b7c-9136-4e6e-a42c-0d1b1b5c83eb
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -11921,14 +10189,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -11954,14 +10214,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -11987,14 +10239,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12020,14 +10264,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12053,14 +10289,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12086,14 +10314,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12119,14 +10339,6 @@
         name: gpu-5-multiprocessors
       - capacity: "1"
         name: gpu-5-copy-engines
-      - capacity: "0"
-        name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 4864Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12154,12 +10366,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12189,12 +10395,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12224,12 +10424,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12259,12 +10453,6 @@
         name: gpu-5-copy-engines
       - capacity: "2"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 19968Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12298,12 +10486,6 @@
         name: gpu-5-copy-engines
       - capacity: "2"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 19968Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12337,12 +10519,6 @@
         name: gpu-5-copy-engines
       - capacity: "2"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 19968Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12376,8 +10552,6 @@
         name: gpu-5-copy-engines
       - capacity: "5"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12423,8 +10597,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12456,8 +10628,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12489,8 +10659,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12522,8 +10690,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12555,8 +10721,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12588,8 +10752,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12621,8 +10783,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
       - capacity: "1"
         name: gpu-5-jpeg-engines
       - capacity: "1"
@@ -12654,12 +10814,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12689,12 +10843,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12724,12 +10872,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12759,12 +10901,6 @@
         name: gpu-5-copy-engines
       - capacity: "1"
         name: gpu-5-decoders
-      - capacity: "0"
-        name: gpu-5-encoders
-      - capacity: "0"
-        name: gpu-5-jpeg-engines
-      - capacity: "0"
-        name: gpu-5-ofa-engines
       - capacity: 9856Mi
         name: gpu-5-memory
       - capacity: "1"
@@ -12773,7 +10909,7 @@
         name: gpu-5-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-f622c1e4-488e-43d7-9f4e-16a579ee57cb
+        string: GPU-b99e9ba4-9c44-4797-9140-b9d8d54ce551
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -12815,14 +10951,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -12848,14 +10976,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -12881,14 +11001,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -12914,14 +11026,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -12947,14 +11051,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -12980,14 +11076,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13013,14 +11101,6 @@
         name: gpu-6-multiprocessors
       - capacity: "1"
         name: gpu-6-copy-engines
-      - capacity: "0"
-        name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 4864Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13048,12 +11128,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13083,12 +11157,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13118,12 +11186,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13153,12 +11215,6 @@
         name: gpu-6-copy-engines
       - capacity: "2"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 19968Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13192,12 +11248,6 @@
         name: gpu-6-copy-engines
       - capacity: "2"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 19968Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13231,12 +11281,6 @@
         name: gpu-6-copy-engines
       - capacity: "2"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 19968Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13270,8 +11314,6 @@
         name: gpu-6-copy-engines
       - capacity: "5"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13317,8 +11359,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13350,8 +11390,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13383,8 +11421,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13416,8 +11452,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13449,8 +11483,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13482,8 +11514,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13515,8 +11545,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
       - capacity: "1"
         name: gpu-6-jpeg-engines
       - capacity: "1"
@@ -13548,12 +11576,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13583,12 +11605,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13618,12 +11634,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13653,12 +11663,6 @@
         name: gpu-6-copy-engines
       - capacity: "1"
         name: gpu-6-decoders
-      - capacity: "0"
-        name: gpu-6-encoders
-      - capacity: "0"
-        name: gpu-6-jpeg-engines
-      - capacity: "0"
-        name: gpu-6-ofa-engines
       - capacity: 9856Mi
         name: gpu-6-memory
       - capacity: "1"
@@ -13667,7 +11671,7 @@
         name: gpu-6-memory-slices-7
     - attributes:
       - name: uuid
-        string: GPU-1e54e215-0d74-4c78-8123-abbd8543609a
+        string: GPU-9846d324-7e23-4b56-993e-9a2201c7ee7e
       - name: product-name
         string: Mock NVIDIA A100-SXM4-40GB
       - name: brand
@@ -13709,14 +11713,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13742,14 +11738,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13775,14 +11763,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13808,14 +11788,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13841,14 +11813,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13874,14 +11838,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13907,14 +11863,6 @@
         name: gpu-7-multiprocessors
       - capacity: "1"
         name: gpu-7-copy-engines
-      - capacity: "0"
-        name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 4864Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13942,12 +11890,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -13977,12 +11919,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14012,12 +11948,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14047,12 +11977,6 @@
         name: gpu-7-copy-engines
       - capacity: "2"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 19968Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14086,12 +12010,6 @@
         name: gpu-7-copy-engines
       - capacity: "2"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 19968Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14125,12 +12043,6 @@
         name: gpu-7-copy-engines
       - capacity: "2"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 19968Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14164,8 +12076,6 @@
         name: gpu-7-copy-engines
       - capacity: "5"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14211,8 +12121,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14244,8 +12152,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14277,8 +12183,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14310,8 +12214,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14343,8 +12245,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14376,8 +12276,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14409,8 +12307,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
       - capacity: "1"
         name: gpu-7-jpeg-engines
       - capacity: "1"
@@ -14442,12 +12338,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14477,12 +12367,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14512,12 +12396,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14547,12 +12425,6 @@
         name: gpu-7-copy-engines
       - capacity: "1"
         name: gpu-7-decoders
-      - capacity: "0"
-        name: gpu-7-encoders
-      - capacity: "0"
-        name: gpu-7-jpeg-engines
-      - capacity: "0"
-        name: gpu-7-ofa-engines
       - capacity: 9856Mi
         name: gpu-7-memory
       - capacity: "1"
@@ -14570,8 +12442,6 @@
       name: gpu-0-copy-engines
     - capacity: "5"
       name: gpu-0-decoders
-    - capacity: "0"
-      name: gpu-0-encoders
     - capacity: "1"
       name: gpu-0-jpeg-engines
     - capacity: "1"
@@ -14600,8 +12470,6 @@
       name: gpu-1-copy-engines
     - capacity: "5"
       name: gpu-1-decoders
-    - capacity: "0"
-      name: gpu-1-encoders
     - capacity: "1"
       name: gpu-1-jpeg-engines
     - capacity: "1"
@@ -14630,8 +12498,6 @@
       name: gpu-2-copy-engines
     - capacity: "5"
       name: gpu-2-decoders
-    - capacity: "0"
-      name: gpu-2-encoders
     - capacity: "1"
       name: gpu-2-jpeg-engines
     - capacity: "1"
@@ -14660,8 +12526,6 @@
       name: gpu-3-copy-engines
     - capacity: "5"
       name: gpu-3-decoders
-    - capacity: "0"
-      name: gpu-3-encoders
     - capacity: "1"
       name: gpu-3-jpeg-engines
     - capacity: "1"
@@ -14690,8 +12554,6 @@
       name: gpu-4-copy-engines
     - capacity: "5"
       name: gpu-4-decoders
-    - capacity: "0"
-      name: gpu-4-encoders
     - capacity: "1"
       name: gpu-4-jpeg-engines
     - capacity: "1"
@@ -14720,8 +12582,6 @@
       name: gpu-5-copy-engines
     - capacity: "5"
       name: gpu-5-decoders
-    - capacity: "0"
-      name: gpu-5-encoders
     - capacity: "1"
       name: gpu-5-jpeg-engines
     - capacity: "1"
@@ -14750,8 +12610,6 @@
       name: gpu-6-copy-engines
     - capacity: "5"
       name: gpu-6-decoders
-    - capacity: "0"
-      name: gpu-6-encoders
     - capacity: "1"
       name: gpu-6-jpeg-engines
     - capacity: "1"
@@ -14780,8 +12638,6 @@
       name: gpu-7-copy-engines
     - capacity: "5"
       name: gpu-7-decoders
-    - capacity: "0"
-      name: gpu-7-encoders
     - capacity: "1"
       name: gpu-7-jpeg-engines
     - capacity: "1"

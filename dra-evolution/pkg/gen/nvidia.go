@@ -111,7 +111,7 @@ func sharedGroupToResources(group newresourceapi.NamedResourcesSharedResourceGro
 
 	for _, item := range group.Items {
 		name := fmt.Sprintf("gpu-%d-%s", gpu, item.Name)
-		if item.QuantityValue != nil {
+		if item.QuantityValue != nil && !item.QuantityValue.IsZero() {
 			resources = append(resources, api.SharedCapacity{
 				Name:     name,
 				Capacity: *item.QuantityValue,
