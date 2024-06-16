@@ -59,14 +59,14 @@ type ResourcePoolSpec struct {
 	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
-	// SharedCapacity defines the sets of shared capacity consumable by
+	// SharedCapacity defines the set of shared capacity consumable by
 	// devices in this ResourceSlice.
 	//
-	// Must not have more than 16 entries.
+	// Must not have more than 128 entries.
 	//
 	// +listType=atomic
 	// +optional
-	SharedCapacity []SharedCapacityGroup `json:"sharedCapacity,omitempty"`
+	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
 
 	// Devices lists all available devices in this pool.
 	//
@@ -76,24 +76,6 @@ type ResourcePoolSpec struct {
 	// FUTURE EXTENSION: some other kind of list, should we ever need it.
 	// Old clients seeing an empty Devices field can safely ignore the (to
 	// them) empty pool.
-}
-
-// SharedCapacityGroup contains shared capacity values that are
-// part of a common set.
-//
-// For example, each physical, partitionable GPU would have one
-// SharedCapacityGroup.
-type SharedCapacityGroup struct {
-	Name string `json:"name"`
-
-	// SharedCapacity defines the sets of shared capacity consumable by
-	// devices in this SharedCapacityGroup.
-	//
-	// Must not have more than 16 entries.
-	//
-	// +listType=atomic
-	// +optional
-	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
 }
 
 const ResourcePoolMaxSharedCapacity = 128
@@ -122,7 +104,7 @@ type Device struct {
 	//
 	// +listType=atomic
 	// +optional
-	SharedCapacityConsumed []SharedCapacityGroup `json:"sharedCapacityConsumed,omitempty"`
+	SharedCapacityConsumed []SharedCapacity `json:"sharedCapacityConsumed,omitempty"`
 }
 
 const ResourcePoolMaxAttributesPerDevice = 32
