@@ -59,14 +59,11 @@ type ResourcePoolSpec struct {
 	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
-	// SharedCapacity defines the set of shared capacity consumable by
-	// devices in this ResourceSlice.
+	// CommonData represents information that is common across various devices,
+	// to reduce redundancy in the devices list.
 	//
-	// Must not have more than 128 entries.
-	//
-	// +listType=atomic
 	// +optional
-	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
+	CommonData []CommonDeviceData `json:"commonData,omitempty"`
 
 	// Devices lists all available devices in this pool.
 	//
@@ -78,8 +75,25 @@ type ResourcePoolSpec struct {
 	// them) empty pool.
 }
 
-const ResourcePoolMaxSharedCapacity = 128
+const ResourcePoolMaxCommonData = 16
 const ResourcePoolMaxDevices = 128
+
+type CommonDeviceData struct {
+	// Name identifies the particular set of common data represented
+	// here.
+	//
+	// +required
+	Name string `json:"name"`
+
+	// Exactly one must be populated
+	Attributes []DeviceAttribute
+	Capacity   []DeviceCapacity
+
+	// Future possible additions:
+	// - SharedCapacity for use in allocating partitionable devices
+	// - DeviceShape for encapsulating attributes, capacities, partion schemes
+	// - DeviceShapeRef for storing those in a secondary object
+}
 
 // Device represents one individual hardware instance that can be selected based
 // on its attributes.
@@ -88,27 +102,43 @@ type Device struct {
 	// the driver on the node. It must be a DNS label.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
 
+	// CommonData is the list of names of entries from the common data that
+	// should be included in this device.
+	//
+	// +listType=atomic
+	// +optional
+	//
+	CommonData []string `json:"commonData,omitempty"`
+
 	// Attributes defines the attributes of this device.
 	// The name of each attribute must be unique.
 	//
 	// Must not have more than 32 entries.
 	//
+	// Values in this list whose name conflict with common attributes
+	// will override the common attribute values.
+	//
 	// +listType=atomic
 	// +optional
+	//
 	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
-	// SharedCapacityConsumed defines the set of shared capacity consumed by
-	// this device.
+	// Capacity defines the capacity values for this device.
+	// The name of each capacity must be unique.
 	//
 	// Must not have more than 32 entries.
 	//
+	// Values in this list whose name conflict with common capacity
+	// will override the common capacity values.
+	//
 	// +listType=atomic
 	// +optional
-	SharedCapacityConsumed []SharedCapacity `json:"sharedCapacityConsumed,omitempty"`
+	//
+	Capacity []DeviceCapacity `json:"capacity,omitempty"`
 }
 
 const ResourcePoolMaxAttributesPerDevice = 32
-const ResourcePoolMaxSharedCapacityConsumedPerDevice = 32
+const ResourcePoolMaxCapacityPerDevice = 32
 
 // ResourcePoolMaxDevices and ResourcePoolMaxAttributesPerDevice where chosen
 // so that with the maximum attribute length of 96 characters the total size of
@@ -154,40 +184,24 @@ type DeviceAttribute struct {
 	VersionValue *string `json:"version,omitempty" protobuf:"bytes,5,opt,name=version"`
 }
 
-type SharedCapacity struct {
-	// Name is a unique identifier among all shared capacities managed by the
+type DeviceCapacity struct {
+	// Name is a unique identifier among all capacities managed by the
 	// driver in the pool.
-	//
-	// It is referenced both when defining the total amount of shared capacity
-	// that is available, as well as by individual devices when declaring
-	// how much of this shared capacity they consume.
-	//
-	// SharedCapacity names must be a C-style identifier (e.g. "the_name") with
-	// a maximum length of 32.
-	//
-	// By limiting these names to a C-style identifier, the same validation can
-	// be used for both these names and the identifier portion of a
-	// DeviceAttribute name.
 	//
 	// +required
 	Name string `json:"name"`
 
 	// Capacity is the total capacity of the named resource.
-	// This can either represent the total *available* capacity, or the total
-	// capacity *consumed*, depending on the context where it is referenced.
 	//
 	// +required
 	Capacity resource.Quantity `json:"capacity"`
 }
 
-// CStyleIdentifierMaxLength is the maximum length of a c-style identifier used for naming.
-const CStyleIdentifierMaxLength = 32
-
 // DeviceAttributeMaxIDLength is the maximum length of the identifier in a device attribute name (`<domain>/<ID>`).
-const DeviceAttributeMaxIDLength = CStyleIdentifierMaxLength
+const DeviceAttributeMaxIDLength = 32
 
 // DeviceAttributeMaxValueLength is the maximum length of a string or version attribute value.
 const DeviceAttributeMaxValueLength = 64
 
-// SharedCapacityMaxNameLength is the maximum length of a shared capacity name.
-const SharedCapacityMaxNameLength = CStyleIdentifierMaxLength
+// DeviceCapacityMaxNameLength is the maximum length of a shared capacity name.
+const DeviceCapacityMaxNameLength = DeviceAttributeMaxIDLength
