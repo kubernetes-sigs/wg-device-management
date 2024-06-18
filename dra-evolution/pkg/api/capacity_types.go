@@ -59,11 +59,13 @@ type ResourcePoolSpec struct {
 	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
-	// CommonData represents information that is common across various devices,
-	// to reduce redundancy in the devices list.
+	// SliceContent represents the type of data in this slice. Currently the only
+	// valid values is `Devices`. As we add features, new values will be added
+	// to this discriminator. This allows older schedulers to know if they should
+	// ignore the slice, due to it being of a type they do not understand.
 	//
-	// +optional
-	CommonData []CommonDeviceData `json:"commonData,omitempty"`
+	// +required
+	SliceContent string `json:"sliceContent"`
 
 	// Devices lists all available devices in this pool.
 	//
@@ -78,37 +80,12 @@ type ResourcePoolSpec struct {
 const ResourcePoolMaxCommonData = 16
 const ResourcePoolMaxDevices = 128
 
-type CommonDeviceData struct {
-	// Name identifies the particular set of common data represented
-	// here.
-	//
-	// +required
-	Name string `json:"name"`
-
-	// Exactly one must be populated
-	Attributes []DeviceAttribute
-	Capacity   []DeviceCapacity
-
-	// Future possible additions:
-	// - SharedCapacity for use in allocating partitionable devices
-	// - DeviceShape for encapsulating attributes, capacities, partion schemes
-	// - DeviceShapeRef for storing those in a secondary object
-}
-
 // Device represents one individual hardware instance that can be selected based
 // on its attributes.
 type Device struct {
 	// Name is unique identifier among all devices managed by
 	// the driver on the node. It must be a DNS label.
 	Name string `json:"name" protobuf:"bytes,1,name=name"`
-
-	// CommonData is the list of names of entries from the common data that
-	// should be included in this device.
-	//
-	// +listType=atomic
-	// +optional
-	//
-	CommonData []string `json:"commonData,omitempty"`
 
 	// Attributes defines the attributes of this device.
 	// The name of each attribute must be unique.
@@ -173,8 +150,6 @@ type DeviceAttribute struct {
 	// field "String" and the corresponding method. That method is required.
 	// The Kubernetes API is defined without that suffix to keep it more natural.
 
-	// QuantityValue is a quantity.
-	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,2,opt,name=quantity"`
 	// BoolValue is a true/false value.
 	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,3,opt,name=bool"`
 	// StringValue is a string. Must not be longer than 64 characters.
