@@ -92,9 +92,6 @@ type Device struct {
 	//
 	// Must not have more than 32 entries.
 	//
-	// Values in this list whose name conflict with common attributes
-	// will override the common attribute values.
-	//
 	// +listType=atomic
 	// +optional
 	//
@@ -104,9 +101,6 @@ type Device struct {
 	// The name of each capacity must be unique.
 	//
 	// Must not have more than 32 entries.
-	//
-	// Values in this list whose name conflict with common capacity
-	// will override the common capacity values.
 	//
 	// +listType=atomic
 	// +optional
