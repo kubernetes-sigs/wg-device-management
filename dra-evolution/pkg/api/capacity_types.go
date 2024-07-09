@@ -59,14 +59,13 @@ type ResourcePoolSpec struct {
 	// vendor of the driver.
 	DriverName string `json:"driverName" protobuf:"bytes,3,name=driverName"`
 
-	// SharedCapacity defines the set of shared capacity consumable by
-	// devices in this ResourceSlice.
+	// SliceContent represents the type of data in this slice. Currently the only
+	// valid values is `Devices`. As we add features, new values will be added
+	// to this discriminator. This allows older schedulers to know if they should
+	// ignore the slice, due to it being of a type they do not understand.
 	//
-	// Must not have more than 128 entries.
-	//
-	// +listType=atomic
-	// +optional
-	SharedCapacity []SharedCapacity `json:"sharedCapacity,omitempty"`
+	// +required
+	SliceContent string `json:"sliceContent"`
 
 	// Devices lists all available devices in this pool.
 	//
@@ -78,7 +77,7 @@ type ResourcePoolSpec struct {
 	// them) empty pool.
 }
 
-const ResourcePoolMaxSharedCapacity = 128
+const ResourcePoolMaxCommonData = 16
 const ResourcePoolMaxDevices = 128
 
 // Device represents one individual hardware instance that can be selected based
@@ -95,20 +94,22 @@ type Device struct {
 	//
 	// +listType=atomic
 	// +optional
+	//
 	Attributes []DeviceAttribute `json:"attributes,omitempty" protobuf:"bytes,3,opt,name=attributes"`
 
-	// SharedCapacityConsumed defines the set of shared capacity consumed by
-	// this device.
+	// Capacity defines the capacity values for this device.
+	// The name of each capacity must be unique.
 	//
 	// Must not have more than 32 entries.
 	//
 	// +listType=atomic
 	// +optional
-	SharedCapacityConsumed []SharedCapacity `json:"sharedCapacityConsumed,omitempty"`
+	//
+	Capacity []DeviceCapacity `json:"capacity,omitempty"`
 }
 
 const ResourcePoolMaxAttributesPerDevice = 32
-const ResourcePoolMaxSharedCapacityConsumedPerDevice = 32
+const ResourcePoolMaxCapacityPerDevice = 32
 
 // ResourcePoolMaxDevices and ResourcePoolMaxAttributesPerDevice where chosen
 // so that with the maximum attribute length of 96 characters the total size of
@@ -143,8 +144,6 @@ type DeviceAttribute struct {
 	// field "String" and the corresponding method. That method is required.
 	// The Kubernetes API is defined without that suffix to keep it more natural.
 
-	// QuantityValue is a quantity.
-	QuantityValue *resource.Quantity `json:"quantity,omitempty" protobuf:"bytes,2,opt,name=quantity"`
 	// BoolValue is a true/false value.
 	BoolValue *bool `json:"bool,omitempty" protobuf:"bytes,3,opt,name=bool"`
 	// StringValue is a string. Must not be longer than 64 characters.
@@ -154,40 +153,24 @@ type DeviceAttribute struct {
 	VersionValue *string `json:"version,omitempty" protobuf:"bytes,5,opt,name=version"`
 }
 
-type SharedCapacity struct {
-	// Name is a unique identifier among all shared capacities managed by the
+type DeviceCapacity struct {
+	// Name is a unique identifier among all capacities managed by the
 	// driver in the pool.
-	//
-	// It is referenced both when defining the total amount of shared capacity
-	// that is available, as well as by individual devices when declaring
-	// how much of this shared capacity they consume.
-	//
-	// SharedCapacity names must be a C-style identifier (e.g. "the_name") with
-	// a maximum length of 32.
-	//
-	// By limiting these names to a C-style identifier, the same validation can
-	// be used for both these names and the identifier portion of a
-	// DeviceAttribute name.
 	//
 	// +required
 	Name string `json:"name"`
 
 	// Capacity is the total capacity of the named resource.
-	// This can either represent the total *available* capacity, or the total
-	// capacity *consumed*, depending on the context where it is referenced.
 	//
 	// +required
 	Capacity resource.Quantity `json:"capacity"`
 }
 
-// CStyleIdentifierMaxLength is the maximum length of a c-style identifier used for naming.
-const CStyleIdentifierMaxLength = 32
-
 // DeviceAttributeMaxIDLength is the maximum length of the identifier in a device attribute name (`<domain>/<ID>`).
-const DeviceAttributeMaxIDLength = CStyleIdentifierMaxLength
+const DeviceAttributeMaxIDLength = 32
 
 // DeviceAttributeMaxValueLength is the maximum length of a string or version attribute value.
 const DeviceAttributeMaxValueLength = 64
 
-// SharedCapacityMaxNameLength is the maximum length of a shared capacity name.
-const SharedCapacityMaxNameLength = CStyleIdentifierMaxLength
+// DeviceCapacityMaxNameLength is the maximum length of a shared capacity name.
+const DeviceCapacityMaxNameLength = DeviceAttributeMaxIDLength
