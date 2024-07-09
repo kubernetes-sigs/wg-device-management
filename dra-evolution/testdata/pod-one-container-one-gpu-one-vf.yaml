@@ -57,23 +57,31 @@ spec:
   constraints:
   - matchAttribute: dra.k8s.io/pcie_root
   requests:
-  - deviceClassName: foozer.example.com
-  - deviceClassName: sriov-nic-example.org
+  - name: gpu
+    deviceClassName: foozer.example.com
+  - name: nic
+    deviceClassName: sriov-nic-example.org
     requirements:
     - deviceSelector: "device.stringAttributes['sriov-nic.example.org/sriovType'] == 'vf'"
 status:
   allocation:
-    nodeName: worker-1
+    availableOnNodes:
+      nodeSelectorTerms:
+      - matchFields:
+        - key: name
+          operator: in
+          values:
+          - worker-1
     shareable: true
-    driverData:
-    - driverName: foozer.example.com
-      data:
-        results:
-        - deviceName: gpu-1
-    - driverName: sriov.example.org
-      data:
-        results:
-        - deviceName: nic-1
+    results:
+    - requestName: gpu
+      driverName: foozer.example.com
+      devicePoolName: worker-1
+      deviceName: gpu-1
+    - requestName: nic
+      driverName: sriov.example.org
+      devicePoolName: worker-1
+      deviceName: nic-1
   reservedFor:
   - resource: pods
     name: foozer
