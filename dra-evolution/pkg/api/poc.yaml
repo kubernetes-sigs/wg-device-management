@@ -1,0 +1,482 @@
+sharedAttributeGroups:
+- name: common-attributes
+  attributes:
+  - name: brand
+    string: Nvidia
+  - name: cuda-compute-capability
+    version: 8.0.0
+  - name: driver-version
+    version: 550.54.15
+  - name: cuda-driver-version
+    version: 12.4.0
+
+- name: a100-common-attributes
+  attributes:
+  - name: product-name
+    string: Mock NVIDIA A100-SXM4-40GB
+  - name: architecture
+    string: Ampere
+
+- name: h100-common-attributes
+  attributes:
+  - name: product-name
+    string: Mock NVIDIA H100-SXM4-80GB
+  - name: architecture
+    string: Hopper
+
+- name: gpu-0-common-attributes
+  attributes:
+  - name "k8s.io/pcie-root"
+    string "pci_0"
+
+- name: gpu-1-common-attributes
+  attributes:
+  - name "k8s.io/pcie-root"
+    string "pci_1"
+
+- name: gpu-2-common-attributes
+  attributes:
+  - name "k8s.io/pcie-root"
+    string "pci_2"
+
+sharedCapacityTemplates:
+- name: a100-shared-resources
+  capacities:
+  - name: multiprocessors
+    quantity: "98"
+  - name: copy-engines
+    quantity: "7"
+  - name: decoders
+    quantity: "5"
+  - name: encoders
+    quantity: "0"
+  - name: jpeg-engines
+    quantity: "1"
+  - name: ofa-engines
+    quantity: "1"
+  - name: memory-slices
+    intRange: 0-7
+
+- name: h100-shared-resources
+  capacities:
+  - name: multiprocessors
+    quantity: "132"
+  - name: copy-engines
+    quantity: "8"
+  - name: decoders
+    quantity: "7"
+  - name: encoders
+    quantity: "0"
+  - name: jpeg-engines
+    quantity: "7"
+  - name: ofa-engines
+    quantity: "1"
+  - name: memory-slices
+    intRange: 0-7
+
+deviceTemplates:
+- name: a100-whole-gpu
+  sharedAttributeGroups:
+  - common-attributes
+  - a100-common-attributes
+  attributes:
+  - name: memory
+    quantity: 40Gi
+  - name: mig-capable
+    bool: true
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: multiprocessors
+      quantity: "98"
+    - name: copy-engines
+      quantity: "7"
+    - name: decoders
+      quantity: "5"
+    - name: encoders
+      quantity: "0"
+    - name: jpeg-engines
+      quantity: "1"
+    - name: ofa-engines
+      quantity: "1"
+    - name: memory-slices
+      intRange: 0-7
+
+- name: h100-whole-gpu
+  sharedAttributeGroups:
+  - common-attributes
+  - h100-common-attributes
+  attributes:
+  - name: memory
+    quantity: 80Gi
+  - name: mig-capable
+    bool: true
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: multiprocessors
+      quantity: "132"
+    - name: copy-engines
+      quantity: "8"
+    - name: decoders
+      quantity: "7"
+    - name: encoders
+      quantity: "0"
+    - name: jpeg-engines
+      quantity: "7"
+    - name: ofa-engines
+      quantity: "1"
+    - name: memory-slices
+      intRange: 0-7
+
+- name: a100-mig-1g.5gb-base
+  sharedAttributeGroups:
+  - common-attributes
+  - a100-common-attributes
+  attributes:
+  - name: mig-profile
+    string: 1g.5gb
+  - name: memory
+    quantity: 4864Mi
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: multiprocessors
+      quantity: "14"
+    - name: copy-engines
+      quantity: "1"
+    - name: decoders
+      quantity: "0"
+    - name: encoders
+      quantity: "0"
+    - name: jpeg-engines
+      quantity: "0"
+    - name: ofa-engines
+      quantity: "0"
+
+- name: h100-mig-1g.10gb-base
+  sharedAttributeGroups:
+  - common-attributes
+  - h100-common-attributes
+  attributes:
+  - name: mig-profile
+    string: 1g.10gb
+  - name: memory
+    quantity: 9728Mi
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: multiprocessors
+      quantity: "16"
+    - name: copy-engines
+      quantity: "1"
+    - name: decoders
+      quantity: "1"
+    - name: encoders
+      quantity: "0"
+    - name: jpeg-engines
+      quantity: "1"
+    - name: ofa-engines
+      quantity: "0"
+
+- name: a100-mig-1g.5gb-0
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "0"
+
+- name: a100-mig-1g.5gb-1
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "1"
+
+- name: a100-mig-1g.5gb-2
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "2"
+
+- name: a100-mig-1g.5gb-3
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "3"
+
+- name: a100-mig-1g.5gb-4
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "4"
+
+- name: a100-mig-1g.5gb-5
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "5"
+
+- name: a100-mig-1g.5gb-6
+  deviceTemplateName: a100-mig-1g.5gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: a100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "6"
+
+- name: h100-mig-1g.10gb-0
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "0"
+
+- name: h100-mig-1g.10gb-1
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "1"
+
+- name: h100-mig-1g.10gb-2
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "2"
+
+- name: h100-mig-1g.10gb-3
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "3"
+
+- name: h100-mig-1g.10gb-4
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "4"
+
+- name: h100-mig-1g.10gb-5
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "5"
+
+- name: h100-mig-1g.10gb-6
+  deviceTemplateName: h100-mig-1g.10gb-base
+  sharedCapacitiesConsumed:
+  - sharedCapacityTemplateName: h100-shared-resources
+    capacities:
+    - name: memory-slices
+      intRange: "6"
+
+devices:
+# GPU 0 is an A100 with MIG disabled so is only advertised as a full GPU
+- name: gpu-0
+  deviceTemplateName: a100-whole-gpu
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-0
+  sharedAttributeGroups:
+  - gpu-0-common-attributes
+  attributes:
+  - name: index
+    string: "0"
+  - name: minor
+    string: "0"
+  - name: uuid
+    string: GPU-0eaad900-5263-4fd6-b020-f03d30efac31
+
+# GPU 1 is an A100 with MIG enabled so is only advertised as its full set of MIG devices
+- name: gpu-1-mig-1g.5gb-0
+  deviceTemplateName: a100-mig-1g.5gb-0
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+- name: gpu-1-mig-1g.5gb-1
+  deviceTemplateName: a100-mig-1g.5gb-1
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+- name: gpu-1-mig-1g.5gb-2
+  deviceTemplateName: a100-mig-1g.5gb-2
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+- name: gpu-1-mig-1g.5gb-3
+  deviceTemplateName: a100-mig-1g.5gb-3
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+- name: gpu-1-mig-1g.5gb-4
+  deviceTemplateName: a100-mig-1g.5gb-4
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+- name: gpu-1-mig-1g.5gb-5
+  deviceTemplateName: a100-mig-1g.5gb-5
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+- name: gpu-1-mig-1g.5gb-6
+  deviceTemplateName: a100-mig-1g.5gb-6
+  sharedCapacityInstances:
+  - templateName: a100-shared-resources
+    instanceName: gpu-1
+  sharedAttributeGroups:
+  - gpu-1-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "1"
+
+# GPU 2 is an H100 and advertises both its full GPU and all of its MIG devices
+- name: gpu-2
+  deviceTemplateName: h100-whole-gpu
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: index
+    string: "2"
+  - name: minor
+    string: "2"
+  - name: uuid
+    string: GPU-4404041a-04cf-1ccf-9e70-f139a9b1e23c
+
+- name: gpu-2-mig-1g.10gb-0
+  deviceTemplateName: h100-mig-1g.10gb-0
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: index
+    string: "2:0"
+  - name: parentIndex
+    string: "2"
+
+- name: gpu-2-mig-1g.10gb-1
+  deviceTemplateName: h100-mig-1g.10gb-1
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "2"
+
+- name: gpu-2-mig-1g.10gb-2
+  deviceTemplateName: h100-mig-1g.10gb-2
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "2"
+
+- name: gpu-2-mig-1g.10gb-3
+  deviceTemplateName: h100-mig-1g.10gb-3
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "2"
+
+- name: gpu-2-mig-1g.10gb-4
+  deviceTemplateName: h100-mig-1g.10gb-4
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "2"
+
+- name: gpu-2-mig-1g.10gb-5
+  deviceTemplateName: h100-mig-1g.10gb-5
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "2"
+
+- name: gpu-2-mig-1g.10gb-6
+  deviceTemplateName: h100-mig-1g.10gb-6
+  sharedCapacityInstances:
+  - templateName: h100-shared-resources
+    instanceName: gpu-2
+  sharedAttributeGroups:
+  - gpu-2-common-attributes
+  attributes:
+  - name: parentIndex
+    string: "2"
