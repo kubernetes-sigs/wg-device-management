@@ -11,7 +11,10 @@ import (
 )
 
 // PerGpuAllocatableDevices holds the list of allocatable devices per GPU.
-type PerGpuAllocatableDevices map[int]AllocatableDevices
+type PerGpuAllocatableDevices struct {
+	Devices    map[int]AllocatableDevices
+	SystemInfo SystemInfo
+}
 
 // AllocatableDevices holds the list of allocatable devices.
 type AllocatableDevices []AllocatableDevice
@@ -21,6 +24,12 @@ type AllocatableDevices []AllocatableDevice
 type AllocatableDevice struct {
 	Gpu *GpuInfo
 	Mig *MigInfo
+}
+
+// SystemInfo holds info pertinent to all devices.
+type SystemInfo struct {
+	DriverVersion     string
+	CudaDriverVersion string
 }
 
 // GpuInfo holds all of the relevant information about a GPU.
@@ -33,10 +42,7 @@ type GpuInfo struct {
 	Brand                 string
 	Architecture          string
 	CudaComputeCapability string
-	DriverVersion         string
-	CudaDriverVersion     string
 	MigCapable            bool
-	MigEnabled            bool
 }
 
 // MigInfo holds all of the relevant information about a MIG device.
@@ -88,13 +94,15 @@ func (l NVDeviceLib) AlwaysShutdown() {
 // set of allocatable devices to just those GPUs. If no indices are provided,
 // the full set of allocatable devices across all GPUs are returned.
 // NOTE: Both full GPUs and MIG devices are returned as part of this call.
-func (l NVDeviceLib) GetPerGpuAllocatableDevices(indices ...int) (PerGpuAllocatableDevices, error) {
+func (l NVDeviceLib) GetPerGpuAllocatableDevices(indices ...int) (*PerGpuAllocatableDevices, error) {
 	if err := l.Init(); err != nil {
 		return nil, err
 	}
 	defer l.AlwaysShutdown()
 
-	allocatable := make(PerGpuAllocatableDevices)
+	allocatable := PerGpuAllocatableDevices{
+		Devices: make(map[int]AllocatableDevices),
+	}
 	err := l.nvdev.VisitDevices(func(i int, d nvdev.Device) error {
 		if indices != nil && !slices.Contains(indices, i) {
 			return nil
@@ -107,7 +115,7 @@ func (l NVDeviceLib) GetPerGpuAllocatableDevices(indices ...int) (PerGpuAllocata
 		gpuDevice := AllocatableDevice{
 			Gpu: gpuInfo,
 		}
-		allocatable[gpuInfo.Index] = append(allocatable[gpuInfo.Index], gpuDevice)
+		allocatable.Devices[gpuInfo.Index] = append(allocatable.Devices[gpuInfo.Index], gpuDevice)
 
 		migInfos, err := l.getMigInfos(gpuInfo, d)
 		if err != nil {
@@ -117,7 +125,7 @@ func (l NVDeviceLib) GetPerGpuAllocatableDevices(indices ...int) (PerGpuAllocata
 			migDevice := AllocatableDevice{
 				Mig: migInfo,
 			}
-			allocatable[gpuInfo.Index] = append(allocatable[gpuInfo.Index], migDevice)
+			allocatable.Devices[gpuInfo.Index] = append(allocatable.Devices[gpuInfo.Index], migDevice)
 		}
 
 		return nil
@@ -126,7 +134,21 @@ func (l NVDeviceLib) GetPerGpuAllocatableDevices(indices ...int) (PerGpuAllocata
 		return nil, fmt.Errorf("error visiting devices: %w", err)
 	}
 
-	return allocatable, nil
+	driverVersion, ret := l.nvml.SystemGetDriverVersion()
+	if ret != nvml.SUCCESS {
+		return nil, fmt.Errorf("error getting driver version: %w", err)
+	}
+	cudaDriverVersion, ret := l.nvml.SystemGetCudaDriverVersion()
+	if ret != nvml.SUCCESS {
+		return nil, fmt.Errorf("error getting CUDA driver version: %w", err)
+	}
+
+	allocatable.SystemInfo = SystemInfo{
+		DriverVersion:     driverVersion,
+		CudaDriverVersion: fmt.Sprintf("%v.%v", cudaDriverVersion/1000, (cudaDriverVersion%1000)/10),
+	}
+
+	return &allocatable, nil
 }
 
 // getGpuInfo returns info about the GPU at the provided index.
@@ -159,21 +181,9 @@ func (l NVDeviceLib) getGpuInfo(index int, device nvdev.Device) (*GpuInfo, error
 	if err != nil {
 		return nil, fmt.Errorf("error getting CUDA compute capability for device %d: %w", index, err)
 	}
-	driverVersion, ret := l.nvml.SystemGetDriverVersion()
-	if ret != nvml.SUCCESS {
-		return nil, fmt.Errorf("error getting driver version: %w", err)
-	}
-	cudaDriverVersion, ret := l.nvml.SystemGetCudaDriverVersion()
-	if ret != nvml.SUCCESS {
-		return nil, fmt.Errorf("error getting CUDA driver version: %w", err)
-	}
 	migCapable, err := device.IsMigCapable()
 	if err != nil {
 		return nil, fmt.Errorf("error checking if MIG capable for device %d: %w", index, err)
-	}
-	migEnabled, err := device.IsMigEnabled()
-	if err != nil {
-		return nil, fmt.Errorf("error checking if MIG mode enabled for device %d: %w", index, err)
 	}
 
 	gpuInfo := &GpuInfo{
@@ -185,10 +195,7 @@ func (l NVDeviceLib) getGpuInfo(index int, device nvdev.Device) (*GpuInfo, error
 		Brand:                 brand,
 		Architecture:          architecture,
 		CudaComputeCapability: cudaComputeCapability,
-		DriverVersion:         driverVersion,
-		CudaDriverVersion:     fmt.Sprintf("%v.%v", cudaDriverVersion/1000, (cudaDriverVersion%1000)/10),
 		MigCapable:            migCapable,
-		MigEnabled:            migEnabled,
 	}
 
 	return gpuInfo, nil

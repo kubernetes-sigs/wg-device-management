@@ -8,12 +8,11 @@ import (
 	"sigs.k8s.io/yaml"
 
 	nvdevicelib "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/nvdevice"
-	currentresourceapi "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/resource/current"
-	newresourceapi "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/resource/new"
+	resourceapi "github.com/kubernetes-sigs/wg-device-management/nv-partitionable-resources/pkg/resource"
 )
 
 // Main queries the list of allocatable devices and prints them as a kubernetes
-// structure resource model.
+// resource slice.
 func main() {
 	// Instantiate an instance of a mock dgxa100 server and build a nvDeviceLib
 	// from it. The nvDeviceLib is then used to populate the list of allocatable
@@ -26,39 +25,35 @@ func main() {
 		klog.Fatalf("Error getAllocatableDevices: %v", err)
 	}
 
-	// Print the current structured resource model.
-	fmt.Printf("######## NamedResourceModel v1.30 ########\n")
-	if err := printCurrentResourceModel(allocatable); err != nil {
-		klog.Fatalf("Error printCurrentResourceModel: %v", err)
-	}
+	// Generate a resource slice spec from it:
+	spec := (*resourceapi.PerGpuAllocatableDevices)(allocatable).ToResourceSliceSpec()
 
+	// Print the original resource slice spec.
+	fmt.Printf("Original spec:\n")
+	if err := printResourceSliceSpec(spec); err != nil {
+		klog.Fatalf("Error printResourceSliceSpec: %v", err)
+	}
 	fmt.Printf("\n")
 
-	// Print the new structured resource model.
-	fmt.Printf("######## Proposed NamedResourceModel v1.31 ########\n")
-	if err := printNewResourceModel(allocatable); err != nil {
-		klog.Fatalf("Error printNewResourceModel: %v", err)
+	// Flatten the original spec into a new one.
+	spec, err = spec.Flatten()
+	if err != nil {
+		klog.Fatalf("Error spec.Flatten: %v", err)
+	}
+
+	// Print the flattened resource slice spec.
+	fmt.Printf("Flattened spec:\n")
+	if err := printResourceSliceSpec(spec); err != nil {
+		klog.Fatalf("Error printResourceSliceSpec: %v", err)
 	}
 }
 
-// printCurrentResourceModel prints the current structured resource model as yaml.
-func printCurrentResourceModel(allocatable nvdevicelib.PerGpuAllocatableDevices) error {
-	model := currentresourceapi.PerGpuAllocatableDevices(allocatable).ToNamedResourcesResourceModel()
-	modelYaml, err := yaml.Marshal(model)
+// printResourcesSliceSpec prints the resource slice spec as yaml.
+func printResourceSliceSpec(spec *resourceapi.ResourceSliceSpec) error {
+	specYaml, err := yaml.Marshal(spec)
 	if err != nil {
-		klog.Fatalf("Error marshaling resource model to yaml: %v", err)
+		klog.Fatalf("Error marshaling resource spec spec to yaml: %v", err)
 	}
-	fmt.Printf("%v", string(modelYaml))
-	return nil
-}
-
-// printNewResourceModel prints the new structured resource model as yaml.
-func printNewResourceModel(allocatable nvdevicelib.PerGpuAllocatableDevices) error {
-	model := newresourceapi.PerGpuAllocatableDevices(allocatable).ToNamedResourcesResourceModel()
-	modelYaml, err := yaml.Marshal(model)
-	if err != nil {
-		klog.Fatalf("Error marshaling resource model to yaml: %v", err)
-	}
-	fmt.Printf("%v", string(modelYaml))
+	fmt.Printf("%v", string(specYaml))
 	return nil
 }
