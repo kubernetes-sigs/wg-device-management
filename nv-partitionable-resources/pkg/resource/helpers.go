@@ -3,7 +3,6 @@ package resource
 import (
 	"fmt"
 	"regexp"
-	//	"slices"
 	"strings"
 
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -33,7 +32,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 	systemAttributesName := toRFC1123Compliant("system-attributes")
 	mixinsMap[systemAttributesName] = DeviceMixin{
 		Name: "system-attributes",
-		Basic: &BasicDeviceMixin{
+		Partitionable: &PartitionableDeviceMixin{
 			Attributes: map[QualifiedName]DeviceAttribute{
 				"driverVersion": {
 					VersionValue: ptr.To(nvdevicelib.PerGpuAllocatableDevices(pgads).SystemInfo.DriverVersion),
@@ -62,7 +61,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				commonGpuAttributesName := toRFC1123Compliant(fmt.Sprintf("common-gpu-%s-attributes", d.Gpu.ProductName))
 				mixinsMap[commonGpuAttributesName] = DeviceMixin{
 					Name: commonGpuAttributesName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Attributes: map[QualifiedName]DeviceAttribute{
 							"type": {
 								StringValue: ptr.To("gpu"),
@@ -87,7 +86,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				gpuSpecificAttributesName := toRFC1123Compliant(fmt.Sprintf("gpu-%d-attributes", d.Gpu.Index))
 				mixinsMap[gpuSpecificAttributesName] = DeviceMixin{
 					Name: gpuSpecificAttributesName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Attributes: map[QualifiedName]DeviceAttribute{
 							"index": {
 								IntValue: ptr.To(int64(d.Gpu.Index)),
@@ -106,7 +105,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				specificGpuTypeName := toRFC1123Compliant(fmt.Sprintf("gpu-%s", d.Gpu.ProductName))
 				mixinsMap[specificGpuTypeName] = DeviceMixin{
 					Name: specificGpuTypeName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Includes: []DeviceMixinRef{
 							{
 								Name: systemAttributesName,
@@ -130,7 +129,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				commonMigAttributesName := toRFC1123Compliant(fmt.Sprintf("common-mig-%s-attributes", d.Mig.Parent.ProductName))
 				mixinsMap[commonMigAttributesName] = DeviceMixin{
 					Name: commonMigAttributesName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Attributes: map[QualifiedName]DeviceAttribute{
 							"type": {
 								StringValue: ptr.To("mig"),
@@ -155,7 +154,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				gpuSpecificMigAttributesName := toRFC1123Compliant(fmt.Sprintf("gpu-%d-mig-attributes", d.Mig.Parent.Index))
 				mixinsMap[gpuSpecificMigAttributesName] = DeviceMixin{
 					Name: gpuSpecificMigAttributesName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Attributes: map[QualifiedName]DeviceAttribute{
 							"parentIndex": {
 								IntValue: ptr.To(int64(d.Mig.Parent.Index)),
@@ -175,7 +174,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				migProfileName := toRFC1123Compliant(fmt.Sprintf("mig-%s-%s", d.Mig.Profile, d.Mig.Parent.ProductName))
 				mixinsMap[migProfileName] = DeviceMixin{
 					Name: migProfileName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Includes: []DeviceMixinRef{
 							{
 								Name: systemAttributesName,
@@ -221,7 +220,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				if maxCapacities[d.Mig.Parent.Index] == nil {
 					maxCapacities[d.Mig.Parent.Index] = make(map[QualifiedName]DeviceCapacity)
 				}
-				for k, v := range mixinsMap[migProfileName].Basic.Capacity {
+				for k, v := range mixinsMap[migProfileName].Partitionable.Capacity {
 					if k == "memory" {
 						continue
 					}
@@ -241,13 +240,13 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				memorySlicesName := toRFC1123Compliant(fmt.Sprintf("memory-slices-%s", memorySlicesSuffix))
 				mixinsMap[memorySlicesName] = DeviceMixin{
 					Name: memorySlicesName,
-					Basic: &BasicDeviceMixin{
+					Partitionable: &PartitionableDeviceMixin{
 						Capacity: map[QualifiedName]DeviceCapacity{},
 					},
 				}
 				for i := placement.Start; i < placement.Start+placement.Size; i++ {
 					sliceName := QualifiedName(fmt.Sprintf("memorySlice%d", i))
-					mixinsMap[memorySlicesName].Basic.Capacity[sliceName] = DeviceCapacity{
+					mixinsMap[memorySlicesName].Partitionable.Capacity[sliceName] = DeviceCapacity{
 						Quantity: *resource.NewQuantity(1, resource.BinarySI),
 					}
 				}
@@ -261,7 +260,7 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 				migDeviceName := toRFC1123Compliant(fmt.Sprintf("gpu-%d-mig-%s-%s", d.Mig.Parent.Index, d.Mig.Profile, memorySlicesSuffix))
 				devicesMap[migDeviceName] = Device{
 					Name: migDeviceName,
-					Basic: &BasicDevice{
+					Partitionable: &PartitionableDevice{
 						Includes: []DeviceMixinRef{
 							{
 								Name: gpuSpecificMigAttributesName,
@@ -297,14 +296,14 @@ func (pgads PerGpuAllocatableDevices) ToResourceSliceSpec() *ResourceSliceSpec {
 
 				// Patch the specificGpuTypeName mixin with its capacities.
 				for k, v := range maxCapacities[d.Gpu.Index] {
-					mixinsMap[specificGpuTypeName].Basic.Capacity[k] = v
+					mixinsMap[specificGpuTypeName].Partitionable.Capacity[k] = v
 				}
 
 				// Add each full GPU as a device in terms of its mixins.
 				specificGpuName := toRFC1123Compliant(fmt.Sprintf("gpu-%d", d.Gpu.Index))
 				devicesMap[specificGpuName] = Device{
 					Name: specificGpuName,
-					Basic: &BasicDevice{
+					Partitionable: &PartitionableDevice{
 						Includes: []DeviceMixinRef{
 							{
 								Name: specificGpuTypeName,
@@ -361,10 +360,10 @@ func (s *ResourceSliceSpec) Flatten() (*ResourceSliceSpec, error) {
 		stack := make(map[string]bool)
 
 		deviceAsMixin := &DeviceMixin{
-			Basic: &BasicDeviceMixin{
-				Includes:   d.Basic.Includes,
-				Attributes: d.Basic.Attributes,
-				Capacity:   d.Basic.Capacity,
+			Partitionable: &PartitionableDeviceMixin{
+				Includes:   d.Partitionable.Includes,
+				Attributes: d.Partitionable.Attributes,
+				Capacity:   d.Partitionable.Capacity,
 			},
 		}
 
@@ -373,9 +372,9 @@ func (s *ResourceSliceSpec) Flatten() (*ResourceSliceSpec, error) {
 			return nil, err
 		}
 
-		d.Basic.Includes = flattened.Basic.Includes
-		d.Basic.Attributes = flattened.Basic.Attributes
-		d.Basic.Capacity = flattened.Basic.Capacity
+		d.Partitionable.Includes = flattened.Partitionable.Includes
+		d.Partitionable.Attributes = flattened.Partitionable.Attributes
+		d.Partitionable.Capacity = flattened.Partitionable.Capacity
 
 		flattenedSpec.Devices = append(flattenedSpec.Devices, d)
 	}
@@ -383,7 +382,7 @@ func (s *ResourceSliceSpec) Flatten() (*ResourceSliceSpec, error) {
 	return &flattenedSpec, nil
 }
 
-// flattenDeviceMixin flattens the mixin into a new BasicDeviceMixin, detecting errors along the way.
+// flattenDeviceMixin flattens the mixin into a new PartitionableDeviceMixin, detecting errors along the way.
 func flattenDeviceMixin(mixin *DeviceMixin, mixinMap map[string]*DeviceMixin, visited, stack map[string]bool) (*DeviceMixin, error) {
 	// If the mixin is in the current recursion stack, a cycle is detected
 	if stack[mixin.Name] {
@@ -394,27 +393,27 @@ func flattenDeviceMixin(mixin *DeviceMixin, mixinMap map[string]*DeviceMixin, vi
 	visited[mixin.Name] = true
 	stack[mixin.Name] = true
 
-	// Create a new BasicDeviceMixin with merged attributes and capacities
+	// Create a new PartitionableDeviceMixin with merged attributes and capacities
 	flattened := &DeviceMixin{
 		Name: mixin.Name,
-		Basic: &BasicDeviceMixin{
+		Partitionable: &PartitionableDeviceMixin{
 			Attributes: make(map[QualifiedName]DeviceAttribute),
 			Capacity:   make(map[QualifiedName]DeviceCapacity),
 		},
 	}
 
-	// If the mixin has a Basic definition, merge its attributes and capacities
-	if mixin.Basic != nil {
+	// If the mixin has a Partitionable definition, merge its attributes and capacities
+	if mixin.Partitionable != nil {
 		// Copy existing attributes and capacities to the flattened mixin
-		for key, value := range mixin.Basic.Attributes {
-			flattened.Basic.Attributes[key] = value
+		for key, value := range mixin.Partitionable.Attributes {
+			flattened.Partitionable.Attributes[key] = value
 		}
-		for key, value := range mixin.Basic.Capacity {
-			flattened.Basic.Capacity[key] = value
+		for key, value := range mixin.Partitionable.Capacity {
+			flattened.Partitionable.Capacity[key] = value
 		}
 
 		// Traverse the included mixins and merge their attributes and capacities
-		for _, includeRef := range mixin.Basic.Includes {
+		for _, includeRef := range mixin.Partitionable.Includes {
 			includedMixin, exists := mixinMap[includeRef.Name]
 			if !exists {
 				return nil, fmt.Errorf("mixin %s not found", includeRef.Name)
@@ -427,15 +426,15 @@ func flattenDeviceMixin(mixin *DeviceMixin, mixinMap map[string]*DeviceMixin, vi
 			}
 
 			// Merge attributes from the included mixin only if they do not already exist
-			for key, value := range result.Basic.Attributes {
-				if _, exists := flattened.Basic.Attributes[key]; !exists {
-					flattened.Basic.Attributes[key] = value
+			for key, value := range result.Partitionable.Attributes {
+				if _, exists := flattened.Partitionable.Attributes[key]; !exists {
+					flattened.Partitionable.Attributes[key] = value
 				}
 			}
 			// Merge capacities from the included mixin only if they do not already exist
-			for key, value := range result.Basic.Capacity {
-				if _, exists := flattened.Basic.Capacity[key]; !exists {
-					flattened.Basic.Capacity[key] = value
+			for key, value := range result.Partitionable.Capacity {
+				if _, exists := flattened.Partitionable.Capacity[key]; !exists {
+					flattened.Partitionable.Capacity[key] = value
 				}
 			}
 		}

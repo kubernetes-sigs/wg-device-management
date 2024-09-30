@@ -58,16 +58,16 @@ type DeviceMixin struct {
 	// +required
 	Name string `json:"name"`
 
-	// Basic defines a mixin usable by a basic device.
+	// Partitionable defines a mixin usable by a partitionable device.
 	//
 	// +optional
 	// +oneOf=deviceMixinType
-	Basic *BasicDeviceMixin `json:"basic,omitempty"`
+	Partitionable *PartitionableDeviceMixin `json:"partitionable,omitempty"`
 }
 
-// BasicDeviceMixin defines a mixin that a basic device can include.
+// PartitionableDeviceMixin defines a mixin that a partitionable device can include.
 // +k8s:deepcopy-gen=true
-type BasicDeviceMixin struct {
+type PartitionableDeviceMixin struct {
 	// Includes defines the set of other mixins that this mixin includes.
 	//
 	// The propertes of each included mixin are applied to this mixin in
@@ -120,16 +120,16 @@ type Device struct {
 	// +required
 	Name string `json:"name"`
 
-	// Basic defines one device instance.
+	// Paartitionable defines one partitionable device instance.
 	//
 	// +optional
 	// +oneOf=deviceType
-	Basic *BasicDevice `json:"basic,omitempty"`
+	Partitionable *PartitionableDevice `json:"partitionable,omitempty"`
 }
 
-// BasicDevice defines one device instance.
+// PartitionableDevice defines one device instance.
 // +k8s:deepcopy-gen=true
-type BasicDevice struct {
+type PartitionableDevice struct {
 	// Includes defines the set of device mixins that this device includes.
 	//
 	// The propertes of each included mixin are applied to this device
@@ -234,7 +234,7 @@ type DeviceAttribute struct {
 	VersionValue *string `json:"version,omitempty"`
 }
 
-// DeviceCapacity is a single entry in [BasicDevice.Capacity].
+// DeviceCapacity defines consumable capacity of a device.
 // +k8s:deepcopy-gen=true
 type DeviceCapacity struct {
 	// Quantity defines how much of a certain device capacity is available.
