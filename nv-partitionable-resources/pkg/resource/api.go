@@ -68,17 +68,6 @@ type DeviceMixin struct {
 // PartitionableDeviceMixin defines a mixin that a partitionable device can include.
 // +k8s:deepcopy-gen=true
 type PartitionableDeviceMixin struct {
-	// Includes defines the set of other mixins that this mixin includes.
-	//
-	// The propertes of each included mixin are applied to this mixin in
-	// order (recursively). Conflicting properties from multiple mixins are
-	// taken from the last mixin listed that contains them.
-	//
-	// The maximum number of mixins that can be included is 8.
-	//
-	// +optional
-	Includes []DeviceMixinRef `json:"includes,omitempty"`
-
 	// Attributes defines the set of attributes for this mixin.
 	// The name of each attribute must be unique in that set.
 	//
@@ -132,9 +121,9 @@ type Device struct {
 type PartitionableDevice struct {
 	// Includes defines the set of device mixins that this device includes.
 	//
-	// The propertes of each included mixin are applied to this device
-	// in order (recursively). Conflicting properties from multiple mixins
-	// are taken from the last mixin listed that contains them.
+	// The propertes of each included mixin are applied to this device in
+	// order. Conflicting properties from multiple mixins are taken from the
+	// last mixin listed that contains them.
 	//
 	// The maximum number of mixins that can be included is 8.
 	//
@@ -143,6 +132,8 @@ type PartitionableDevice struct {
 
 	// ConsumesCapacityFrom defines the set of devices where any capacity
 	// consumed by this device should be pulled from. This applies recursively.
+	// In cases where the dvice names itself as its source, the recursion is
+	// halted.
 	//
 	// Conflicting capacities from multiple devices are taken from the
 	// last device listed that contains them.

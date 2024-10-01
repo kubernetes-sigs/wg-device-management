@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/NVIDIA/go-nvml/pkg/nvml/mock/dgxa100"
 	"k8s.io/klog/v2"
@@ -50,6 +51,24 @@ func main() {
 
 // printResourcesSliceSpec prints the resource slice spec as yaml.
 func printResourceSliceSpec(spec *resourceapi.ResourceSliceSpec) error {
+	slices.SortFunc(spec.DeviceMixins, func(a, b resourceapi.DeviceMixin) int {
+		if a.Name < b.Name {
+			return -1
+		}
+		if a.Name > b.Name {
+			return 1
+		}
+		return 0
+	})
+	slices.SortFunc(spec.Devices, func(a, b resourceapi.Device) int {
+		if a.Name < b.Name {
+			return -1
+		}
+		if a.Name > b.Name {
+			return 1
+		}
+		return 0
+	})
 	specYaml, err := yaml.Marshal(spec)
 	if err != nil {
 		klog.Fatalf("Error marshaling resource spec spec to yaml: %v", err)
