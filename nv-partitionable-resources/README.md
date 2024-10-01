@@ -36,7 +36,8 @@ $ make print-model
 
 Original spec:
 deviceMixins:
-- basic:
+- name: common-gpu-mock-nvidia-a100-sxm4-40gb-attributes
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -45,25 +46,48 @@ deviceMixins:
       cudaComputeCapability:
         string: "8.0"
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
       type:
         string: gpu
-  name: common-gpu-nvidia-a100-sxm4-40gb-attributes
-- basic:
-    attributes:
-      index:
-        int: 0
-      minor:
-        int: 0
-      uuid:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-  name: gpu-0-attributes
-- basic:
+- name: common-gpu-mock-nvidia-a100-sxm4-40gb-capacities
+  partitionable:
     capacity:
-      memorySlice5:
+      copy-engines:
+        quantity: "7"
+      decoders:
+        quantity: "5"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
         quantity: "1"
-  name: memory-slices-5
-- basic:
+      memory:
+        quantity: 40Gi
+      multiprocessors:
+        quantity: "98"
+      ofa-engines:
+        quantity: "1"
+- name: common-mig-1g.10gb-mock-nvidia-a100-sxm4-40gb
+  partitionable:
+    attributes:
+      profile:
+        string: 1g.10gb
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 9856Mi
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+- name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+  partitionable:
     attributes:
       profile:
         string: 1g.5gb+me
@@ -82,57 +106,8 @@ deviceMixins:
         quantity: "14"
       ofa-engines:
         quantity: "1"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
-- basic:
-    attributes:
-      profile:
-        string: 1g.10gb
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 9984Mi
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-1g.10gb-nvidia-a100-sxm4-40gb
-- basic:
-    attributes:
-      profile:
-        string: 7g.40gb
-    capacity:
-      copy-engines:
-        quantity: "7"
-      decoders:
-        quantity: "5"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "1"
-      memory:
-        quantity: 40320Mi
-      multiprocessors:
-        quantity: "98"
-      ofa-engines:
-        quantity: "1"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-7g.40gb-nvidia-a100-sxm4-40gb
-- basic:
+- name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+  partitionable:
     attributes:
       profile:
         string: 1g.5gb
@@ -151,34 +126,8 @@ deviceMixins:
         quantity: "14"
       ofa-engines:
         quantity: "0"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      type:
-        string: mig
-  name: common-mig-nvidia-a100-sxm4-40gb-attributes
-- basic:
-    capacity:
-      memorySlice4:
-        quantity: "1"
-  name: memory-slices-4
-- basic:
-    capacity:
-      memorySlice6:
-        quantity: "1"
-  name: memory-slices-6
-- basic:
+- name: common-mig-2g.10gb-mock-nvidia-a100-sxm4-40gb
+  partitionable:
     attributes:
       profile:
         string: 2g.10gb
@@ -192,70 +141,13 @@ deviceMixins:
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 9984Mi
+        quantity: 9856Mi
       multiprocessors:
         quantity: "28"
       ofa-engines:
         quantity: "0"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-2g.10gb-nvidia-a100-sxm4-40gb
-- basic:
-    capacity:
-      memorySlice0:
-        quantity: "1"
-      memorySlice1:
-        quantity: "1"
-      memorySlice2:
-        quantity: "1"
-      memorySlice3:
-        quantity: "1"
-      memorySlice4:
-        quantity: "1"
-      memorySlice5:
-        quantity: "1"
-      memorySlice6:
-        quantity: "1"
-      memorySlice7:
-        quantity: "1"
-  name: memory-slices-0-7
-- basic:
-    capacity:
-      copy-engines:
-        quantity: "7"
-      decoders:
-        quantity: "5"
-      jpeg-engines:
-        quantity: "1"
-      multiprocessors:
-        quantity: "98"
-      ofa-engines:
-        quantity: "1"
-    includes:
-    - name: system-attributes
-    - name: common-gpu-nvidia-a100-sxm4-40gb-attributes
-  name: gpu-nvidia-a100-sxm4-40gb
-- basic:
-    attributes:
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-  name: system-attributes
-- basic:
-    capacity:
-      memorySlice3:
-        quantity: "1"
-  name: memory-slices-3
-- basic:
-    capacity:
-      memorySlice4:
-        quantity: "1"
-      memorySlice5:
-        quantity: "1"
-  name: memory-slices-4-5
-- basic:
+- name: common-mig-3g.20gb-mock-nvidia-a100-sxm4-40gb
+  partitionable:
     attributes:
       profile:
         string: 3g.20gb
@@ -269,55 +161,13 @@ deviceMixins:
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 20096Mi
+        quantity: 19968Mi
       multiprocessors:
         quantity: "42"
       ofa-engines:
         quantity: "0"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-3g.20gb-nvidia-a100-sxm4-40gb
-- basic:
-    capacity:
-      memorySlice0:
-        quantity: "1"
-      memorySlice1:
-        quantity: "1"
-      memorySlice2:
-        quantity: "1"
-      memorySlice3:
-        quantity: "1"
-  name: memory-slices-0-3
-- basic:
-    capacity:
-      memorySlice6:
-        quantity: "1"
-      memorySlice7:
-        quantity: "1"
-  name: memory-slices-6-7
-- basic:
-    attributes:
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-  name: gpu-0-mig-attributes
-- basic:
-    capacity:
-      memorySlice2:
-        quantity: "1"
-  name: memory-slices-2
-- basic:
-    capacity:
-      memorySlice0:
-        quantity: "1"
-      memorySlice1:
-        quantity: "1"
-  name: memory-slices-0-1
-- basic:
+- name: common-mig-4g.20gb-mock-nvidia-a100-sxm4-40gb
+  partitionable:
     attributes:
       profile:
         string: 4g.20gb
@@ -331,23 +181,122 @@ deviceMixins:
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 20096Mi
+        quantity: 19968Mi
       multiprocessors:
         quantity: "56"
       ofa-engines:
         quantity: "0"
-    includes:
-    - name: system-attributes
-    - name: common-mig-nvidia-a100-sxm4-40gb-attributes
-  name: mig-4g.20gb-nvidia-a100-sxm4-40gb
-- basic:
+- name: common-mig-7g.40gb-mock-nvidia-a100-sxm4-40gb
+  partitionable:
+    attributes:
+      profile:
+        string: 7g.40gb
+    capacity:
+      copy-engines:
+        quantity: "7"
+      decoders:
+        quantity: "5"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "1"
+      memory:
+        quantity: 40192Mi
+      multiprocessors:
+        quantity: "98"
+      ofa-engines:
+        quantity: "1"
+- name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      type:
+        string: mig
+- name: memory-slices-0
+  partitionable:
+    capacity:
+      memorySlice0:
+        quantity: "1"
+- name: memory-slices-0-1
+  partitionable:
+    capacity:
+      memorySlice0:
+        quantity: "1"
+      memorySlice1:
+        quantity: "1"
+- name: memory-slices-0-3
+  partitionable:
+    capacity:
+      memorySlice0:
+        quantity: "1"
+      memorySlice1:
+        quantity: "1"
+      memorySlice2:
+        quantity: "1"
+      memorySlice3:
+        quantity: "1"
+- name: memory-slices-0-7
+  partitionable:
+    capacity:
+      memorySlice0:
+        quantity: "1"
+      memorySlice1:
+        quantity: "1"
+      memorySlice2:
+        quantity: "1"
+      memorySlice3:
+        quantity: "1"
+      memorySlice4:
+        quantity: "1"
+      memorySlice5:
+        quantity: "1"
+      memorySlice6:
+        quantity: "1"
+      memorySlice7:
+        quantity: "1"
+- name: memory-slices-1
+  partitionable:
+    capacity:
+      memorySlice1:
+        quantity: "1"
+- name: memory-slices-2
+  partitionable:
+    capacity:
+      memorySlice2:
+        quantity: "1"
+- name: memory-slices-2-3
+  partitionable:
     capacity:
       memorySlice2:
         quantity: "1"
       memorySlice3:
         quantity: "1"
-  name: memory-slices-2-3
-- basic:
+- name: memory-slices-3
+  partitionable:
+    capacity:
+      memorySlice3:
+        quantity: "1"
+- name: memory-slices-4
+  partitionable:
+    capacity:
+      memorySlice4:
+        quantity: "1"
+- name: memory-slices-4-5
+  partitionable:
+    capacity:
+      memorySlice4:
+        quantity: "1"
+      memorySlice5:
+        quantity: "1"
+- name: memory-slices-4-7
+  partitionable:
     capacity:
       memorySlice4:
         quantity: "1"
@@ -357,228 +306,312 @@ deviceMixins:
         quantity: "1"
       memorySlice7:
         quantity: "1"
-  name: memory-slices-4-7
-- basic:
+- name: memory-slices-5
+  partitionable:
     capacity:
-      memorySlice0:
+      memorySlice5:
         quantity: "1"
-  name: memory-slices-0
-- basic:
+- name: memory-slices-6
+  partitionable:
     capacity:
-      memorySlice1:
+      memorySlice6:
         quantity: "1"
-  name: memory-slices-1
+- name: memory-slices-6-7
+  partitionable:
+    capacity:
+      memorySlice6:
+        quantity: "1"
+      memorySlice7:
+        quantity: "1"
+- name: specific-gpu-0-attributes
+  partitionable:
+    attributes:
+      index:
+        int: 0
+      minor:
+        int: 0
+      uuid:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+- name: specific-gpu-0-mig-attributes
+  partitionable:
+    attributes:
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+- name: system-attributes
+  partitionable:
+    attributes:
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
 devices:
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
+- name: gpu-0
+  partitionable:
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-3g.20gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-0-3
-  name: gpu-0-mig-3g.20gb-0-3
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-3g.20gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-4-7
-  name: gpu-0-mig-3g.20gb-4-7
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-7g.40gb-nvidia-a100-sxm4-40gb
+    - name: system-attributes
+    - name: common-gpu-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-gpu-mock-nvidia-a100-sxm4-40gb-capacities
+    - name: specific-gpu-0-attributes
     - name: memory-slices-0-7
-  name: gpu-0-mig-7g.40gb-0-7
-- basic:
+- name: gpu-0-mig-1g.10gb-0-1
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
-    - name: memory-slices-4
-  name: gpu-0-mig-1g.5gb-me-4
-- basic:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-0-1
+- name: gpu-0-mig-1g.10gb-2-3
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-0
-  name: gpu-0-mig-1g.5gb-0
-- basic:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-2-3
+- name: gpu-0-mig-1g.10gb-4-5
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-2
-  name: gpu-0-mig-1g.5gb-2
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-4
-  name: gpu-0-mig-1g.5gb-4
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-5
-  name: gpu-0-mig-1g.5gb-5
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.10gb-nvidia-a100-sxm4-40gb
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
     - name: memory-slices-4-5
-  name: gpu-0-mig-1g.10gb-4-5
-- basic:
+- name: gpu-0-mig-1g.10gb-6-7
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.10gb-nvidia-a100-sxm4-40gb
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
     - name: memory-slices-6-7
-  name: gpu-0-mig-1g.10gb-6-7
-- basic:
-    includes:
-    - name: gpu-nvidia-a100-sxm4-40gb
-    - name: gpu-0-attributes
-    - name: memory-slices-0-7
-  name: gpu-0
-- basic:
+- name: gpu-0-mig-1g.5gb-0
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
-    - name: memory-slices-3
-  name: gpu-0-mig-1g.5gb-me-3
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
-    - name: memory-slices-6
-  name: gpu-0-mig-1g.5gb-me-6
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-1
-  name: gpu-0-mig-1g.5gb-1
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-6
-  name: gpu-0-mig-1g.5gb-6
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-2g.10gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-0-1
-  name: gpu-0-mig-2g.10gb-0-1
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-2g.10gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-4-5
-  name: gpu-0-mig-2g.10gb-4-5
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-3
-  name: gpu-0-mig-1g.5gb-3
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-2g.10gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-2-3
-  name: gpu-0-mig-2g.10gb-2-3
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
-    - name: memory-slices-2
-  name: gpu-0-mig-1g.5gb-me-2
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.10gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-0-1
-  name: gpu-0-mig-1g.10gb-0-1
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.10gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-2-3
-  name: gpu-0-mig-1g.10gb-2-3
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-4g.20gb-nvidia-a100-sxm4-40gb
-    - name: memory-slices-0-3
-  name: gpu-0-mig-4g.20gb-0-3
-- basic:
-    consumesCapacityFrom:
-    - name: gpu-0
-    includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
     - name: memory-slices-0
-  name: gpu-0-mig-1g.5gb-me-0
-- basic:
+- name: gpu-0-mig-1g.5gb-1
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
     - name: memory-slices-1
-  name: gpu-0-mig-1g.5gb-me-1
-- basic:
+- name: gpu-0-mig-1g.5gb-2
+  partitionable:
     consumesCapacityFrom:
     - name: gpu-0
     includes:
-    - name: gpu-0-mig-attributes
-    - name: mig-1g.5gb-me-nvidia-a100-sxm4-40gb
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-2
+- name: gpu-0-mig-1g.5gb-3
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-3
+- name: gpu-0-mig-1g.5gb-4
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-4
+- name: gpu-0-mig-1g.5gb-5
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
     - name: memory-slices-5
-  name: gpu-0-mig-1g.5gb-me-5
+- name: gpu-0-mig-1g.5gb-6
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-6
+- name: gpu-0-mig-1g.5gb-me-0
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-0
+- name: gpu-0-mig-1g.5gb-me-1
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-1
+- name: gpu-0-mig-1g.5gb-me-2
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-2
+- name: gpu-0-mig-1g.5gb-me-3
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-3
+- name: gpu-0-mig-1g.5gb-me-4
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-4
+- name: gpu-0-mig-1g.5gb-me-5
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-5
+- name: gpu-0-mig-1g.5gb-me-6
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-1g.5gb-me-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-6
+- name: gpu-0-mig-2g.10gb-0-1
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-2g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-0-1
+- name: gpu-0-mig-2g.10gb-2-3
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-2g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-2-3
+- name: gpu-0-mig-2g.10gb-4-5
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-2g.10gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-4-5
+- name: gpu-0-mig-3g.20gb-0-3
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-3g.20gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-0-3
+- name: gpu-0-mig-3g.20gb-4-7
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-3g.20gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-4-7
+- name: gpu-0-mig-4g.20gb-0-3
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-4g.20gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-0-3
+- name: gpu-0-mig-7g.40gb-0-7
+  partitionable:
+    consumesCapacityFrom:
+    - name: gpu-0
+    includes:
+    - name: system-attributes
+    - name: common-mig-mock-nvidia-a100-sxm4-40gb-attributes
+    - name: common-mig-7g.40gb-mock-nvidia-a100-sxm4-40gb
+    - name: specific-gpu-0-mig-attributes
+    - name: memory-slices-0-7
 
 Flattened spec:
 devices:
-- basic:
+- name: gpu-0
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -587,496 +620,30 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 3g.20gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "3"
-      decoders:
-        quantity: "2"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 20096Mi
-      memorySlice0:
-        quantity: "1"
-      memorySlice1:
-        quantity: "1"
-      memorySlice2:
-        quantity: "1"
-      memorySlice3:
-        quantity: "1"
-      multiprocessors:
-        quantity: "42"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-3g.20gb-0-3
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 3g.20gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "3"
-      decoders:
-        quantity: "2"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 20096Mi
-      memorySlice4:
-        quantity: "1"
-      memorySlice5:
-        quantity: "1"
-      memorySlice6:
-        quantity: "1"
-      memorySlice7:
-        quantity: "1"
-      multiprocessors:
-        quantity: "42"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-3g.20gb-4-7
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 7g.40gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "7"
-      decoders:
-        quantity: "5"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "1"
-      memory:
-        quantity: 40320Mi
-      memorySlice0:
-        quantity: "1"
-      memorySlice1:
-        quantity: "1"
-      memorySlice2:
-        quantity: "1"
-      memorySlice3:
-        quantity: "1"
-      memorySlice4:
-        quantity: "1"
-      memorySlice5:
-        quantity: "1"
-      memorySlice6:
-        quantity: "1"
-      memorySlice7:
-        quantity: "1"
-      multiprocessors:
-        quantity: "98"
-      ofa-engines:
-        quantity: "1"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-7g.40gb-0-7
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb+me
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "1"
-      memory:
-        quantity: 4864Mi
-      memorySlice4:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "1"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-4
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice0:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-0
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice2:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-2
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice4:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-4
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice5:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-5
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.10gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 9984Mi
-      memorySlice4:
-        quantity: "1"
-      memorySlice5:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.10gb-4-5
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.10gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 9984Mi
-      memorySlice6:
-        quantity: "1"
-      memorySlice7:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.10gb-6-7
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       index:
         int: 0
       minor:
         int: 0
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
       type:
         string: gpu
       uuid:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
     capacity:
       copy-engines:
         quantity: "7"
       decoders:
         quantity: "5"
+      encoders:
+        quantity: "0"
       jpeg-engines:
         quantity: "1"
+      memory:
+        quantity: 40Gi
       memorySlice0:
         quantity: "1"
       memorySlice1:
@@ -1097,8 +664,8 @@ devices:
         quantity: "98"
       ofa-engines:
         quantity: "1"
-  name: gpu-0
-- basic:
+- name: gpu-0-mig-1g.10gb-0-1
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1107,17 +674,641 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.10gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 9856Mi
+      memorySlice0:
+        quantity: "1"
+      memorySlice1:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.10gb-2-3
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.10gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 9856Mi
+      memorySlice2:
+        quantity: "1"
+      memorySlice3:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.10gb-4-5
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.10gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 9856Mi
+      memorySlice4:
+        quantity: "1"
+      memorySlice5:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.10gb-6-7
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.10gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 9856Mi
+      memorySlice6:
+        quantity: "1"
+      memorySlice7:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-0
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice0:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-1
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice1:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-2
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice2:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-3
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice3:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-4
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice4:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-5
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice5:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-6
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "0"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 4864Mi
+      memorySlice6:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-me-0
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb+me
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "1"
+      memory:
+        quantity: 4864Mi
+      memorySlice0:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "1"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-me-1
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb+me
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "1"
+      memory:
+        quantity: 4864Mi
+      memorySlice1:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "1"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-me-2
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb+me
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "1"
+      memory:
+        quantity: 4864Mi
+      memorySlice2:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "1"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-me-3
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
         string: 1g.5gb+me
       type:
@@ -1141,8 +1332,8 @@ devices:
         quantity: "1"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-3
-- basic:
+- name: gpu-0-mig-1g.5gb-me-4
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1151,17 +1342,105 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb+me
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "1"
+      memory:
+        quantity: 4864Mi
+      memorySlice4:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "1"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-me-5
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 1g.5gb+me
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "1"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "1"
+      memory:
+        quantity: 4864Mi
+      memorySlice5:
+        quantity: "1"
+      multiprocessors:
+        quantity: "14"
+      ofa-engines:
+        quantity: "1"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-1g.5gb-me-6
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
         string: 1g.5gb+me
       type:
@@ -1185,8 +1464,8 @@ devices:
         quantity: "1"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-6
-- basic:
+- name: gpu-0-mig-2g.10gb-0-1
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1195,105 +1474,17 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice1:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-1
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice6:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-6
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
         string: 2g.10gb
       type:
@@ -1308,7 +1499,7 @@ devices:
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 9984Mi
+        quantity: 9856Mi
       memorySlice0:
         quantity: "1"
       memorySlice1:
@@ -1319,8 +1510,8 @@ devices:
         quantity: "0"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-2g.10gb-0-1
-- basic:
+- name: gpu-0-mig-2g.10gb-2-3
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1329,17 +1520,17 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
         string: 2g.10gb
       type:
@@ -1354,7 +1545,53 @@ devices:
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 9984Mi
+        quantity: 9856Mi
+      memorySlice2:
+        quantity: "1"
+      memorySlice3:
+        quantity: "1"
+      multiprocessors:
+        quantity: "28"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-2g.10gb-4-5
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 2g.10gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "2"
+      decoders:
+        quantity: "1"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 9856Mi
       memorySlice4:
         quantity: "1"
       memorySlice5:
@@ -1365,8 +1602,8 @@ devices:
         quantity: "0"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-2g.10gb-4-5
-- basic:
+- name: gpu-0-mig-3g.20gb-0-3
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1375,224 +1612,48 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
-        string: 1g.5gb
+        string: 3g.20gb
       type:
         string: mig
     capacity:
       copy-engines:
-        quantity: "1"
+        quantity: "3"
       decoders:
-        quantity: "0"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 4864Mi
-      memorySlice3:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-3
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 2g.10gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
         quantity: "2"
-      decoders:
-        quantity: "1"
       encoders:
         quantity: "0"
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 9984Mi
-      memorySlice2:
-        quantity: "1"
-      memorySlice3:
-        quantity: "1"
-      multiprocessors:
-        quantity: "28"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-2g.10gb-2-3
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb+me
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "1"
-      memory:
-        quantity: 4864Mi
-      memorySlice2:
-        quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "1"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-2
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.10gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 9984Mi
+        quantity: 19968Mi
       memorySlice0:
         quantity: "1"
       memorySlice1:
         quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "0"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.10gb-0-1
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.10gb
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "0"
-      memory:
-        quantity: 9984Mi
       memorySlice2:
         quantity: "1"
       memorySlice3:
         quantity: "1"
       multiprocessors:
-        quantity: "14"
+        quantity: "42"
       ofa-engines:
         quantity: "0"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-1g.10gb-2-3
-- basic:
+- name: gpu-0-mig-3g.20gb-4-7
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1601,17 +1662,67 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
+      profile:
+        string: 3g.20gb
+      type:
+        string: mig
+    capacity:
+      copy-engines:
+        quantity: "3"
+      decoders:
+        quantity: "2"
+      encoders:
+        quantity: "0"
+      jpeg-engines:
+        quantity: "0"
+      memory:
+        quantity: 19968Mi
+      memorySlice4:
+        quantity: "1"
+      memorySlice5:
+        quantity: "1"
+      memorySlice6:
+        quantity: "1"
+      memorySlice7:
+        quantity: "1"
+      multiprocessors:
+        quantity: "42"
+      ofa-engines:
+        quantity: "0"
+    consumesCapacityFrom:
+    - name: gpu-0
+- name: gpu-0-mig-4g.20gb-0-3
+  partitionable:
+    attributes:
+      architecture:
+        string: Ampere
+      brand:
+        string: Nvidia
+      cudaComputeCapability:
+        string: "8.0"
+      cudaDriverVersion:
+        version: "12.4"
+      driverVersion:
+        version: 550.54.15
+      parentIndex:
+        int: 0
+      parentMinor:
+        int: 0
+      parentUUID:
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
+      productName:
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
         string: 4g.20gb
       type:
@@ -1626,7 +1737,7 @@ devices:
       jpeg-engines:
         quantity: "0"
       memory:
-        quantity: 20096Mi
+        quantity: 19968Mi
       memorySlice0:
         quantity: "1"
       memorySlice1:
@@ -1641,8 +1752,8 @@ devices:
         quantity: "0"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-4g.20gb-0-3
-- basic:
+- name: gpu-0-mig-7g.40gb-0-7
+  partitionable:
     attributes:
       architecture:
         string: Ampere
@@ -1651,129 +1762,54 @@ devices:
       cudaComputeCapability:
         string: "8.0"
       cudaDriverVersion:
-        version: "12.6"
+        version: "12.4"
       driverVersion:
-        version: 560.35.03
+        version: 550.54.15
       parentIndex:
         int: 0
       parentMinor:
         int: 0
       parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
+        string: GPU-ea456537-2782-4f6a-8907-fbd43b999173
       productName:
-        string: NVIDIA A100-SXM4-40GB
+        string: Mock NVIDIA A100-SXM4-40GB
       profile:
-        string: 1g.5gb+me
+        string: 7g.40gb
       type:
         string: mig
     capacity:
       copy-engines:
-        quantity: "1"
+        quantity: "7"
       decoders:
-        quantity: "1"
+        quantity: "5"
       encoders:
         quantity: "0"
       jpeg-engines:
         quantity: "1"
       memory:
-        quantity: 4864Mi
+        quantity: 40192Mi
       memorySlice0:
         quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
-        quantity: "1"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-0
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb+me
-      type:
-        string: mig
-    capacity:
-      copy-engines:
-        quantity: "1"
-      decoders:
-        quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "1"
-      memory:
-        quantity: 4864Mi
       memorySlice1:
         quantity: "1"
-      multiprocessors:
-        quantity: "14"
-      ofa-engines:
+      memorySlice2:
         quantity: "1"
-    consumesCapacityFrom:
-    - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-1
-- basic:
-    attributes:
-      architecture:
-        string: Ampere
-      brand:
-        string: Nvidia
-      cudaComputeCapability:
-        string: "8.0"
-      cudaDriverVersion:
-        version: "12.6"
-      driverVersion:
-        version: 560.35.03
-      parentIndex:
-        int: 0
-      parentMinor:
-        int: 0
-      parentUUID:
-        string: GPU-4cf8db2d-06c0-7d70-1a51-e59b25b2c16c
-      productName:
-        string: NVIDIA A100-SXM4-40GB
-      profile:
-        string: 1g.5gb+me
-      type:
-        string: mig
-    capacity:
-      copy-engines:
+      memorySlice3:
         quantity: "1"
-      decoders:
+      memorySlice4:
         quantity: "1"
-      encoders:
-        quantity: "0"
-      jpeg-engines:
-        quantity: "1"
-      memory:
-        quantity: 4864Mi
       memorySlice5:
         quantity: "1"
+      memorySlice6:
+        quantity: "1"
+      memorySlice7:
+        quantity: "1"
       multiprocessors:
-        quantity: "14"
+        quantity: "98"
       ofa-engines:
         quantity: "1"
     consumesCapacityFrom:
     - name: gpu-0
-  name: gpu-0-mig-1g.5gb-me-5
 ```
 
 ```console
