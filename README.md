@@ -6,6 +6,8 @@ Prototypes and experiments for WG Device Management.
 
 Learn how to engage with the Kubernetes community on the [community page](http://kubernetes.io/community/).
 
+[Project Board](https://github.com/orgs/kubernetes/projects/95/views/1)
+
 You can reach the maintainers of this project at:
 
 - [Slack](https://kubernetes.slack.com/messages/wg-device-management)
