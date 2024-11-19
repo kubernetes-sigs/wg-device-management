@@ -14,10 +14,8 @@
 
 .DEFAULT_GOAL := all
 
-DEEPCOPY_SOURCES  = pkg/intrange
 DEEPCOPY_SOURCES += pkg/nvdevice
-DEEPCOPY_SOURCES += pkg/resource/current
-DEEPCOPY_SOURCES += pkg/resource/new
+DEEPCOPY_SOURCES += pkg/resource
 
 .PHONY: all
 all: fmt test build
