@@ -20,6 +20,7 @@ One area that we want to track is not just DRA availability but also support of 
 | AMD     | could not find
 | Intel   | [intel-resource-drivers-for-kubernetes](https://github.com/intel/intel-resource-drivers-for-kubernetes)
 | Google (TPU)  | could not find
+| FuriosaAI | could not find
 
 
 ### NVIDIA
@@ -55,3 +56,15 @@ TODO: maybe some help on AMD on status on this.
 #### Google TPU Driver
 
 I wasn't able to find this. TODO: maybe some help on google on status on this.
+
+### FuriosaAI
+
+#### FuriosaAI DRA Driver
+FuriosaAI's DRA Driver has not been officially released yet.
+It is expected to be released and open-sourced in 2025 Q4.
+Engineering version and it's guide is available:
+- https://hub.docker.com/r/furiosaai/furiosa-dra-driver
+- https://github.com/furiosa-ai/furiosa-dra-driver-guide
+
+#### FuriosaAI NPU Operator
+It is currently under development and expected to be released in 2025 Q4.
