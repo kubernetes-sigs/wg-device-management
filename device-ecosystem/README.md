@@ -12,16 +12,24 @@ This document is not official supported by Kubernetes and is mainly used by #wg-
 
 One area that we want to track is not just DRA availability but also support of various DRA features as they graduate.
 
-### Table
+### Vendor-specific drivers
 
 | Vendor  | DRA Driver
 |---------|------------
-| Kubernetes Eaxmple Driver  | [dra-example-driver](https://github.com/kubernetes-sigs/dra-example-driver)
 | NVIDIA  | [k8s-dra-driver-gpu](https://github.com/NVIDIA/k8s-dra-driver-gpu)
 | AMD     | could not find
 | Intel   | [intel-resource-drivers-for-kubernetes](https://github.com/intel/intel-resource-drivers-for-kubernetes)
 | Google (TPU)  | could not find
 | FuriosaAI | could not find
+
+### Vendor-neutral drivers
+
+| Resource | DRA Driver | Notes
+|----------|------------|-------
+| Kubernetes Example Driver  | [dra-example-driver](https://github.com/kubernetes-sigs/dra-example-driver) |
+| CPU |  [dra-driver-cpu](https://github.com/kubernetes-sigs/dra-driver-cpu) | see [KEP 5517](https://github.com/kubernetes/enhancements/issues/5517)
+| SRIOV | [dra-driver-sriov](https://github.com/k8snetworkplumbingwg/dra-driver-sriov) |
+| RAM+Hugepages | [dra-driver-memory](https://github.com/ffromani/dra-driver-memory) | see [KEP 5517](https://github.com/kubernetes/enhancements/issues/5517); planned to be [merged](https://github.com/kubernetes-sigs/dra-driver-cpu/issues/36) with the CPU driver
 
 
 ### Example DRA Driver
