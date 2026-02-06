@@ -19,8 +19,9 @@ One area that we want to track is not just DRA availability but also support of 
 | NVIDIA  | [k8s-dra-driver-gpu](https://github.com/NVIDIA/k8s-dra-driver-gpu)
 | AMD     | could not find
 | Intel   | [intel-resource-drivers-for-kubernetes](https://github.com/intel/intel-resource-drivers-for-kubernetes)
-| Google (TPU)  | could not find
-| FuriosaAI | could not find
+| Google (NVIDIA GPU) | Via NVIDIA's driver ([docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation))
+| Google (TPU)  | [Docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation)
+| FuriosaAI | In [development](https://github.com/furiosa-ai/furiosa-dra-driver-guide)
 
 ### Vendor-neutral drivers
 
@@ -28,6 +29,7 @@ One area that we want to track is not just DRA availability but also support of 
 |----------|------------|-------
 | Kubernetes Example Driver  | [dra-example-driver](https://github.com/kubernetes-sigs/dra-example-driver) |
 | CPU |  [dra-driver-cpu](https://github.com/kubernetes-sigs/dra-driver-cpu) | see [KEP 5517](https://github.com/kubernetes/enhancements/issues/5517)
+| DRANET  | [dranet](https://github.com/kubernetes-sigs/dranet) | [DRANET Site](https://dranet.dev), [GKE Docs](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/allocate-network-resources-dra)
 | SRIOV | [dra-driver-sriov](https://github.com/k8snetworkplumbingwg/dra-driver-sriov) |
 | RAM+Hugepages | [dra-driver-memory](https://github.com/ffromani/dra-driver-memory) | see [KEP 5517](https://github.com/kubernetes/enhancements/issues/5517); planned to be [merged](https://github.com/kubernetes-sigs/dra-driver-cpu/issues/36) with the CPU driver
 
@@ -72,9 +74,9 @@ TODO: maybe some help on AMD on status on this.
 
 ### Google
 
-#### Google TPU Driver
+Google supports DRA for GPU and TPU in preview mode for GKE 1.32-1.34. See the [documentation](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation) for how to run DRA on GKE.
 
-I wasn't able to find this. TODO: maybe some help on google on status on this.
+Google also supports [DRANET on GKE](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/allocate-network-resources-dra).
 
 ### FuriosaAI
 
