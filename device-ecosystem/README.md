@@ -32,7 +32,8 @@ One area that we want to track is not just DRA availability but also support of 
 | DRANET  | [dranet](https://github.com/kubernetes-sigs/dranet) | [DRANET Site](https://dranet.dev), [GKE Docs](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/allocate-network-resources-dra)
 | SRIOV | [dra-driver-sriov](https://github.com/k8snetworkplumbingwg/dra-driver-sriov) |
 | RAM+Hugepages | [dra-driver-memory](https://github.com/ffromani/dra-driver-memory) | see [KEP 5517](https://github.com/kubernetes/enhancements/issues/5517); planned to be [merged](https://github.com/kubernetes-sigs/dra-driver-cpu/issues/36) with the CPU driver
-
+| CNI-DRA-Driver | [cni-dra-driver](https://github.com/kubernetes-sigs/cni-dra-driver) | Experimental DRA driver bringing CNI closer to Kubernetes 
+| kubernetes-network-drivers | [kubernetes-network-drivers](https://github.com/kubernetes-sigs/kubernetes-network-drivers) | Some reference and example Kubernetes networking drivers, maintained by the SIG Network community.
 
 ### Example DRA Driver
 The Kubernetes example DRA driver is a vendor-neutral reference implementation that demonstrates how to create a custom driver for managing specialized hardware in a Kubernetes cluster. It provides a foundational template that developers can adapt to support their specific resources, such as GPUs, FPGAs, or other accelerators. This driver showcases the core logic for resource discovery, allocation, and lifecycle management within the DRA framework.
