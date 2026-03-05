@@ -17,7 +17,7 @@ One area that we want to track is not just DRA availability but also support of 
 | Vendor  | DRA Driver
 |---------|------------
 | NVIDIA  | [k8s-dra-driver-gpu](https://github.com/NVIDIA/k8s-dra-driver-gpu)
-| AMD     | could not find
+| AMD     | [k8s-gpu-dra-driver](https://github.com/ROCm/k8s-gpu-dra-driver)
 | Intel   | [intel-resource-drivers-for-kubernetes](https://github.com/intel/intel-resource-drivers-for-kubernetes)
 | Google (NVIDIA GPU) | Via NVIDIA's driver ([docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation))
 | Google (TPU)  | [Docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation)
@@ -69,9 +69,7 @@ However, the device drivers are not yet GA according to [their github readme](ht
 
 #### AMD DRA Driver
 
-Searching in [AMD ROCm](https://github.com/ROCm) I cannot seem to find a DRA implementation yet.
-
-TODO: maybe some help on AMD on status on this.
+AMD has [k8s-gpu-dra-driver](https://github.com/ROCm/k8s-gpu-dra-driver) DRA driver for AMD GPUs 
 
 ### Google
 
