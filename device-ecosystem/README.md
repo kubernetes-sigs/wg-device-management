@@ -1,6 +1,6 @@
 # Device Ecosystem for DRA
 
-DRA is going to stable in 1.34 of Kubernetes. As more device vendors provide support for DRA, we want to have a tracking page where people can do to see who supports DRA.
+DRA is stable in 1.34 of Kubernetes. As more device vendors provide support for DRA, we want to have a tracking page where people can do to see who supports DRA.
 
 ## Contributing
 
@@ -16,8 +16,8 @@ One area that we want to track is not just DRA availability but also support of 
 
 | Vendor  | DRA Driver
 |---------|------------
-| NVIDIA  | [k8s-dra-driver-gpu](https://github.com/NVIDIA/k8s-dra-driver-gpu)
-| AMD     | could not find
+| NVIDIA  | [NVIDIA/k8s-dra-driver-gpu](https://github.com/NVIDIA/k8s-dra-driver-gpu)
+| AMD     | [ROCm/k8s-gpu-dra-driver](https://github.com/ROCm/k8s-gpu-dra-driver)
 | Intel   | [intel-resource-drivers-for-kubernetes](https://github.com/intel/intel-resource-drivers-for-kubernetes)
 | Google (NVIDIA GPU) | Via NVIDIA's driver ([docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation))
 | Google (TPU)  | [Docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation)
@@ -69,9 +69,15 @@ However, the device drivers are not yet GA according to [their github readme](ht
 
 #### AMD DRA Driver
 
-Searching in [AMD ROCm](https://github.com/ROCm) I cannot seem to find a DRA implementation yet.
+AMD's GPU DRA driver is available here: https://github.com/ROCm/k8s-gpu-dra-driver
 
-TODO: maybe some help on AMD on status on this.
+- Status: Experimental (alpha).
+- For installation, requirements, demos, and examples, refer to the repository:
+	- Installation & Developer Guide: https://github.com/ROCm/k8s-gpu-dra-driver/blob/main/docs/installation.md
+	- Examples: https://github.com/ROCm/k8s-gpu-dra-driver/tree/main/example
+	- Demo Guide: https://github.com/ROCm/k8s-gpu-dra-driver/blob/main/docs/demo.md
+
+Planned: Integration with the [AMD GPU Operator](https://github.com/ROCm/gpu-operator) coming soon.
 
 ### Google
 
