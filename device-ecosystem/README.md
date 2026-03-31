@@ -22,6 +22,7 @@ One area that we want to track is not just DRA availability but also support of 
 | Google (NVIDIA GPU) | Via NVIDIA's driver ([docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation))
 | Google (TPU)  | [Docs for GKE 1.32-1.34](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/about-dynamic-resource-allocation)
 | FuriosaAI | In [development](https://github.com/furiosa-ai/furiosa-dra-driver-guide)
+| IBM (Spyre) | [ibm-aiu/dra-driver-spyre](https://github.com/ibm-aiu/dra-driver-spyre)
 
 ### Vendor-neutral drivers
 
