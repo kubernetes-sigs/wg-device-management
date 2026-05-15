@@ -1,0 +1,75 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata:
+  name: job1-gb200-56
+spec:
+  devices:
+    requests:
+      - name: gb200
+        exactly:
+          deviceClassName: gb200.example.com
+          capacity:
+            requests:
+              gpus: 56
+---
+apiVersion: scheduling.k8s.io/v1alpha2
+kind: Workload
+metadata:
+  name: job1-workload
+spec:
+  controllerRef:
+    apiGroup: batch
+    kind: Job
+    name: job1
+  podGroupTemplates:
+  - name: job1-podgroup-template
+    schedulingPolicy:
+      gang:
+        minCount: 14
+    resourceClaims:
+    - name: nvl
+      resourceClaimName: job1-gb200-56
+---
+apiVersion: scheduling.k8s.io/v1alpha2
+kind: PodGroup
+metadata:
+  name: job1-podgroup
+spec:
+  podGroupTemplateRef:
+    workload:
+      workloadName: job1-workload
+      podGroupTemplateName: job1-podgroup-template
+  schedulingPolicy:
+    gang:
+      minCount: 14
+  resourceClaims:
+  - name: nvl
+    resourceClaimName: job1-gb200-56
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job1
+spec:
+  completions: 14           # Total number of Pods to complete
+  parallelism: 14           # Number of Pods to run at once
+  completionMode: Indexed  # This enables the indexing feature
+  template:
+    spec:
+      schedulerName: dra-scheduler
+      containers:
+      - name: worker
+        image: ubuntu:22.04
+        command: ["bash", "-c"]
+        args: ["date; sleep 30; date"]
+        resources:
+          claims:
+          - name: gpus
+      restartPolicy: Never
+      schedulingGroup:
+        podGroupName: job1-podgroup
+      resourceClaims:
+      - name: gpus
+        resourceClaimTemplateName: all-gpus
+      - name: nvl
+        resourceClaimName: job1-gb200-56

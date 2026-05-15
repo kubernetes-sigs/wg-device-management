@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dra-driver-nvidia-gpu-base
+description: A Helm chart for cluster-scoped resources of dra-driver-nvidia-gpu
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

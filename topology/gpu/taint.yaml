@@ -1,0 +1,13 @@
+apiVersion: resource.k8s.io/v1beta2
+kind: DeviceTaintRule
+metadata:
+  name: taint-gpu-0-maintenance
+spec:
+  deviceSelector:
+    driver: "gpu.nvidia.com"
+    pool: "gke-dra-alpha-fake-gb200-00-f65ba89a-533r"
+    device: "gpu-0"
+  taint:
+    key: "nvidia.com/failed" # Replace with your specific taint key
+    value: "true"                  # Replace with your specific taint value (optional)
+    effect: "NoExecute"

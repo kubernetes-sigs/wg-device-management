@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dra-driver-nvidia-gpu-mock
+description: Fork of the Official Helm chart for the DRA Driver for NVIDIA GPUs, using mock NVML
+type: application
+version: "0.4.0-mock"
+appVersion: "0.4.0-dev"
