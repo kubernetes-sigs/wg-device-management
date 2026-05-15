@@ -15,9 +15,11 @@
 CLUSTER_NAME=${CLUSTER_NAME:-dra-alpha}
 LOCATION=${LOCATION:-us-west4}
 
-gcloud container clusters create ${CLUSTER_NAME} \
+# Note: DRADeviceTaintRules is beta, but it still works to list it here.
+
+gcloud --configuration default container clusters create ${CLUSTER_NAME} \
     --location=${LOCATION} \
     --cluster-version=1.36.0-gke.1379000 \
     --enable-kubernetes-alpha --no-enable-autoupgrade --no-enable-autorepair \
-    --alpha-cluster-feature-gates=DRAResourcePoolStatus=true,GenericWorkload=true,WorkloadWithJob=true,DRAWorkloadResourceClaims=true,GangScheduling=true \
+    --alpha-cluster-feature-gates=DRAResourcePoolStatus=true,GenericWorkload=true,WorkloadWithJob=true,DRAWorkloadResourceClaims=true,GangScheduling=true,DRADeviceTaintRules=true \
     --logging SYSTEM,WORKLOAD,API_SERVER,SCHEDULER,CONTROLLER_MANAGER

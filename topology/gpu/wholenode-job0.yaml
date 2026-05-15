@@ -47,7 +47,7 @@ spec:
       - name: worker
         image: ubuntu:22.04
         command: ["bash", "-c"]
-        args: ["date; sleep 30; date"]
+        args: ["date; sleep 300; date"]
         resources:
           claims:
           - name: gpus
