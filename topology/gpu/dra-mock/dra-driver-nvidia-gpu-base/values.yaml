@@ -1,0 +1,6 @@
+resources:
+  gpus:
+    enabled: true
+  computeDomains:
+    enabled: true
+resourceApiVersion: ""

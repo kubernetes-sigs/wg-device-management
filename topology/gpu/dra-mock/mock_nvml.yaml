@@ -1,0 +1,6 @@
+system:
+  driver_version: "565.0.0"
+devices:
+- product_name: "NVIDIA Blackwell B200"
+  memory_total: 206158430208 # ~192 GB in bytes
+  pci_device_id: "0x2340" # Placeholder for B200

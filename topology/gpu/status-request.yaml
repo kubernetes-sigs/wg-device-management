@@ -1,0 +1,13 @@
+apiVersion: resource.k8s.io/v1alpha3
+kind: ResourcePoolStatusRequest
+metadata:
+  name: check-gpus
+spec:
+  driver: gpu.nvidia.com
+---
+apiVersion: resource.k8s.io/v1alpha3
+kind: ResourcePoolStatusRequest
+metadata:
+  name: check-nvls
+spec:
+  driver: nvl.example.com

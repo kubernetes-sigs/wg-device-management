@@ -1,0 +1,200 @@
+#
+# Example: Whole Node Consumption
+#
+# This example shows a way to model NVL72 instances when we are doing
+# only whole node consumption. Each NVL72 is a sharable device, with
+# a consumable capacity value for "gpus", which can be consumed in
+# 4 GPU increments.
+#
+# The NVL72 device can contain meta data about the model (GB200, GB300),
+# as well as information about the resources (memory, CPU, etc) in each
+# node. Those values would not be consumable, they would just be
+# informational.
+#
+# A user would specify the number of GPUs in a ResourceClaimTemplate for
+# an NVL, and optionally a model (device classes can help here). This would
+# find an NVL with sufficient available GPUs, and consume that number from it.
+# The node selector for the device would be the entire NVL, not the subsets of
+# machines specific to the GPUs. That secondary scheduling is not prescribed, we
+# just let the scheduler pick the nodes, constrained by the node selector.
+#
+# Pods would reference the PodGroup claim, and also have a ResourceClaimTemplate that
+# requests `All` GPUs on the node.
+#
+# For ComputeDomain lifecycling with the PodGroup, we use an additional controller.
+# That controller watches for ResourceClaims for this driver that get allocated and de-
+# allocated, and automatically manages the ComputeDomain CR. 
+# That controller would watch functionality where the IMEX configuration follows
+# the workload would still apply here. However, we could have a controller that
+#
+# This effectively implements the single-level TAS.
+# 
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: nvl.example.com-00
+spec:
+  driver: nvl.example.com
+  pool:
+    name: nvl.example.com
+    generation: 1
+    resourceSliceCount: 1
+  perDeviceNodeSelection: true
+  devices:
+  - name: gb200-00
+    nodeSelector:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: example.com/nvldomain
+          operator: In
+          values:
+            - gb200-00
+    allowMultipleAllocations: true
+    attributes:
+      model:
+        string: "GB200"
+      connectivity:
+        string: "nvlink"
+    capacity:
+      gpus:
+        requestPolicy:
+          default: "4"
+          validRange:
+            min: "4"
+            max: "72"
+            step: "4"
+        value: "72"
+  - name: gb200-01
+    nodeSelector:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: example.com/nvldomain
+          operator: In
+          values:
+          - gb200-01
+    allowMultipleAllocations: true
+    attributes:
+      model:
+        string: "GB200"
+      connectivity:
+        string: "nvlink"
+    capacity:
+      gpus:
+        requestPolicy:
+          default: "4"
+          validRange:
+            min: "4"
+            max: "72"
+            step: "4"
+        value: "72"
+  - name: gb300-00
+    nodeSelector:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: example.com/nvldomain
+          operator: In
+          values:
+          - gb300-00
+    allowMultipleAllocations: true
+    attributes:
+      model:
+        string: "GB300"
+      connectivity:
+        string: "nvlink"
+    capacity:
+      gpus:
+        requestPolicy:
+          default: "4"
+          validRange:
+            min: "4"
+            max: "72"
+            step: "4"
+        value: "72"
+  - name: gb300-01
+    nodeSelector:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: example.com/nvldomain
+          operator: In
+          values:
+          - gb300-01
+    allowMultipleAllocations: true
+    attributes:
+      model:
+        string: "GB300"
+      connectivity:
+        string: "nvlink"
+    capacity:
+      gpus:
+        requestPolicy:
+          default: "4"
+          validRange:
+            min: "4"
+            max: "72"
+            step: "4"
+        value: "72"
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata:
+  name: nvldomain.example.com
+spec:
+  selectors:
+  - cel:
+      expression: 'device.driver == "nvl.example.com"'
+  - cel:
+      expression: 'device.attributes["nvl.example.com"].connectivity == "nvlink"'
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata:
+  name: gb200.example.com
+spec:
+  selectors:
+  - cel:
+      expression: 'device.driver == "nvl.example.com"'
+  - cel:
+      expression: 'device.attributes["nvl.example.com"].connectivity == "nvlink"'
+  - cel:
+      expression: 'device.attributes["nvl.example.com"].model == "GB200"'
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata:
+  name: gb300.example.com
+spec:
+  selectors:
+  - cel:
+      expression: 'device.driver == "nvl.example.com"'
+  - cel:
+      expression: 'device.attributes["nvl.example.com"].connectivity == "nvlink"'
+  - cel:
+      expression: 'device.attributes["nvl.example.com"].model == "GB300"'
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata:
+  name: gb200-16
+spec:
+  spec:
+    devices:
+      requests:
+        - name: gb200
+          exactly:
+            deviceClassName: gb200.example.com
+            capacity:
+              requests:
+                gpus: 16
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata:
+  name: all-gpus
+spec:
+  spec:
+    devices:
+      requests:
+        - name: req-0
+          exactly:
+            deviceClassName: gpu.nvidia.com
+            allocationMode: All
