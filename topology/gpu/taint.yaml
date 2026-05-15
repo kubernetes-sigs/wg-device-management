@@ -5,7 +5,7 @@ metadata:
 spec:
   deviceSelector:
     driver: "gpu.nvidia.com"
-    pool: "gke-dra-alpha-fake-gb200-00-f65ba89a-533r"
+    pool: "gke-alpha2-fake-gb200-00-4a96166a-tc28"
     device: "gpu-0"
   taint:
     key: "nvidia.com/failed" # Replace with your specific taint key
