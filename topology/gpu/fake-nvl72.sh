@@ -23,13 +23,16 @@ if gcloud container clusters describe $CLUSTER_NAME --location $LOCATION | grep 
 	AUTOREPAIR=" --no-enable-autorepair --no-enable-autoupgrade "
 fi
 
+# Generate a unique Clique ID
+CLIQUE_ID=$(cat /proc/sys/kernel/random/uuid)
+
 gcloud container node-pools create fake-${name} \
     --cluster=${CLUSTER_NAME} \
     --location=${LOCATION} \
     --node-locations=${LOCATION}-${zone} \
     --machine-type="e2-highcpu-4" \
     --num-nodes=18 \
-    --node-labels=gke-no-default-nvidia-gpu-device-plugin=true,nvidia.com/gpu.present=true,cloud.google.com/gke-nvidia-gpu-dra-driver=true,example.com/nvldomain=${name},example.com/fake-gpu=${GPU} $AUTOREPAIR
+    --node-labels=gke-no-default-nvidia-gpu-device-plugin=true,nvidia.com/gpu.present=true,cloud.google.com/gke-nvidia-gpu-dra-driver=true,example.com/nvldomain=${name},example.com/fake-gpu=${GPU},nvidia.com/gpu.clique=$CLIQUE_ID $AUTOREPAIR
 
 # Create ConfigMap for mock NVML
 CONFIG_MAP_NAME="mock-nvml-config-${name}"
@@ -317,4 +320,126 @@ helm upgrade --install dra-driver-nvidia-gpu-${name} $SCRIPT_DIR/dra-mock/dra-dr
     --namespace $NS \
     --set 'gpuResourcesEnabledOverride=true' \
     -f $HELM_VALUES_FILE
+
+# Create Headless Service for IMEX
+IMEX_SERVICE_FILE="/tmp/imex-service-${name}.yaml"
+cat <<EOF > $IMEX_SERVICE_FILE
+apiVersion: v1
+kind: Service
+metadata:
+  name: nvidia-imex-service-${name}
+  namespace: $NS
+spec:
+  publishNotReadyAddresses: true
+  clusterIP: None
+  selector:
+    app: nvidia-imex
+    pool: ${name}
+  ports:
+  - name: imex
+    port: 1101
+    targetPort: 1101
+EOF
+kubectl apply -f $IMEX_SERVICE_FILE
+
+# Create ConfigMap for IMEX template
+IMEX_CONFIG_FILE="/tmp/imex-config-${name}.cfg"
+cat <<EOF > $IMEX_CONFIG_FILE
+# IMEX configuration file
+IMEX_NODE_CONFIG_FILE=/etc/nvidia-imex/nodes_config.cfg
+EOF
+
+IMEX_CONFIG_MAP_NAME="imex-config-${name}"
+kubectl create configmap $IMEX_CONFIG_MAP_NAME --from-file=config.cfg=$IMEX_CONFIG_FILE -n $NS --dry-run=client -o yaml | kubectl apply -f -
+
+# Deploy IMEX DaemonSet in no-gpu mode
+IMEX_MANIFEST="/tmp/imex-daemonset-${name}.yaml"
+cat <<EOF > $IMEX_MANIFEST
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nvidia-imex-${name}
+  namespace: $NS
+spec:
+  selector:
+    matchLabels:
+      app: nvidia-imex
+      pool: ${name}
+  template:
+    metadata:
+      labels:
+        app: nvidia-imex
+        pool: ${name}
+    spec:
+      nodeSelector:
+        example.com/nvldomain: "${name}"
+      initContainers:
+      - name: init-imex
+        image: us-central1-docker.pkg.dev/jbelamaric-dev/jbelamaric-dev/nvidia-imex:latest
+        securityContext:
+          privileged: true
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          # Create channels
+          MAJOR=240 # Hardcoded major number for mock channels
+          echo "Using hardcoded major number \$MAJOR for mock channels"
+          mkdir -p /dev/nvidia-caps-imex-channels/
+          for i in \$(seq 0 200); do
+            mknod /dev/nvidia-caps-imex-channels/channel\$i c \$MAJOR \$i
+          done
+          chmod 666 /dev/nvidia-caps-imex-channels/channel*
+
+          # Wait for all pods to be ready and get IPs
+          SERVICE_NAME="nvidia-imex-service-${name}"
+          TOTAL_PODS=18 # We know it from script
+          
+          mkdir -p /etc/nvidia-imex
+          
+          while true; do
+            IPS=\$(getent hosts \$SERVICE_NAME | awk '{print \$1}' | sort -u)
+            COUNT=\$(echo "\$IPS" | wc -w)
+            if [ "\$COUNT" -eq "\$TOTAL_PODS" ]; then
+              echo "\$IPS" > /etc/nvidia-imex/nodes_config.cfg
+              break
+            fi
+            echo "Waiting for \$TOTAL_PODS pods, currently found \$COUNT..."
+            sleep 5
+          done
+        volumeMounts:
+        - name: imex-config-dir
+          mountPath: /etc/nvidia-imex
+        - name: imex-channels
+          mountPath: /dev/nvidia-caps-imex-channels
+      containers:
+      - name: imex-daemon
+        image: us-central1-docker.pkg.dev/jbelamaric-dev/jbelamaric-dev/nvidia-imex:latest
+        securityContext:
+          privileged: true
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          cp /etc/nvidia-imex-template/config.cfg /etc/nvidia-imex/config.cfg
+          exec /usr/bin/nvidia-imex --nogpu -c /etc/nvidia-imex/config.cfg
+        env:
+        - name: IMEX_CLIQUE_ID
+          value: "$CLIQUE_ID"
+        volumeMounts:
+        - name: imex-template-volume
+          mountPath: /etc/nvidia-imex-template
+        - name: imex-config-dir
+          mountPath: /etc/nvidia-imex
+        - name: imex-channels
+          mountPath: /dev/nvidia-caps-imex-channels
+      volumes:
+      - name: imex-template-volume
+        configMap:
+          name: $IMEX_CONFIG_MAP_NAME
+      - name: imex-config-dir
+        emptyDir: {}
+      - name: imex-channels
+        emptyDir: {}
+EOF
+
+kubectl apply -f $IMEX_MANIFEST
 

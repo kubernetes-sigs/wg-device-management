@@ -1,0 +1,42 @@
+# Stage 1: Build mocknvml shared library
+FROM golang:1.26 as mocknvml-builder
+
+RUN apt-get update && apt-get install -y git build-essential
+
+# Clone the k8s-test-infra repo
+RUN git clone https://github.com/NVIDIA/k8s-test-infra /k8s-test-infra
+WORKDIR /k8s-test-infra
+
+# Build the mocknvml shared library
+RUN make -C pkg/gpu/mocknvml
+
+# Stage 2: Final image
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add NVIDIA CUDA repository
+RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub | gpg --dearmor -o /usr/share/keyrings/cuda-archive-keyring.gpg
+
+RUN echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /" > /etc/apt/sources.list.d/cuda.list
+
+# Install nvidia-imex
+RUN apt-get update && apt-get install -y \
+    nvidia-imex-570 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the mock library from Stage 1
+COPY --from=mocknvml-builder /k8s-test-infra/pkg/gpu/mocknvml/libnvidia-ml.so /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.mock
+RUN ln -sf /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.mock /usr/lib/x86_64-linux-gnu/libnvidia-ml.so
+RUN ln -sf /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.mock /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1
+
+# Set LD_LIBRARY_PATH to force using the mock library
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+
+# Set entrypoint
+ENTRYPOINT ["nvidia-imex"]
+CMD ["--nogpu"]

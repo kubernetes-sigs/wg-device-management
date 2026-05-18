@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nvidia-imex-service-gb200-00
+  namespace: dra-driver-nvidia-gpu-mock-gb200-00
+spec:
+  publishNotReadyAddresses: true
+  clusterIP: None
+  selector:
+    app: nvidia-imex
+    pool: gb200-00
+  ports:
+  - name: imex
+    port: 1101
+    targetPort: 1101
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nvidia-imex-gb200-00
+  namespace: dra-driver-nvidia-gpu-mock-gb200-00
+spec:
+  selector:
+    matchLabels:
+      app: nvidia-imex
+      pool: gb200-00
+  template:
+    metadata:
+      labels:
+        app: nvidia-imex
+        pool: gb200-00
+    spec:
+      nodeSelector:
+        example.com/nvldomain: "gb200-00"
+      initContainers:
+      - name: init-imex
+        image: us-central1-docker.pkg.dev/jbelamaric-dev/jbelamaric-dev/nvidia-imex:latest
+        securityContext:
+          privileged: true
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          # Create channels
+          MAJOR=240 # Hardcoded major number for mock channels
+          echo "Using hardcoded major number $MAJOR for mock channels"
+          mkdir -p /dev/nvidia-caps-imex-channels/
+          for i in $(seq 0 200); do
+            mknod /dev/nvidia-caps-imex-channels/channel$i c $MAJOR $i
+          done
+          chmod 666 /dev/nvidia-caps-imex-channels/channel*
+
+          # Wait for all pods to be ready and get IPs
+          SERVICE_NAME="nvidia-imex-service-gb200-00"
+          TOTAL_PODS=18
+          
+          mkdir -p /etc/nvidia-imex
+          
+          while true; do
+            IPS=$(getent hosts $SERVICE_NAME | awk '{print $1}' | sort -u)
+            COUNT=$(echo "$IPS" | wc -w)
+            if [ "$COUNT" -eq "$TOTAL_PODS" ]; then
+              echo "$IPS" > /etc/nvidia-imex/nodes_config.cfg
+              break
+            fi
+            echo "Waiting for $TOTAL_PODS pods, currently found $COUNT..."
+            sleep 5
+          done
+        volumeMounts:
+        - name: imex-config-dir
+          mountPath: /etc/nvidia-imex
+        - name: imex-channels
+          mountPath: /dev/nvidia-caps-imex-channels
+      containers:
+      - name: imex-daemon
+        image: us-central1-docker.pkg.dev/jbelamaric-dev/jbelamaric-dev/nvidia-imex:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          cp /etc/nvidia-imex-template/config.cfg /etc/nvidia-imex/config.cfg
+          exec /usr/bin/nvidia-imex --nogpu -c /etc/nvidia-imex/config.cfg
+        env:
+        - name: IMEX_CLIQUE_ID
+          value: "d85bb19c-2e0d-44a9-b64e-9277d3990674"
+        volumeMounts:
+        - name: imex-template-volume
+          mountPath: /etc/nvidia-imex-template
+        - name: imex-config-dir
+          mountPath: /etc/nvidia-imex
+        - name: imex-channels
+          mountPath: /dev/nvidia-caps-imex-channels
+      volumes:
+      - name: imex-template-volume
+        configMap:
+          name: imex-config-gb200-00
+      - name: imex-config-dir
+        emptyDir: {}
+      - name: imex-channels
+        emptyDir: {}
