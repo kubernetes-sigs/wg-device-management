@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: compute-domain-driver-simulated
+  namespace: dra-driver-nvidia-gpu-mock-gb200-00
+spec:
+  selector:
+    matchLabels:
+      app: compute-domain-driver-simulated
+  template:
+    metadata:
+      labels:
+        app: compute-domain-driver-simulated
+    spec:
+      nodeSelector:
+        example.com/nvldomain: "gb200-00"
+      containers:
+      - name: compute-domains
+        image: us-central1-docker.pkg.dev/jbelamaric-dev/jbelamaric-dev/dra-driver-nvidia-gpu-mock:latest
+        securityContext:
+          privileged: true
+        command: ["bash", "-c"]
+        args:
+        - |-
+          # Create dummy NVIDIA device nodes
+          mknod -m 666 /dev/nvidiactl c 195 255 || true
+          mknod -m 666 /dev/nvidia-uvm c 510 0 || true
+          mknod -m 666 /dev/nvidia-uvm-tools c 510 1 || true
+          for i in $(seq 0 7); do
+            mknod -m 666 /dev/nvidia$i c 195 $i || true
+          done
+          
+          mkdir -p /dev/nvidia-caps-imex-channels
+          for i in $(seq 0 7); do
+            mknod -m 666 /dev/nvidia-caps-imex-channels/channel$i c 240 $i || true
+          done
+          
+          compute-domain-kubelet-plugin -v 4 --container-driver-root=/
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: MOCK_NVML_CONFIG
+          value: /etc/nvml-mock/config.yaml
+        - name: MOCK_TOPOLOGY_CONFIG
+          value: /etc/nvml-mock/topology/topology.yaml
+        - name: IMEX_STATE_DIR
+          value: /tmp/nvml-mock-imex-state
+        - name: ALT_PROC_DEVICES_PATH
+          value: /etc/nvml-mock/proc-devices
+        - name: MOCK_NVML_DRIVER_VERSION
+          value: "570.158.01"
+        volumeMounts:
+        - name: nvml-config
+          mountPath: /etc/nvml-mock/config.yaml
+          subPath: config.yaml
+        - name: topology-config
+          mountPath: /etc/nvml-mock/topology
+        - name: imex-state
+          mountPath: /tmp/nvml-mock-imex-state
+        - name: proc-devices-volume
+          mountPath: /etc/nvml-mock/proc-devices
+          subPath: proc-devices
+        - name: plugins-registry
+          mountPath: /var/lib/kubelet/plugins_registry
+        - name: plugins
+          mountPath: /var/lib/kubelet/plugins
+          mountPropagation: Bidirectional
+      volumes:
+      - name: nvml-config
+        configMap:
+          name: mock-nvml-config-gb200-00
+      - name: topology-config
+        configMap:
+          name: topology-config-gb200-00
+      - name: imex-state
+        hostPath:
+          path: /tmp/nvml-mock-imex-state
+          type: DirectoryOrCreate
+      - name: proc-devices-volume
+        configMap:
+          name: proc-devices-gb200-00
+      - name: plugins-registry
+        hostPath:
+          path: /var/lib/kubelet/plugins_registry
+      - name: plugins
+        hostPath:
+          path: /var/lib/kubelet/plugins

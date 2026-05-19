@@ -276,6 +276,47 @@ func (cdi *CDIHandler) writeSpec(spec spec.Interface, specName string) error {
 		return fmt.Errorf("failed to transform driver root in CDI spec: %w", err)
 	}
 
+	// Filter out mounts for files that don't exist on the host in mock environment
+	rawSpec := spec.Raw()
+	
+	// Filter global mounts
+	if len(rawSpec.ContainerEdits.Mounts) > 0 {
+		var filteredMounts []*cdispec.Mount
+		for _, m := range rawSpec.ContainerEdits.Mounts {
+			if m != nil && isProblematicMount(m.HostPath) {
+				klog.V(4).Infof("Filtering out host mount for %s", m.HostPath)
+				continue
+			}
+			filteredMounts = append(filteredMounts, m)
+		}
+		rawSpec.ContainerEdits.Mounts = filteredMounts
+	}
+
+	// Filter per-device mounts
+	for i := range rawSpec.Devices {
+		if len(rawSpec.Devices[i].ContainerEdits.Mounts) > 0 {
+			var filteredMounts []*cdispec.Mount
+			for _, m := range rawSpec.Devices[i].ContainerEdits.Mounts {
+				if m != nil && isProblematicMount(m.HostPath) {
+					klog.V(4).Infof("Filtering out host mount for %s from device %s", m.HostPath, rawSpec.Devices[i].Name)
+					continue
+				}
+				filteredMounts = append(filteredMounts, m)
+			}
+			rawSpec.Devices[i].ContainerEdits.Mounts = filteredMounts
+		}
+	}
+
 	klog.V(7).Infof("Write CDI spec: %s", specName)
 	return spec.Save(filepath.Join(cdi.cdiRoot, specName+".yaml"))
+}
+
+func isProblematicMount(path string) bool {
+	return path == "/usr/bin/nvidia-debugdump" ||
+		path == "/usr/bin/nvidia-smi" ||
+		path == "/usr/bin/nvidia-persistenced" ||
+		path == "/usr/bin/nvidia-cuda-mps-control" ||
+		path == "/usr/bin/nvidia-cuda-mps-server" ||
+		path == "/usr/bin/nvidia-imex" ||
+		path == "/usr/bin/nvidia-imex-ctl"
 }
