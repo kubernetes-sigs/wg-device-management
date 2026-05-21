@@ -99,6 +99,20 @@ spec:
             sed -i 's/^ModifyDeviceFiles: 1$/ModifyDeviceFiles: 0/' /root/gpu-params
             mount --bind /root/gpu-params /proc/driver/nvidia/params
           fi
+          
+          # Create dummy NVIDIA device nodes for simulation on host
+          mknod -m 666 /host-dev/nvidiactl c 195 255 || true
+          mknod -m 666 /host-dev/nvidia-uvm c 510 0 || true
+          mknod -m 666 /host-dev/nvidia-uvm-tools c 510 1 || true
+          for i in $(seq 0 7); do
+            mknod -m 666 /host-dev/nvidia$i c 195 $i || true
+          done
+          
+          mkdir -p /host-dev/nvidia-caps-imex-channels
+          for i in $(seq 0 7); do
+            mknod -m 666 /host-dev/nvidia-caps-imex-channels/channel$i c 240 $i || true
+          done
+          
           compute-domain-kubelet-plugin -v $(LOG_VERBOSITY) --container-driver-root=/
         resources:
           {{- toYaml .Values.kubeletPlugin.containers.computeDomains.resources | nindent 10 }}
@@ -179,6 +193,10 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
         volumeMounts:
+        - name: imex-state
+          mountPath: /tmp/nvml-mock-imex-state
+        - name: host-dev
+          mountPath: /host-dev
         - name: plugins-registry
           mountPath: {{ .Values.kubeletPlugin.kubeletRegistrarDirectoryPath | quote }}
         - name: plugins
@@ -336,6 +354,13 @@ spec:
         {{- end }}
       {{- end }}
       volumes:
+      - name: imex-state
+        hostPath:
+          path: /tmp/nvml-mock-imex-state
+          type: DirectoryOrCreate
+      - name: host-dev
+        hostPath:
+          path: /dev
       - name: plugins-registry
         hostPath:
           path: {{ .Values.kubeletPlugin.kubeletRegistrarDirectoryPath | quote }}

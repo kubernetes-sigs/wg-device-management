@@ -1,0 +1,38 @@
+apiVersion: resource.nvidia.com/v1beta1
+kind: ComputeDomain
+metadata:
+  name: compute-domain-job1
+  namespace: standard
+spec:
+  numNodes: 0 # no longer needed
+  channel:
+    resourceClaimTemplate:
+      name: compute-domain-job1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job1
+  namespace: standard
+spec:
+  completions: 16
+  parallelism: 16
+  completionMode: Indexed
+  template:
+    spec:
+      schedulerName: dra-scheduler
+      containers:
+      - name: worker
+        image: ubuntu:22.04
+        command: ["bash", "-c"]
+        args: ["date; sleep 30; date"]
+        resources:
+          claims:
+          - name: gpus
+          - name: compute-domain
+      restartPolicy: Never
+      resourceClaims:
+      - name: gpus
+        resourceClaimTemplateName: all-gpus
+      - name: compute-domain
+        resourceClaimTemplateName: compute-domain-job1

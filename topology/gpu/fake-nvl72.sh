@@ -43,8 +43,8 @@ cat <<'EOF' > $MOCK_CONFIG_FILE
 version: "1.0"
 
 system:
-  driver_version: "535.288.01"
-  nvml_version: "12.535.288.01"
+  driver_version: "570.158.01"
+  nvml_version: "12.570.158.01"
   cuda_version: "12.6"
   cuda_version_major: 12
   cuda_version_minor: 6
@@ -278,11 +278,41 @@ NS="dra-driver-nvidia-gpu-mock-${name}"
 
 kubectl create ns $NS
 
-# Create ConfigMap in the cluster
+# Create ConfigMaps in the cluster
 kubectl create configmap $CONFIG_MAP_NAME --from-file=config.yaml=$MOCK_CONFIG_FILE -n $NS --dry-run=client -o yaml | kubectl apply -f -
 
-# Deploy the driver to the created node pool
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+# Query node names in the pool and generate topology.yaml
+NODES=$(kubectl get nodes -l example.com/nvldomain=${name} -o jsonpath='{.items[*].metadata.name}')
+
+TOPOLOGY_FILE="/tmp/topology-${name}.yaml"
+cat <<EOF > $TOPOLOGY_FILE
+topology:
+  enabled: true
+  domains:
+    - name: ${name}-domain
+      uuid: "00000000-0000-0000-0000-0000000000ab"
+      cliques:
+        - id: 0
+          nodes:
+EOF
+for node in $NODES; do
+  echo "            - $node" >> $TOPOLOGY_FILE
+done
+
+TOPOLOGY_CONFIG_MAP_NAME="topology-config-${name}"
+kubectl create configmap $TOPOLOGY_CONFIG_MAP_NAME --from-file=topology.yaml=$TOPOLOGY_FILE -n $NS --dry-run=client -o yaml | kubectl apply -f -
+
+# Create ConfigMap for fake proc-devices
+PROC_DEVICES_FILE="/tmp/proc-devices-${name}"
+cat <<EOF > $PROC_DEVICES_FILE
+Character devices:
+240 nvidia-caps-imex-channels
+
+Block devices:
+EOF
+
+PROC_DEVICES_CONFIG_MAP_NAME="proc-devices-${name}"
+kubectl create configmap $PROC_DEVICES_CONFIG_MAP_NAME --from-file=proc-devices=$PROC_DEVICES_FILE -n $NS --dry-run=client -o yaml | kubectl apply -f -
 
 # Create a temporary values file for Helm
 HELM_VALUES_FILE="/tmp/helm-values-${name}.yaml"
@@ -292,11 +322,20 @@ image:
   tag: latest
   pullPolicy: Always
 
+resources:
+  computeDomains:
+    enabled: true
+
 mockNvml:
   configMaps:
     - name: $CONFIG_MAP_NAME
       mountPath: /var/lib/nvml-mock/config.yaml
       subPath: config.yaml
+    - name: $TOPOLOGY_CONFIG_MAP_NAME
+      mountPath: /etc/nvml-mock/topology
+    - name: $PROC_DEVICES_CONFIG_MAP_NAME
+      mountPath: /etc/nvml-mock/proc-devices
+      subPath: proc-devices
 
 kubeletPlugin:
   priorityClassName: ""
@@ -311,10 +350,22 @@ kubeletPlugin:
       env:
         - name: MOCK_NVML_CONFIG
           value: /var/lib/nvml-mock/config.yaml
+        - name: MOCK_TOPOLOGY_CONFIG
+          value: /etc/nvml-mock/topology/topology.yaml
+        - name: IMEX_STATE_DIR
+          value: /tmp/nvml-mock-imex-state
+        - name: ALT_PROC_DEVICES_PATH
+          value: /etc/nvml-mock/proc-devices
+        - name: MOCK_NVML_DRIVER_VERSION
+          value: "570.158.01"
 EOF
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 helm upgrade --install dra-driver-nvidia-gpu-${name} $SCRIPT_DIR/dra-mock/dra-driver-nvidia-gpu \
     --namespace $NS \
     --set 'gpuResourcesEnabledOverride=true' \
     -f $HELM_VALUES_FILE
+
+# End of file
 
